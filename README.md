@@ -1,8 +1,6 @@
 # TechnoUP
-> Este é um projeto artefato da disciplina de Experiência Criativa do curso de **Bacharelado em Engenharia de Software**.
->
+Este é um projeto artefato da disciplina de Experiência Criativa do curso de **Bacharelado em Engenharia de Software**.
 > **O objetivo é** criar uma plataforma onde lojas de eletrônicos possam informatizar seus produtos em um catálogo digital.
->
 
 ## Links importantes
 
