@@ -20,6 +20,7 @@ $fields = [
     "nome" => "Nome",
     "email" => "Email"
 ];
+-- adicionar values quando for UPDATE
 $values = $cliente ?? [];
 
-include 'components/form.php'; -->
+include '../components/form.php'; -->
