@@ -8,10 +8,10 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/clientes.php">Clientes</a>
+                    <a class="nav-link" href="../lojista/">Lojistas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/produtos.php">Produtos</a>
+                    <a class="nav-link" href="../catalogo/">Produtos</a>
                 </li>
             </ul>
         </div>

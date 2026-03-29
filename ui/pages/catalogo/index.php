@@ -1,0 +1,53 @@
+
+<?php
+$title = "Catálogo da Loja";
+include '../../components/head.php';
+include '../../components/navbar.php';
+
+include '../../../php/_conexao.php';
+
+$sql = "SELECT * FROM produto";
+$result = $conexao->query($sql);
+
+$data = [];
+
+while ($row = $result->fetch_assoc()) {
+    $data[] = [
+        "id" => $row['id'],
+        "nome" => $row['nome'],
+        "preco" => $row['preco'],
+        "tipo" => $row['tipo']
+    ];
+}
+?>
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">Meu Catálogo</h2>
+
+    <?php
+
+// formulario
+    $action = "../../../php/catalogo_salvar.php";
+    $method = "POST";
+    $fields = [
+        "nome" => "Nome do Produto",
+        "preco" => "Preço",
+        "tipo" => "Tipo"
+    ];
+    $buttonText = "Adicionar Produto";
+
+    include '../../components/form.php';
+    ?>
+
+    <hr>
+
+    <?php
+    // tabela
+    $columns = ["ID", "Nome", "Preço", "Tipo"];
+    include '../../components/table.php';
+    ?>
+
+</div>
+
+<?php include '../../components/footer.php'; ?>
