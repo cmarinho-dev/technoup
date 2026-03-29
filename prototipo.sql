@@ -1,32 +1,39 @@
-create database technoup;
-use technoup;
+CREATE DATABASE IF NOT EXISTS technoup;
+USE technoup;
 
-create table consumidor(
-id_consumidor int not null auto_increment primary key,
-email varchar(50),
-senha varchar(50)
+CREATE TABLE IF NOT EXISTS consumidor (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	nome VARCHAR(200),
+	email VARCHAR(50),
+	senha VARCHAR(50),
+	ativo TINYINT(4) DEFAULT NULL
 );
 
-create table lojista(
-id_lojista int not null auto_increment primary key,
-email varchar(50),
-senha varchar(50),
-nome_loja varchar(50),
-telefone int
+CREATE TABLE IF NOT EXISTS lojista (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	email VARCHAR(50),
+	senha VARCHAR(50),
+	nome_loja VARCHAR(50),
+	telefone INT,
+	ativo TINYINT(4) DEFAULT NULL
 );
 
-create table produto(
-id_produto int not null primary key,
-nome varchar(50),
-preco decimal(10,2),
-tipo varchar(30)
+CREATE TABLE IF NOT EXISTS produto (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	nome VARCHAR(50),
+	preco DECIMAL(10,2),
+	tipo VARCHAR(30)
 );
 
-create table catalogo(
-id_catalogo int not null,
-id_produto int not null,
-id_lojista int not null,
-preco decimal(10,2),
-foreign key (id_produto) references produto(id_produto),
-foreign key (id_lojista) references lojista(id_lojista)
+CREATE TABLE IF NOT EXISTS catalogo (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	produto_id INT NOT NULL,
+	lojista_id INT NOT NULL,
+	preco DECIMAL(10,2),
+	FOREIGN KEY (produto_id) REFERENCES produto(id),
+	FOREIGN KEY (lojista_id) REFERENCES lojista(id)
 );
+
+INSERT IGNORE INTO lojista (id, email, senha, nome_loja, telefone, ativo) VALUES
+(1, 'poo@g.co', 'poo', 'Loja Exemplo', 123456789, 1),
+(2, 'loja@example.com', 'loja', 'Loja Exemplo 2', 987654321, 1);
