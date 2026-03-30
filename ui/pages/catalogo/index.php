@@ -49,5 +49,6 @@ while ($row = $result->fetch_assoc()) {
     ?>
 
 </div>
-
+<script src="../../../js/_valida_sessao.js"></script>
+<script>valida_sessao()</script>
 <?php include '../../components/footer.php'; ?>
