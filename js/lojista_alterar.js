@@ -20,6 +20,8 @@ async function buscar(id) {
     var registro = resposta.data[0];
     document.getElementById("email").value = registro.email;
     document.getElementById("senha").value = registro.senha;
+    document.getElementById("cnpj").value = registro.cnpj;
+    document.getElementById("cep_loja").value = registro.cep_loja;
     document.getElementById("nome_loja").value = registro.nome_loja;
     document.getElementById("telefone").value = registro.telefone;
     document.getElementById("ativo").value = registro.ativo;
@@ -39,6 +41,8 @@ document.getElementById("enviar").addEventListener("click", () => {
 async function alterar() {
   var email = document.getElementById("email").value;
   var senha = document.getElementById("senha").value;
+  var cnpj = document.getElementById("cnpj").value;
+  var cep_loja = document.getElementById("cep_loja").value;
   var nome_loja = document.getElementById("nome_loja").value;
   var telefone = document.getElementById("telefone").value;
   var ativo = document.getElementById("ativo").value;
@@ -47,6 +51,8 @@ async function alterar() {
   const fd = new FormData();
   fd.append("email", email);
   fd.append("senha", senha);
+  fd.append("cnpj", cnpj);
+  fd.append("cep_loja", cep_loja); 
   fd.append("nome_loja", nome_loja);
   fd.append("telefone", telefone);
   fd.append("ativo", ativo);

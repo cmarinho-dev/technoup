@@ -43,6 +43,8 @@ function preencherTabela(tabela){
             <tr>
                 <th> Email </th>
                 <th> Senha </th>
+                <th> CNPJ </th>
+                <th> CEP Loja </th>
                 <th> Nome loja </th>
                 <th> Telefone </th>
                 <th> Ativo </th>
@@ -53,6 +55,8 @@ function preencherTabela(tabela){
             <tr>
                 <td>${tabela[i].email}</td>
                 <td>${tabela[i].senha}</td>
+                <td>${tabela[i].cnpj || ''}</td>
+                <td>${tabela[i].cep_loja || ''}</td>
                 <td>${tabela[i].nome_loja}</td>
                 <td>${tabela[i].telefone}</td>
                 <td>${tabela[i].ativo}</td>
