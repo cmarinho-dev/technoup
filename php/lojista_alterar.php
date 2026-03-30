@@ -11,13 +11,15 @@
         // Simulando as informações que vem do front
         $email      = $_POST['email'];
         $senha      = $_POST['senha'];
+        $cnpj       = $_POST['cnpj'];
+        $cep_loja   = $_POST['cep_loja'];
         $nome_loja  = $_POST['nome_loja'];
         $telefone   = $_POST['telefone'];
         $ativo      = (int) $_POST['ativo'];
     
-        // Preparando para inserção no banco de dados
-        $stmt = $conexao->prepare("UPDATE lojista SET email = ?, senha = ?, nome_loja = ?, telefone = ?, ativo = ? WHERE id = ?");
-        $stmt->bind_param("ssssii",$email, $senha, $nome_loja, $telefone, $ativo, $_GET['id']);
+        // Preparando para atualização no banco de dados
+        $stmt = $conexao->prepare("UPDATE lojista SET email = ?, senha = ?, cnpj = ?, cep_loja = ?, nome_loja = ?, telefone = ?, ativo = ? WHERE id = ?");
+        $stmt->bind_param("ssssssii",$email, $senha, $cnpj, $cep_loja, $nome_loja, $telefone, $ativo, $_GET['id']);
         $stmt->execute();
 
         if($stmt->affected_rows > 0){
