@@ -9,15 +9,23 @@ include '../../components/navbar.php';
 
     <?php
     // formulario
-    $action = "../../../php/lojista_alterar.php";
-    $method = "POST";
+    //$action = "../../../php/lojista_alterar.php";
+    // $method = "POST";
     $fields = [
         "id" => "ID",
+        "nome_loja" => "Nome da Loja",
+        "logradouro" => "Logradouro",
+        "nome_lojista" => "Nome do Lojista",
+        "cpf" => "CPF",
+        "cnpj" => "CNPJ",
+        "cep_lojista" => "CEP do Lojista",
+        "estado" => "Estado",
+        "cidade" => "Cidade",
+        "bairro" => "Bairro",
+        "numero" => "Número",
+        "genero" => "Gênero",
         "email" => "Email",
         "senha" => "Senha",
-        "cnpj" => "CNPJ",
-        "cep_loja" => "CEP",
-        "nome_loja" => "Nome da Loja",
         "telefone" => "Telefone",
         "ativo" => "Ativo"
     ];

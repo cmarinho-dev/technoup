@@ -41,23 +41,38 @@ function preencherTabela(tabela){
     var html = `
         <table class="table table-striped">
             <tr>
-                <th> Email </th>
-                <th> Senha </th>
-                <th> CNPJ </th>
-                <th> CEP Loja </th>
-                <th> Nome loja </th>
-                <th> Telefone </th>
-                <th> Ativo </th>
-                <th> # </th>
+                <th>Nome da Loja</th>
+                <th>Logradouro</th>
+                <th>Lojista</th>
+                <th>CPF</th>
+                <th>CNPJ</th>
+                <th>CEP</th>
+                <th>Estado</th>
+                <th>Cidade</th>
+                <th>Bairro</th>
+                <th>Número</th>
+                <th>Gênero</th>
+                <th>Email</th>
+                <th>Senha</th>
+                <th>Telefone</th>
+                <th>Ativo</th>
             </tr>`;
     for(var i=0;i<tabela.length;i++){
         html += `
             <tr>
+                <td>${tabela[i].nome_loja}</td>
+                <td>${tabela[i].logradouro || ''}</td>
+                <td>${tabela[i].nome_lojista || ''}</td>
+                <td>${tabela[i].cpf || ''}</td>
+                <td>${tabela[i].cnpj || ''}</td>
+                <td>${tabela[i].cep_lojista || ''}</td>
+                <td>${tabela[i].estado || ''}</td>
+                <td>${tabela[i].cidade || ''}</td>
+                <td>${tabela[i].bairro || ''}</td>
+                <td>${tabela[i].numero || ''}</td>
+                <td>${tabela[i].genero || ''}</td>
                 <td>${tabela[i].email}</td>
                 <td>${tabela[i].senha}</td>
-                <td>${tabela[i].cnpj || ''}</td>
-                <td>${tabela[i].cep_loja || ''}</td>
-                <td>${tabela[i].nome_loja}</td>
                 <td>${tabela[i].telefone}</td>
                 <td>${tabela[i].ativo}</td>
                 <td>

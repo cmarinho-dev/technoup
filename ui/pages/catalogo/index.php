@@ -1,3 +1,4 @@
+
 <?php
 $title = "Catálogo da Loja";
 include '../../components/head.php';
@@ -15,7 +16,13 @@ while ($row = $result->fetch_assoc()) {
         "id" => $row['id'],
         "nome" => $row['nome'],
         "preco" => $row['preco'],
-        "tipo" => $row['tipo']
+        "tipo" => $row['tipo'],
+        "descricao" => $row['descricao'],
+        "modelo" => $row['modelo'],
+        "marca" => $row['marca'],
+        "capacidade" => $row['capacidade'],
+        "tipodamemoria" => $row['tipodamemoria'],
+        "conector" => $row['conector']
     ];
 }
 ?>
@@ -25,13 +32,20 @@ while ($row = $result->fetch_assoc()) {
     <h2 class="mb-4">Meu Catálogo</h2>
 
     <?php
-    // formulário
+
+// formulario
     $action = "../../../php/catalogo_salvar.php";
     $method = "POST";
     $fields = [
         "nome" => "Nome do Produto",
         "preco" => "Preço",
-        "tipo" => "Tipo"
+        "tipo" => "Tipo",
+        "descricao" => "Descrição",
+        "modelo" => "Modelo",
+        "marca" => "Marca",
+        "capacidade" => "Capacidade da Memória",
+        "tipodamemoria" => "Tipo da Memória",
+        "conector" => "Conector"
     ];
     $buttonText = "Adicionar Produto";
 
@@ -42,33 +56,11 @@ while ($row = $result->fetch_assoc()) {
 
     <?php
     // tabela
-    $columns = ["ID", "Nome", "Preço", "Tipo"];
+    $columns = ["ID", "Nome", "Preço", "Tipo", "Descrição", "Modelo", "Marca", "Capacidade", "TipodaMemória", "Conector"];
     include '../../components/table.php';
     ?>
 
 </div>
-
 <script src="../../../js/_valida_sessao.js"></script>
 <script>valida_sessao()</script>
-
-<script>
-function buscar(id) {
-    window.location.href = "alterar.php?id=" + encodeURIComponent(id);
-}
-
-async function excluir(id) {
-    const confirmar = confirm("Tem certeza que deseja excluir?");
-    if (!confirmar) return;
-
-    const retorno = await fetch("../../../php/catalogo_excluir.php?id=" + encodeURIComponent(id));
-    const resposta = await retorno.json();
-
-    if (resposta.status === "ok") {
-        location.reload();
-    } else {
-        alert("Erro: " + resposta.mensagem);
-    }
-}
-</script>
-
 <?php include '../../components/footer.php'; ?>

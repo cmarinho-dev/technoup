@@ -13,14 +13,10 @@
                 <?php foreach ($row as $value): ?>
                     <td><?= $value ?></td>
                 <?php endforeach; ?>
-                <td>
-                    <button type="button" onclick="buscar(<?= $row['id'] ?>)" class="btn btn-sm btn-warning">
-                        Editar
-                    </button>
 
-                    <button type="button" onclick="excluir(<?= $row['id'] ?>)" class="btn btn-sm btn-danger">
-                        Excluir
-                    </button>
+                <td>
+                    <a href="editar.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="deletar.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger">Excluir</a>
                 </td>
             </tr>
         <?php endforeach; ?>

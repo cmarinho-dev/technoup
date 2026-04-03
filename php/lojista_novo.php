@@ -1,65 +1,49 @@
 <?php
-include_once('_conexao.php');
+    include_once('_conexao.php');
+    $retorno = [
+        'status'    => '',
+        'mensagem'  => '',
+        'data'      => []
+    ];
+    // Simulando as informações que vem do front
+    $nome_loja    = $_POST['nome_loja'];
+    $logradouro   = $_POST['logradouro'];
+    $nome_lojista = $_POST['nome_lojista'];
+    $cpf          = $_POST['cpf'];
+    $cnpj         = $_POST['cnpj'];
+    $cep_lojista  = $_POST['cep_lojista'];
+    $estado       = $_POST['estado'];
+    $cidade       = $_POST['cidade'];
+    $bairro       = $_POST['bairro'];
+    $numero       = $_POST['numero'];
+    $genero       = $_POST['genero'];
+    $email        = $_POST['email'];
+    $senha        = $_POST['senha'];
+    $telefone     = $_POST['telefone'];
+    $ativo        = (int) $_POST['ativo'];
 
-header("Content-type: application/json; charset=utf-8");
+    // Preparando para inserção no banco de dados
+    $stmt = $conexao->prepare("
+    INSERT INTO lojista(nome_loja, logradouro, nome_lojista, cpf, cnpj, cep_lojista, estado, cidade, bairro, numero, genero, email, senha, telefone, ativo) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param("ssssssssssssssi", $nome_loja, $logradouro, $nome_lojista, $cpf, $cnpj, $cep_lojista, $estado, $cidade, $bairro, $numero, $genero, $email, $senha, $telefone, $ativo);
+    $stmt->execute();
 
-$retorno = [
-    'status' => '',
-    'mensagem' => '',
-    'data' => []
-];
-
-// Verificar se todos os campos necessários foram enviados
-$campos_necessarios = ['email', 'senha', 'cnpj', 'cep_loja', 'nome_loja', 'telefone', 'ativo'];
-foreach ($campos_necessarios as $campo) {
-    if (!isset($_POST[$campo]) || empty(trim($_POST[$campo]))) {
-        $retorno = [
-            'status' => 'nok',
-            'mensagem' => "Campo '$campo' é obrigatório.",
-            'data' => []
-        ];
-        echo json_encode($retorno);
-        exit;
-    }
-}
-
-// Simulando as informações que vem do front
-$email = trim($_POST['email']);
-$senha = trim($_POST['senha']);
-$cnpj = trim($_POST['cnpj']);
-$cep_loja = trim($_POST['cep_loja']);
-$nome_loja = trim($_POST['nome_loja']);
-$telefone = trim($_POST['telefone']);
-$ativo = (int) $_POST['ativo'];
-
-// Preparando para inserção no banco de dados
-$stmt = $conexao->prepare("INSERT INTO lojista(email, senha, cnpj, cep_loja, nome_loja, telefone, ativo) VALUES(?,?,?,?,?,?,?)");
-$stmt->bind_param("ssssssi", $email, $senha, $cnpj, $cep_loja, $nome_loja, $telefone, $ativo);
-
-if ($stmt->execute()) {
-    if ($stmt->affected_rows > 0) {
+    if($stmt->affected_rows > 0){
         $retorno = [
             'status' => 'ok',
-            'mensagem' => 'Registro inserido com sucesso.',
+            'mensagem' => 'registro inserido com sucesso',
             'data' => []
         ];
-    } else {
+    }else{
         $retorno = [
             'status' => 'nok',
-            'mensagem' => 'Falha ao inserir o registro.',
+            'mensagem' => 'falha ao inserir o registro',
             'data' => []
         ];
     }
-} else {
-    $retorno = [
-        'status' => 'nok',
-        'mensagem' => 'Erro na execução da query: ' . $stmt->error,
-        'data' => []
-    ];
-}
 
-$stmt->close();
-$conexao->close();
+    $stmt->close();
+    $conexao->close();
 
-echo json_encode($retorno);
-exit;
+    header("Content-type:application/json;charset:utf-8");
+    echo json_encode($retorno);

@@ -1,49 +1,60 @@
 <?php
-include_once('_conexao.php');
+    include_once('_conexao.php');
 
-$retorno = [
-    'status' => '',
-    'mensagem' => '',
-    'data' => []
-];
+    $retorno = [
+        'status'    => '',
+        'mensagem'  => '',
+        'data'      => []
+    ];
 
-if (isset($_GET['id']) && isset($_POST['email'], $_POST['senha'], $_POST['cnpj'], $_POST['cep_loja'], $_POST['nome_loja'], $_POST['telefone'], $_POST['ativo'])) {
-    $id = (int) $_GET['id'];
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
-    $cnpj = $_POST['cnpj'];
-    $cep_loja = $_POST['cep_loja'];
-    $nome_loja = $_POST['nome_loja'];
-    $telefone = $_POST['telefone'];
-    $ativo = (int) $_POST['ativo'];
+    if(isset($_GET['id'])){
+        // Simulando as informações que vem do front
+        $nome_loja    = $_POST['nome_loja'];
+        $logradouro   = $_POST['logradouro'];
+        $nome_lojista = $_POST['nome_lojista'];
+        $cpf          = $_POST['cpf'];
+        $cnpj         = $_POST['cnpj'];
+        $cep_lojista  = $_POST['cep_lojista'];
+        $estado       = $_POST['estado'];
+        $cidade       = $_POST['cidade'];
+        $bairro       = $_POST['bairro'];
+        $numero       = $_POST['numero'];
+        $genero       = $_POST['genero'];
+        $email        = $_POST['email'];
+        $senha        = $_POST['senha'];
+        $telefone     = $_POST['telefone'];
+        $ativo        = (int) $_POST['ativo'];
+        $id           = $_POST['id'];
 
-    $stmt = $conexao->prepare("UPDATE lojista SET email = ?, senha = ?, cnpj = ?, cep_loja = ?, nome_loja = ?, telefone = ?, ativo = ? WHERE id = ?");
-    $stmt->bind_param("ssssssii", $email, $senha, $cnpj, $cep_loja, $nome_loja, $telefone, $ativo, $id);
+        // Preparando para atualização no banco de dados
 
-    if ($stmt->execute()) {
+        $stmt = $conexao->prepare("UPDATE lojista SET nome_loja = ?, logradouro = ?, nome_lojista = ?, cpf = ?, cnpj = ?, cep_lojista = ?, estado = ?, cidade = ?, bairro = ?, numero = ?, genero = ?, email = ?, senha = ?, telefone = ?, ativo = ? WHERE id = ?");
+        $stmt->bind_param("sssssssssssssssi", $nome_loja, $logradouro, $nome_lojista, $cpf, $cnpj, $cep_lojista, $estado, $cidade, $bairro, $numero, $genero, $email, $senha, $telefone, $ativo, $id);
+        $stmt->execute();
+
+        if($stmt->affected_rows > 0){
+            $retorno = [
+                'status'    => 'ok',
+                'mensagem'  => 'Registro alterado com sucesso.',
+                'data'      => []
+            ];
+        }else{
+            $retorno = [
+                'status'    => 'nok',
+                'mensagem'  => 'Não posso alterar um registro.'.json_encode($_GET),
+                'data'      => []
+            ];
+        }
+        $stmt->close();
+    }else{
         $retorno = [
-            'status' => 'ok',
-            'mensagem' => 'Registro alterado com sucesso.',
-            'data' => []
-        ];
-    } else {
-        $retorno = [
-            'status' => 'nok',
-            'mensagem' => 'Erro ao atualizar o lojista.',
-            'data' => []
+            'status'    => 'nok',
+            'mensagem'  => 'Não posso alterar um registro sem um ID informado.',
+            'data'      => []
         ];
     }
-    $stmt->close();
-} else {
-    $retorno = [
-        'status' => 'nok',
-        'mensagem' => 'Dados incompletos para atualização.',
-        'data' => []
-    ];
-}
+       
+    $conexao->close();
 
-$conexao->close();
-
-header("Content-type: application/json; charset=utf-8");
-echo json_encode($retorno);
-exit;
+    header("Content-type:application/json;charset:utf-8");
+    echo json_encode($retorno);

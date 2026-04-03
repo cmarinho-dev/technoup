@@ -1,59 +1,55 @@
 document.addEventListener("DOMContentLoaded", () => {
     valida_sessao();
-
-    const form = document.getElementById("form");
-    if (form) {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            novo();
-        });
-    }
 });
 
-async function novo() {
-    try {
-        const email = document.getElementById("email").value.trim();
-        const senha = document.getElementById("senha").value.trim();
-        const cnpj = document.getElementById("cnpj").value.trim();
-        const cep_loja = document.getElementById("cep_loja").value.trim();
-        const nome_loja = document.getElementById("nome_loja").value.trim();
-        const telefone = document.getElementById("telefone").value.trim();
-        const ativo = document.getElementById("ativo").value;
+document.getElementById("enviar").addEventListener("click", () => {
+    novo();
+});
 
-        // Validação básica no frontend
-        if (!email || !senha || !cnpj || !cep_loja || !nome_loja || !telefone) {
-            alert("Por favor, preencha todos os campos obrigatórios.");
-            return;
-        }
+async function novo(){
+    var nome_loja    = document.getElementById("nome_loja").value;
+    var logradouro   = document.getElementById("logradouro").value;
+    var nome_lojista = document.getElementById("nome_lojista").value;
+    var cpf          = document.getElementById("cpf").value;
+    var cnpj         = document.getElementById("cnpj").value;
+    var cep_lojista  = document.getElementById("cep_lojista").value;
+    var estado       = document.getElementById("estado").value;
+    var cidade       = document.getElementById("cidade").value;
+    var bairro       = document.getElementById("bairro").value;
+    var numero       = document.getElementById("numero").value;
+    var genero       = document.getElementById("genero").value;
+    var email        = document.getElementById("email").value;
+    var senha        = document.getElementById("senha").value;
+    var telefone     = document.getElementById("telefone").value;
+    var ativo        = document.getElementById("ativo").value;  
 
-        const fd = new FormData();
-        fd.append("email", email);
-        fd.append("senha", senha);
-        fd.append("cnpj", cnpj);
-        fd.append("cep_loja", cep_loja);
-        fd.append("nome_loja", nome_loja);
-        fd.append("telefone", telefone);
-        fd.append("ativo", ativo);
+    const fd = new FormData();
+    fd.append("nome_loja", nome_loja);
+    fd.append("logradouro", logradouro);
+    fd.append("nome_lojista", nome_lojista);
+    fd.append("cpf", cpf);
+    fd.append("cnpj", cnpj);
+    fd.append("cep_lojista", cep_lojista);
+    fd.append("estado", estado);
+    fd.append("cidade", cidade);
+    fd.append("bairro", bairro);
+    fd.append("numero", numero);
+    fd.append("genero", genero);
+    fd.append("email", email);
+    fd.append("senha", senha);
+    fd.append("telefone", telefone);
+    fd.append("ativo", ativo);
 
-        const retorno = await fetch("../../../php/lojista_novo.php", {
-            method: 'POST',
-            body: fd
+    const retorno = await fetch("../../../php/lojista_novo.php",
+        {
+          method: 'POST',
+          body: fd  
         });
-
-        if (!retorno.ok) {
-            throw new Error(`Erro HTTP: ${retorno.status}`);
-        }
-
-        const resposta = await retorno.json();
-
-        if (resposta.status === "ok") {
-            alert("Lojista cadastrado com sucesso!");
-            window.location.href = "./";
-        } else {
-            alert("Erro: " + resposta.mensagem);
-        }
-    } catch (erro) {
-        console.error("Erro ao cadastrar lojista:", erro);
-        alert("Erro ao processar a solicitação. Verifique o console para mais detalhes.");
+    const resposta = await retorno.json();
+    if(resposta.status == "ok"){
+        // alert("SUCESSO: " + resposta.mensagem);
+        window.location.href = "./";
+    }else{
+        alert("ERRO: " + resposta.mensagem);
     }
 }
