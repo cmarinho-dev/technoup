@@ -3,7 +3,7 @@ $host="127.0.0.1";
 $port=3306;
 $socket="";
 $user="root";
-$password="";
+$password="92670516";
 $dbname="technoup";
 
 $con = new mysqli($host, $user, $password, $dbname, $port, $socket)

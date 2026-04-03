@@ -38,9 +38,7 @@ function getLabelAndInput($name, $label, $values) {
     }
 
     return "
-        <div class=\"mb-3\">
             <label for=\"$name\" class=\"form-label\">$label</label>
             <input id=\"$name\" type=\"$type\" name=\"$name\" class=\"form-control\" value=\"$value\" $required>
-        </div>
     ";
 }

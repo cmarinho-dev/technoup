@@ -7,17 +7,16 @@ include '../../components/navbar.php';
 <div class="container mt-4">
     <h1>Novo Lojista</h1>
 
-    <?php
-    // formulario
-    // $action = "../../../php/lojista_novo.php";
-    // $method = "POST";
-    $fields = [
-        "email" => "Email",
-        "senha" => "Senha",
-        "nome_loja" => "Nome da Loja",
-        "telefone" => "Telefone",
-        "ativo" => "Ativo"
-    ];
+<?php
+$fields = [
+    "email" => "Email",
+    "senha" => "Senha",
+    "cnpj" => "CNPJ",
+    "cep_loja" => "CEP",
+    "nome_loja" => "Nome da Loja",
+    "telefone" => "Telefone",
+    "ativo" => "Ativo"
+];
     $buttonText = "Salvar Novo Lojista";
 
     include '../../components/form.php';

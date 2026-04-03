@@ -4,12 +4,18 @@
 // c) Preenche o formulário com os dados do BACKEND
 // ----------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  // pega a URL e armazena em um const
-  // busca nessa URL a variável id e armazana no const id.
   valida_sessao();
   const url = new URLSearchParams(window.location.search);
   const id = url.get("id");
   buscar(id);
+
+  const form = document.getElementById("form");
+  if (form) {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      alterar();
+    });
+  }
 });
 
 async function buscar(id) {
@@ -34,10 +40,6 @@ async function buscar(id) {
 
 // ----------------------------------------------
 // Fase 2
-document.getElementById("enviar").addEventListener("click", () => {
-  alterar();
-});
-
 async function alterar() {
   var email = document.getElementById("email").value;
   var senha = document.getElementById("senha").value;

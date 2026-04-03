@@ -1,4 +1,3 @@
-
 <?php
 $title = "Catálogo da Loja";
 include '../../components/head.php';
@@ -26,8 +25,7 @@ while ($row = $result->fetch_assoc()) {
     <h2 class="mb-4">Meu Catálogo</h2>
 
     <?php
-
-// formulario
+    // formulário
     $action = "../../../php/catalogo_salvar.php";
     $method = "POST";
     $fields = [
@@ -49,6 +47,28 @@ while ($row = $result->fetch_assoc()) {
     ?>
 
 </div>
+
 <script src="../../../js/_valida_sessao.js"></script>
 <script>valida_sessao()</script>
+
+<script>
+function buscar(id) {
+    window.location.href = "alterar.php?id=" + encodeURIComponent(id);
+}
+
+async function excluir(id) {
+    const confirmar = confirm("Tem certeza que deseja excluir?");
+    if (!confirmar) return;
+
+    const retorno = await fetch("../../../php/catalogo_excluir.php?id=" + encodeURIComponent(id));
+    const resposta = await retorno.json();
+
+    if (resposta.status === "ok") {
+        location.reload();
+    } else {
+        alert("Erro: " + resposta.mensagem);
+    }
+}
+</script>
+
 <?php include '../../components/footer.php'; ?>

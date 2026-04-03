@@ -9,12 +9,14 @@ include '../../components/navbar.php';
 
     <?php
     // formulario
-    //$action = "../../../php/lojista_alterar.php";
-    // $method = "POST";
+    $action = "../../../php/lojista_alterar.php";
+    $method = "POST";
     $fields = [
         "id" => "ID",
         "email" => "Email",
         "senha" => "Senha",
+        "cnpj" => "CNPJ",
+        "cep_loja" => "CEP",
         "nome_loja" => "Nome da Loja",
         "telefone" => "Telefone",
         "ativo" => "Ativo"
