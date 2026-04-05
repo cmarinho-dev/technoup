@@ -58,9 +58,20 @@ function criar($tabela, $dados)
     mysqli_stmt_bind_param($stmt, montarTiposBind(count($valores)), ...$valores);
 
     $sucesso = mysqli_stmt_execute($stmt);
+    $idInserido = $sucesso ? mysqli_insert_id($conn) : null;
     mysqli_stmt_close($stmt);
 
-    return $sucesso;
+    if (!$sucesso) {
+        return false;
+    }
+
+    $registroCriado = $dados;
+
+    if ($idInserido) {
+        $registroCriado['id'] = $idInserido;
+    }
+
+    return $registroCriado;
 }
 
 function ler($tabela, $id = null, $nome_coluna_id = 'id')

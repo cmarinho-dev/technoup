@@ -22,13 +22,13 @@ if (isset($_SESSION['usuario'])) {
 
     <div id="profile-dropdown" class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden transition-all duration-200 ease-in-out" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
       <div class="py-1">
-        <a href="../loja_registro" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors" role="menuitem" tabindex="-1" id="menu-item-0">
+        <a href="../lojas/cadastro_loja.php" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors" role="menuitem" tabindex="-1" id="menu-item-0">
           <div class="flex items-center gap-2">
             <i data-lucide="user"  class="h-4 w-4 text-slate-400"></i>
             Meu perfil
           </div>
         </a>
-        <a href="../loja_registro"  class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors" role="menuitem" tabindex="-1" id="menu-item-1">
+        <a href="../lojas/cadastro_loja.php"  class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors" role="menuitem" tabindex="-1" id="menu-item-1">
           <div class="flex items-center gap-2">
              <i data-lucide="store"  class="h-4 w-4 text-slate-400"></i>
             Cadastro loja

@@ -1,5 +1,6 @@
 <?php
-require_once '../_php/valida_sessao.php';
+//somente lojistas podem acessar essa pagina:
+require_once '../_php/valida_lojista.php';
 require_once '../_php/crud.php';
 
 
@@ -7,11 +8,6 @@ $id_usuario_loja = $_SESSION['usuario']['id'];
 $loja = [];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    if ($_SESSION['usuario']['tipo'] !== 'lojista') {
-        header('Location: ../catalogo/');
-        exit();
-    }
-
     $resultado_loja = ler('loja', $_SESSION['usuario']['id'], 'conta_id');
     if ($resultado_loja && mysqli_num_rows($resultado_loja) > 0) {
         $loja = mysqli_fetch_assoc($resultado_loja);
@@ -54,8 +50,25 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro Loja - TechnoUp</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../_componentes/theme.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-optical-sizing: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        h1, h2 ,h3 , h4 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        /*.text-muted {*/
+        /*    color: #da373d;*/
+        /*}*/
+    </style>
 </head>
 
 <body>

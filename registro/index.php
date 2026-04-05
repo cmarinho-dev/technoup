@@ -28,7 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Registro - TechnoUp</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../_componentes/theme.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-optical-sizing: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        h1, h2 ,h3 , h4 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+    </style>
 </head>
 
 <body>
@@ -59,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             size-3 peer appearance-none rounded-full ring-1 ring-offset-2 ring-slate-300 checked:ring-blue-600 checked:bg-blue-600" checked>
                         <label for="tipo_conta_consumidor" class="text-sm text-slate-600">Consumidor</label>
                         <div class="w-2"></div>
-                        <input type="radio" name="tipo_conta" id="tipo_conta_loja" value="loja"
+                        <input type="radio" name="tipo_conta" id="tipo_conta_loja" value="lojista"
                             class="box-border
                             size-3 peer appearance-none rounded-full ring-1 ring-offset-2 ring-slate-300 checked:ring-blue-600 checked:bg-blue-600">
                         <label for="tipo_conta_loja" class="text-sm text-slate-600">Loja</label>
