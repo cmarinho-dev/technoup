@@ -1,11 +1,11 @@
 <?php
 
-$servidor = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$nomeBanco = "technoup";
+$_servidor = "localhost:3306";
+$_usuario = "root";
+$_senha = "";
+$_nomeBanco = "technoup";
 
-$conn = mysqli_connect($servidor, $usuario, $senha, $nomeBanco);
+$conn = mysqli_connect($_servidor, $_usuario, $_senha, $_nomeBanco);
 
 if (!$conn) {
     die("Erro de conexao: " . mysqli_connect_error());
