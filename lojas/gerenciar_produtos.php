@@ -4,28 +4,33 @@ require_once '../_componentes/modal.php';
 
 $content = '';
 
+// ifs para verificar se desejar DELETAR, ATUALIZAR ou CRIAR
 if (!empty($_GET['id']) && !empty($_GET['request'])) {
-  //deletar
-  if ($_GET['request'] == 'delete') {
-    deletarProduto($_GET['id']);
-  }
-  //atualizar
-  elseif ($_GET['request'] == 'update'
-      && !empty($_POST['nome'])
-      && !empty($_POST['preco'])) {
-      atualizarProduto($_GET['id']);
-  }
-  //exibir modal com formulario de atualizacao de produto
-  elseif ($_GET['request'] == 'update') {
-    $id = $_GET['id'];
-    $modal_content = '<input hidden name="id" value="'. $id .'" />';
-    $selecionado = ler('produto', $id)->fetch_assoc(); // retorna todas as colunas -> entao abaixo vamos tirar as colunas desnecessarias
-    unset($selecionado['criado_em']);
-    unset($selecionado['preco_final']);
-    unset($selecionado['id']);
-    foreach ($selecionado as $chave => $valor) {
-      $label = ucwords(str_replace('_', ' ', $chave));
-      $modal_content .= <<<HTML
+    //deletar
+    if ($_GET['request'] == 'delete') {
+        deletarProduto($_GET['id']);
+    } //atualizar
+    elseif ($_GET['request'] == 'update'
+        && !empty($_POST['nome'])
+        && !empty($_POST['preco'])) {
+        atualizarProduto($_GET['id']);
+    } //exibir modal com formulario de atualizacao de produto
+    elseif ($_GET['request'] == 'update') {
+        $id = $_GET['id'];
+
+        // a seguir é retornado todas as colunas, ate as que nao presisam ser mudadas
+        //    -> entao abaixo vamos tirar as colunas desnecessarias
+        $selecionado = ler('produto', $id)->fetch_assoc();
+
+        unset($selecionado['criado_em']);
+        unset($selecionado['preco_final']);
+        unset($selecionado['id']);
+        unset($selecionado['loja_id']);
+
+        $modal_content = '';
+        foreach ($selecionado as $chave => $valor) {
+            $label = ucwords(str_replace('_', ' ', $chave));
+            $modal_content .= <<<HTML
       <div class="relative focus:font-bold">
           <input type="text" id="$chave" name="$chave" value="$valor"
               class="peer w-full px-6 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors shadow-sm" />
@@ -35,11 +40,10 @@ if (!empty($_GET['id']) && !empty($_GET['request'])) {
             </label>
       </div>
       HTML;
+        }
+        $content .= getModal($modal_content, 'Atualizar produto');
     }
-    $content .= getModal($modal_content, 'Atualizar produto');
-  } 
-}
-//criar
+} //criar
 elseif (!empty($_POST['nome'])
     && !empty($_POST['preco'])) {
     criarProduto();
@@ -70,7 +74,7 @@ foreach ($campos as $chave => $label) {
 $content .= getModal($modal_content, 'Novo produto', 'modal_criar', false);
 
 
-
+//mostrar tabela com produtos da loja
 $content .= <<<HTML
 <div class="flex flex-col gap-8 mb-12">
   <div id="lojista_header" class="flex items-center justify-between">
@@ -97,28 +101,16 @@ $content .= <<<HTML
       <tbody class="divide-y divide-gray-200">
 HTML;
 
-$resposta_catalogo = ler('catalogo', $_SESSION['usuario']['id'], 'loja_id');
-$items_catalogo = [];
+$resultado_produtos = ler('produto', $_SESSION['loja']['id'], 'loja_id');
+while ($produto = $resultado_produtos->fetch_assoc()) {
 
-if ($resposta_catalogo) {
-  while ($item_catalogo = mysqli_fetch_assoc($resposta_catalogo)) {
-    $items_catalogo[] = $item_catalogo;
-  }
-}
+    $produto['desconto'] .= '%';
+    if ($produto['desconto'] == '0%') {
+        $produto['desconto'] = '';
+    }
 
-$items_produtos = [];
-foreach ($items_catalogo as $item_catalogo) {
-  $items_produtos[] = ler('produto', $item_catalogo['produto_id'])->fetch_array();
-}
-
-foreach ($items_produtos as $item_produto) {
-  $item_produto['desconto'] .= '%';
-  if ($item_produto['desconto'] == '0%') {
-    $item_produto['desconto'] = '';
-  }
-
-  $id = $item_produto['id'];
-  $content .= <<<HTML
+    $id = $produto['id'];
+    $content .= <<<HTML
     <tr class="*:text-gray-900 *:first:font-medium">
       <td class="px-3 py-2 whitespace-nowrap">
         <div class="flex gap-2">
@@ -136,15 +128,15 @@ foreach ($items_produtos as $item_produto) {
           </a>
         </div>
       </td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['nome']}</td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['tipo']}</td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['marca']}</td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['modelo']}</td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['criado_em']}</td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['descricao']}</td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['preco']}</td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['desconto']}</td>
-      <td class="px-3 py-2 whitespace-nowrap">{$item_produto['preco_final']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['nome']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['tipo']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['marca']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['modelo']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['criado_em']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['descricao']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['preco']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['desconto']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['preco_final']}</td>
     </tr>
   HTML;
 }
@@ -158,29 +150,16 @@ HTML;
 
 return $content;
 
-function deletarProduto($id) {
-  deletar('catalogo', $id, 'produto_id');
-  deletar('produto', $id);
+function deletarProduto($id)
+{
+    deletar('produto', $id);
 
-  header("Location: .");
-  exit;
-}
-function atualizarProduto($id) {
-  $dados = [];
-  $dados['nome'] = $_POST['nome'];
-  $dados['preco'] = $_POST['preco'];
-  $dados['tipo'] = $_POST['tipo'];
-  $dados['descricao'] = $_POST['descricao'];
-  $dados['modelo'] = $_POST['modelo'];
-  $dados['marca'] = $_POST['marca'];
-  $dados['desconto'] = $_POST['desconto'];
-  atualizar('produto', $id, $dados);
-
-  header("Location: .");
-  exit;
+    header("Location: .");
+    exit;
 }
 
-function criarProduto() {
+function atualizarProduto($id)
+{
     $dados = [];
     $dados['nome'] = $_POST['nome'];
     $dados['preco'] = $_POST['preco'];
@@ -189,13 +168,25 @@ function criarProduto() {
     $dados['modelo'] = $_POST['modelo'];
     $dados['marca'] = $_POST['marca'];
     $dados['desconto'] = $_POST['desconto'] ?? 0;
+    atualizar('produto', $id, $dados);
 
-    // o produto é retornado pela funcao criar - isto é necessario para pegarmos o id dele e adicionar a outra tabela [ tabela catalogo ]
-    $produto_criado = criar('produto', $dados);
-    criar('catalogo', [
-        'produto_id' => $produto_criado['id'],
-        'loja_id' => $_SESSION['loja']['id']
-    ]);
+    header("Location: .");
+    exit;
+}
+
+function criarProduto()
+{
+    $dados = [];
+    $dados['loja_id'] = $_SESSION['loja']['id'];
+    $dados['nome'] = $_POST['nome'];
+    $dados['preco'] = $_POST['preco'];
+    $dados['tipo'] = $_POST['tipo'];
+    $dados['descricao'] = $_POST['descricao'];
+    $dados['modelo'] = $_POST['modelo'];
+    $dados['marca'] = $_POST['marca'];
+    $dados['desconto'] = $_POST['desconto'] ?? 0;
+
+    criar('produto', $dados);
 
     header("Location: .");
     exit;

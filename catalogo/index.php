@@ -1,17 +1,8 @@
 <?php
 require_once '../_php/crud.php';
 
-$resultado_catalogo = ler('catalogo');
-
-$items_catalogo = [];
-$total_produtos = 0;
-
-if ($resultado_catalogo) {
-    while ($item_catalogo = mysqli_fetch_assoc($resultado_catalogo)) {
-        $items_catalogo[] = $item_catalogo;
-        $total_produtos++;
-    }
-}
+$resultado_produtos = ler('produto');
+$total_produtos = mysqli_num_rows($resultado_produtos);
 
 $content = <<<HTML
 
@@ -56,13 +47,11 @@ HTML;
 
 // Gera cards de produtos
 if ($total_produtos > 0) {
-    foreach ($items_catalogo as $item_catalogo) {
-        $resultado_produto = ler('produto', $item_catalogo['produto_id']);
-        $resultado_loja = ler('loja', $item_catalogo['loja_id']);
-        $resultado_imagem = ler('imagem_produto', $item_catalogo['produto_id'], 'produto_id');
+    while ($produto = $resultado_produtos->fetch_assoc()) {
+        $resultado_loja = ler('loja', $produto['loja_id']);
+        $resultado_imagem = ler('imagem_produto', $produto['id'], 'produto_id');
 
         $loja_nome = mysqli_fetch_assoc($resultado_loja)['nome_loja'];
-        $produto = mysqli_fetch_assoc($resultado_produto);
         $imagem = mysqli_fetch_assoc($resultado_imagem);
 
         $img = '';
