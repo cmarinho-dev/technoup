@@ -92,7 +92,7 @@ function ler($tabela, $id = null, $nome_coluna_id = 'id')
         return false;
     }
 
-    $valorId = (string) $id;
+    $valorId = (string)$id;
     mysqli_stmt_bind_param($stmt, 's', $valorId);
     mysqli_stmt_execute($stmt);
 
@@ -128,7 +128,7 @@ function atualizar($tabela, $id, $dados, $nome_coluna_id = 'id')
     }
 
     $valores = array_values($dados);
-    $valores[] = (string) $id;
+    $valores[] = (string)$id;
     mysqli_stmt_bind_param($stmt, montarTiposBind(count($valores)), ...$valores);
 
     $sucesso = mysqli_stmt_execute($stmt);
@@ -151,7 +151,7 @@ function deletar($tabela, $id, $nome_coluna_id = 'id')
         return false;
     }
 
-    $valorId = (string) $id;
+    $valorId = (string)$id;
     mysqli_stmt_bind_param($stmt, 's', $valorId);
 
     $sucesso = mysqli_stmt_execute($stmt);

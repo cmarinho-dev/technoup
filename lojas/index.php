@@ -36,7 +36,6 @@ $content .= <<<HTML
 HTML;
 
 
-
 // Gera cards de lojas
 if (count($lojas) > 0) {
     foreach ($lojas as $loja) {

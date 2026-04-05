@@ -1,7 +1,9 @@
 <?php
+//esta pagina não tem utilidade
+//então apenas redirecionará para outra
 $content = <<<HTML
 <script>
-    location.href = "./catalogo/";
+    location.href = "./lojas/";
 </script>
 HTML;
 require_once './_componentes/layout.php';

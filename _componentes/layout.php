@@ -19,28 +19,30 @@
             color: #1a1a1a;
             line-height: 1.6;
         }
-        h1, h2 ,h3 , h4 {
+
+        h1, h2, h3, h4 {
             font-weight: 700;
             letter-spacing: -0.02em;
             line-height: 1.2;
         }
-        .text-muted {
-            color: #da373d;
-        }
+
+        /*.text-muted {*/
+        /*    color: #da373d;*/
+        /*}*/
     </style>
 </head>
 
 <body>
-    <?php require_once 'header.php'; ?>
+<?php require_once 'header.php'; ?>
 
-    <main class="flex flex-col gap-4 sm:mx-8 md:mx-16 lg:mx-24 px-8 py-8 my-8">
-        <?php echo $content ?? 'ERROR: Content not found.'; ?>
-    </main>
+<main class="flex flex-col gap-4 sm:mx-8 md:mx-16 lg:mx-24 px-8 py-8 my-8">
+    <?php echo $content ?? 'ERROR: Content not found.'; ?>
+</main>
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script>
-        lucide.createIcons();
-    </script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script>
+    lucide.createIcons();
+</script>
 </body>
 
 </html>

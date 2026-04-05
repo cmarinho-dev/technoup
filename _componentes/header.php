@@ -3,10 +3,10 @@ session_start();
 $opcoes_login = '';
 
 if (isset($_SESSION['usuario'])) {
-  $usuario_label = $_SESSION['usuario']['nome'] . ' [' .$_SESSION['usuario']['tipo'] . ']';
-  session_write_close();
+    $usuario_label = $_SESSION['usuario']['nome'] . ' [' . $_SESSION['usuario']['tipo'] . ']';
+    session_write_close();
 
-  $opcoes_login = <<<HTML
+    $opcoes_login = <<<HTML
   <div class="relative inline-block text-left" id="profile-menu-container">
     <button type="button" onclick="toggleDropdown()" class="flex items-center gap-2 rounded-full border-none bg-white p-1 px-3 transition-all hover:bg-slate-50 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2" id="menu-button" aria-expanded="true" aria-haspopup="true">
       <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold">
@@ -73,7 +73,7 @@ if (isset($_SESSION['usuario'])) {
   </script>
   HTML;
 } else {
-  $opcoes_login = <<<HTML
+    $opcoes_login = <<<HTML
   <div class="flex items-center gap-3">
     <a class="hidden sm:block rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm border border-slate-300 transition-all hover:bg-slate-150 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2" href="../registro">
       Registro
@@ -87,43 +87,46 @@ if (isset($_SESSION['usuario'])) {
 ?>
 
 <header class="bg-white shadow-sm border-b border-slate-200">
-  <div class="mx-auto flex h-16 md:mx-12 lg:mx-28 items-center gap-8 px-4 sm:px-6">
-    <a class="block text-blue-600" href="#">
-      <span class="sr-only">Home</span>
-      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
-        <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor" />
-        <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor" />
-      </svg>
-    </a>
+    <div class="mx-auto flex h-16 md:mx-12 lg:mx-28 items-center gap-8 px-4 sm:px-6">
+        <a class="block text-blue-600" href="#">
+            <span class="sr-only">Home</span>
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
+                <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z"
+                      fill="currentColor"/>
+                <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z"
+                      fill="currentColor"/>
+            </svg>
+        </a>
 
-    <div class="flex flex-1 items-center justify-end md:justify-between">
-      <nav aria-label="Global" class="hidden md:block">
-        <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
-          <li>
-            <a class="transition hover:text-blue-600" href="../catalogo"> Catálogo </a>
-          </li>
+        <div class="flex flex-1 items-center justify-end md:justify-between">
+            <nav aria-label="Global" class="hidden md:block">
+                <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
+                    <li>
+                        <a class="transition hover:text-blue-600" href="../lojas"> Lojas </a>
+                    </li>
 
-          <li>
-            <a class="transition hover:text-blue-600" href="../lojas"> Lojas </a>
-          </li>
+                    <li>
+                        <a class="transition hover:text-blue-600" href="../catalogo"> Catálogo </a>
+                    </li>
 
-          <li>
-            <a class="transition hover:text-blue-600" href="../sobre"> Sobre </a>
-          </li>
-        </ul>
-      </nav>
+                    <li>
+                        <a class="transition hover:text-blue-600" href="../sobre"> Sobre </a>
+                    </li>
+                </ul>
+            </nav>
 
-      <div class="flex items-center gap-4">
-        <?= $opcoes_login ?>
+            <div class="flex items-center gap-4">
+                <?= $opcoes_login ?>
 
-        <button class="block rounded-lg bg-slate-100 p-2.5 text-slate-600 transition hover:text-slate-700 md:hidden">
-          <span class="sr-only">Toggle menu</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-            stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
+                <button class="block rounded-lg bg-slate-100 p-2.5 text-slate-600 transition hover:text-slate-700 md:hidden">
+                    <span class="sr-only">Toggle menu</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor"
+                         stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </header>

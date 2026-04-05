@@ -1,17 +1,17 @@
 <?php
 session_start();
-if(isset($_SESSION['usuario']) && $_SESSION['usuario']['tipo'] === 'consumidor'){
+if (isset($_SESSION['usuario']) && $_SESSION['usuario']['tipo'] === 'consumidor') {
     $retorno = [
-        'status'    => 'ok', // ok - nok
-        'mensagem'  => '', // mensagem que envio para o front
-        'data'      => []
+        'status' => 'ok', // ok - nok
+        'mensagem' => '', // mensagem que envio para o front
+        'data' => []
     ];
     session_write_close();
-}else{
+} else {
     $retorno = [
-        'status'    => 'nok', // ok - nok
-        'mensagem'  => 'Você precisa estar logado para acessar esta página.', // mensagem que envio para o front
-        'data'      => []
+        'status' => 'nok', // ok - nok
+        'mensagem' => 'Você precisa estar logado para acessar esta página.', // mensagem que envio para o front
+        'data' => []
     ];
     session_write_close();
     header("Location: ../catalogo/");
