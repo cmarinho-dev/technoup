@@ -3,6 +3,12 @@ require_once '../_php/crud.php';
 require_once '../_componentes/modal.php';
 
 $content = '';
+$modal_content =
+    '<div class="flex w-full flex-row-reverse gap-16 px-6">
+                <!--<div class="hidden md:flex flex-col text-center items-center justify-center">
+                ADICIONAR IMAGEM
+                </div>-->
+                <div class="space-y-6">';
 
 // ifs para verificar se desejar DELETAR, ATUALIZAR ou CRIAR
 if (!empty($_GET['id']) && !empty($_GET['request'])) {
@@ -27,7 +33,6 @@ if (!empty($_GET['id']) && !empty($_GET['request'])) {
         unset($selecionado['id']);
         unset($selecionado['loja_id']);
 
-        $modal_content = '';
         foreach ($selecionado as $chave => $valor) {
             $label = ucwords(str_replace('_', ' ', $chave));
             $modal_content .= <<<HTML
@@ -41,7 +46,7 @@ if (!empty($_GET['id']) && !empty($_GET['request'])) {
       </div>
       HTML;
         }
-        $content .= getModal($modal_content, 'Atualizar produto');
+        $content .= getModal($modal_content.'</div></div>', 'Atualizar produto');
     }
 } //criar
 elseif (!empty($_POST['nome'])
@@ -49,7 +54,6 @@ elseif (!empty($_POST['nome'])
     criarProduto();
 }
 //exibir modal com formulario de criacao de produto
-$modal_content = '';
 $campos = [
     'nome' => 'Nome',
     'preco' => 'Preço',
@@ -71,7 +75,7 @@ foreach ($campos as $chave => $label) {
     </div>
     HTML;
 }
-$content .= getModal($modal_content, 'Novo produto', 'modal_criar', false);
+$content .= getModal($modal_content.'</div></div>', 'Novo produto', 'modal_criar', false);
 
 
 //mostrar tabela com produtos da loja
@@ -102,15 +106,16 @@ $content .= <<<HTML
 HTML;
 
 $resultado_produtos = ler('produto', $_SESSION['loja']['id'], 'loja_id');
-while ($produto = $resultado_produtos->fetch_assoc()) {
+if ($resultado_produtos) {
+    while ($produto = $resultado_produtos->fetch_assoc()) {
 
-    $produto['desconto'] .= '%';
-    if ($produto['desconto'] == '0%') {
-        $produto['desconto'] = '';
-    }
+        $produto['desconto'] .= '%';
+        if ($produto['desconto'] == '0%') {
+            $produto['desconto'] = '';
+        }
 
-    $id = $produto['id'];
-    $content .= <<<HTML
+        $id = $produto['id'];
+        $content .= <<<HTML
     <tr class="*:text-gray-900 *:first:font-medium">
       <td class="px-3 py-2 whitespace-nowrap">
         <div class="flex gap-2">
@@ -139,6 +144,7 @@ while ($produto = $resultado_produtos->fetch_assoc()) {
       <td class="px-3 py-2 whitespace-nowrap">{$produto['preco_final']}</td>
     </tr>
   HTML;
+    }
 }
 
 $content .= <<<HTML

@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     aqui</a></p>
 
             <form action="" method="POST" class="space-y-5">
-                <label for="tipo_conta" class="text-md text-slate-600 font-medium">Tipo de conta</label>
+                <div class="text-md text-slate-600 font-medium -mb-1">Tipo de conta</div>
                 <div class="flex items-center gap-2 mt-2 ms-[4px]">
                     <input type="radio" name="tipo_conta" id="tipo_conta_consumidor" value="consumidor"
                            class="box-border
@@ -78,9 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="radio" name="tipo_conta" id="tipo_conta_loja" value="lojista"
                            class="box-border
                             size-3 peer appearance-none rounded-full ring-1 ring-offset-2 ring-slate-300 checked:ring-blue-600 checked:bg-blue-600">
-                    <label for="tipo_conta_loja" class="text-sm text-slate-600">Loja</label>
+                    <label for="tipo_conta_loja" class="text-sm text-slate-600">Lojista</label>
                 </div>
-                <input type="text" id="name" name="nome" required autocomplete="name" placeholder="Nome"
+                <input type="text" id="name" name="nome" required autocomplete="name" placeholder="Nome completo"
                        class="w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors shadow-sm">
                 <input type="email" id="email" name="email" required autocomplete="email" placeholder="Email"
                        class="w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors shadow-sm">
@@ -117,6 +117,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             confirmPasswordError.textContent = 'As senhas não coincidem!';
         } else {
             confirmPasswordError.textContent = '';
+
+            //verifica se é lojista e direciona a requisição para o cadastro de loja
+            const tipoContaOption = document.getElementsByName('tipo_conta');
+            tipoContaOption.forEach(e => {
+                if (e.id === 'tipo_conta_loja' && e.checked) {
+                    form.action = '../lojas/cadastro_loja.php';
+                }
+            })
         }
     });
 </script>

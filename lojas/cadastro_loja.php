@@ -1,20 +1,86 @@
 <?php
-//somente lojistas podem acessar essa pagina:
-require_once '../_php/valida_lojista.php';
 require_once '../_php/crud.php';
 
+$desejaAtualizar = false;
 
-$id_usuario_loja = $_SESSION['usuario']['id'];
-$loja = [];
+//verifica se é necessário criar um login do tipo lojista e então adiciona dados do login a inputs hidden
+if (
+    isset($_POST['nome']) && $_POST['nome'] != "" &&
+    isset($_POST['email']) && $_POST['email'] != "" &&
+    isset($_POST['senha']) && $_POST['senha'] != "" &&
+    isset($_POST['tipo_conta']) && $_POST['tipo_conta'] != ""
+) {
+    var_dump($_POST);
+    $inputs_login = <<<LoginInputsHTML
+<input type="hidden" name="registro_nome" value="{$_POST['nome']}"/>
+<input type="hidden" name="registro_email" value="{$_POST['email']}"/>
+<input type="hidden" name="registro_senha" value="{$_POST['senha']}"/>
+<input type="hidden" name="registro_tipo" value="{$_POST['tipo_conta']}"/>
+LoginInputsHTML;
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    $resultado_loja = ler('loja', $_SESSION['usuario']['id'], 'conta_id');
-    if ($resultado_loja && mysqli_num_rows($resultado_loja) > 0) {
-        $loja = mysqli_fetch_assoc($resultado_loja);
-    }
 } else {
-    $dados = [
-        'conta_id' => $_POST['conta_id'],
+    // verifica se o usuario lojista está cadastrado e logado - se sim então é porque deseja atualizar o seu cadastro
+    session_start();
+    if (isset($_SESSION['usuario'])) {
+        session_write_close();
+        require_once '../_php/valida_lojista.php';
+
+        $desejaAtualizar = true;
+
+        if (isset($_POST['conta_id']) && $_POST['conta_id'] != '' &&
+            isset($_POST['nome_loja']) && $_POST['nome_loja'] != '' &&
+            isset($_POST['cnpj']) && $_POST['cnpj'] != '') {
+
+            $dados_loja = getDadosLojaDoForm();
+            atualizar(
+                'loja',
+                $_POST['conta_id'],
+                $dados_loja,
+                'conta_id'
+            );
+            header('Location: ../lojas/');
+            exit();
+        }
+
+        $id_usuario_loja = $_SESSION['usuario']['id'];
+        $loja = [];
+
+        $resultado_loja = ler('loja', $_SESSION['usuario']['id'], 'conta_id');
+        if ($resultado_loja && mysqli_num_rows($resultado_loja) > 0) {
+            $loja = mysqli_fetch_assoc($resultado_loja);
+        }
+    }
+    //verifica se deve criar login de usuario lojista
+    //- aqui é feito a criação tanto do login lojista quanto da loja
+    elseif (isset($_POST['registro_tipo']) && $_POST['registro_tipo'] = 'lojista' &&
+            isset($_POST['nome_loja']) && $_POST['nome_loja'] != '' &&
+            isset($_POST['cnpj']) && $_POST['cnpj'] != '') {
+        $desejaAtualizar = false; // aqui deseja criar
+        session_write_close();
+
+        $dados_conta_lojista = [
+            'nome' => $_POST['registro_nome'],
+            'email' => $_POST['registro_email'],
+            'senha' => $_POST['registro_senha'],
+            'tipo' => $_POST['registro_tipo']
+        ];
+
+        $login_lojista_criado = criar('conta', $dados_conta_lojista);
+
+        $dados_loja = getDadosLojaDoForm();
+
+        $dados_loja['conta_id'] = $login_lojista_criado['id'];
+
+        criar('loja', $dados_loja);
+
+        header('Location: ../login/');
+        exit();
+    }
+}
+
+function getDadosLojaDoForm()
+{
+    return [
         'nome_loja' => $_POST['nome_loja'],
         'telefone' => $_POST['telefone'],
         'cpf' => $_POST['cpf'],
@@ -26,21 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         'logradouro' => $_POST['logradouro'],
         'numero' => $_POST['numero']
     ];
-    if ($_POST['to_update']) {
-
-        atualizar(
-            'loja',
-            $_POST['conta_id'],
-            $dados,
-            'conta_id'
-        );
-    } else {
-        criar('loja', $dados);
-    }
-
-    header('Location: ../catalogo/');
-    exit();
 }
+
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -170,10 +223,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 </div>
                 <button type="submit"
                         class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-sm transition-all -in-out duration-200 active:scale-[0.98] outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
-                    <?= count($loja) == 0 ? 'Cadastrar' : 'Atualizar'; ?>
+                    <?= $desejaAtualizar ? 'Atualizar' : 'Cadastrar'; ?>
                 </button>
-                <input type="hidden" name="to_update" value="<?= !empty($loja) ? true : false; ?>"/>
-                <input type="hidden" name="conta_id" value="<?= $id_usuario_loja; ?>"/>
+
+                <input type="hidden" name="conta_id" value="<?= $id_usuario_loja ?? null; ?>"/>
+                <?= $inputs_login ?? '' ?>
             </form>
         </div>
     </div>

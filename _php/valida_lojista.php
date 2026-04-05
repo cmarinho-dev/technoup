@@ -14,6 +14,6 @@ if (isset($_SESSION['usuario']) && $_SESSION['usuario']['tipo'] === 'lojista') {
         'data' => []
     ];
     session_write_close();
-    header("Location: ../catalogo/");
+    header("Location: ../login/");
     exit();
 }
