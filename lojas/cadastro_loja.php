@@ -52,7 +52,7 @@ LoginInputsHTML;
     }
     //verifica se deve criar login de usuario lojista
     //- aqui é feito a criação tanto do login lojista quanto da loja
-    elseif (isset($_POST['registro_tipo']) && $_POST['registro_tipo'] = 'lojista' &&
+    elseif (isset($_POST['registro_tipo']) && $_POST['registro_tipo'] == 'lojista' &&
             isset($_POST['nome_loja']) && $_POST['nome_loja'] != '' &&
             isset($_POST['cnpj']) && $_POST['cnpj'] != '') {
         $desejaAtualizar = false; // aqui deseja criar
