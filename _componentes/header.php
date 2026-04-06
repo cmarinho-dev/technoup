@@ -12,20 +12,44 @@ if (isset($_SESSION['usuario'])) {
         case 'lojista':
             $opcoes = [
                 [
+                    'label' => 'Meu perfil',
+                    'url_destino' => '../perfil/',
+                    'icone' => 'user',
+                    'id' => 0
+                ],
+                [
+                    'label' => 'Gerenciar produtos',
+                    'url_destino' => '../lojas/',
+                    'icone' => 'store',
+                    'id' => 1
+                ],
+                [
                     'label' => 'Cadastro loja',
                     'url_destino' => '../lojas/cadastro_loja.php',
                     'icone' => 'store',
-                    'id' => 1
+                    'id' => 2
                 ]
             ];
             break;
         case 'administrador':
             $opcoes = [
                 [
+                    'label' => 'Meu perfil',
+                    'url_destino' => '../perfil/',
+                    'icone' => 'user',
+                    'id' => 0
+                ],
+                [
+                    'label' => 'Gerenciar lojas',
+                    'url_destino' => '../admin+lojas/',
+                    'icone' => 'store',
+                    'id' => 1
+                ],
+                [
                     'label' => 'Configurações',
                     'url_destino' => '#',
                     'icone' => 'settings',
-                    'id' => 0
+                    'id' => 2
                 ]
             ];
             break;
@@ -33,7 +57,7 @@ if (isset($_SESSION['usuario'])) {
             $opcoes = [
                 [
                     'label' => 'Meu perfil',
-                    'url_destino' => '#',
+                    'url_destino' => '../perfil/',
                     'icone' => 'user',
                     'id' => 0
                 ],
@@ -73,7 +97,7 @@ if (isset($_SESSION['usuario'])) {
                 <nav aria-label="Global" class="hidden md:block">
                     <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
                         <li>
-                            <a class="transition hover:text-blue-600" href="../lojas"> Lojas </a>
+                            <a class="transition hover:text-blue-600" href="../home"> Home </a>
                         </li>
 
                         <li>

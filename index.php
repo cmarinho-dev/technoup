@@ -3,7 +3,7 @@
 //então apenas redirecionará para outra
 $content = <<<HTML
 <script>
-    location.href = "./lojas/";
+    location.href = "./home/";
 </script>
 HTML;
 require_once './_componentes/layout.php';
