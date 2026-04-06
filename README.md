@@ -14,6 +14,7 @@ Este é um projeto artefato da disciplina de Experiência Criativa do curso de *
 - Caso ainda não tenha sido criado o banco do projeto você pode cria-lo acessando http://localhost/phpmyadmin (no caso de banco pelo xampp) e assim no menu `SQL` executar o script disponível em [prototipo.sql](./prototipo.sql)
 - E em seguida você deve copiar todos os arquivos do projeto para o diretorio  do htdocs que estará possivelmente em `C:\xampp\htdocs`
 - Para abrir o projeto bastará acessar [localhost/technoup](http://localhost/technoup)
+<<<<<<< HEAD
 
 ## Artefatos geradas 
 
