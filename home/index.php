@@ -43,8 +43,10 @@ function renderizarImagemProduto($produtoId)
         $imagemUrl = $imagem['caminho'] . $imagem['arquivo'];
         $descricao = normalizarTexto($imagem['descricao']);
         return <<<HTML
-            <img src="$imagemUrl" alt="$descricao" class="h-full w-full rounded-2xl object-cover">
-        HTML;
+                    <div class="mb-4 flex h-40 w-full items-center justify-center rounded-2xl bg-slate-100">
+                        <img src="$imagemUrl" alt="$descricao" class="h-full w-full rounded-2xl object-contain">
+                    </div>
+            HTML;
     }
 
     return '<i data-lucide="package" class="h-12 w-12 text-slate-300"></i>';
@@ -85,7 +87,7 @@ function renderizarCardProdutoHome($produto)
     }
 
     return <<<HTML
-        <article class="card flex min-w-[84%] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
+        <article class="card flex min-w-[84%] min-h-[460px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
             <div class="mb-4 flex aspect-square items-center justify-center rounded-2xl bg-slate-100">
                 $imagem
             </div>
@@ -95,11 +97,11 @@ function renderizarCardProdutoHome($produto)
                     <span class="text-xs font-medium text-slate-500">$marca</span>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-slate-900">$nome</h3>
-                    <p class="mt-1 text-sm text-slate-500">$lojaNome</p>
+                    <h3 class="min-h-[56px] text-lg font-semibold text-slate-900">$nome</h3>
+                    <p class="mt-1 min-h-[20px] text-sm text-slate-500">$lojaNome</p>
                 </div>
                 <div class="mt-auto flex items-end justify-between gap-3">
-                    <div class="space-y-1">
+                    <div class="min-h-[72px] space-y-1">
                         $precoMarkup
                     </div>
                     <!--<a href="../catalogo" class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">-->
@@ -120,23 +122,23 @@ function renderizarCardLojaHome($loja)
     if (!empty($loja['banner_img']) && file_exists($loja['banner_img'])) {
         $bannerUrl = $loja['banner_img'];
         $banner = <<<HTML
-            <img src="$bannerUrl" alt="Banner da loja $nome" class="w-full aspect-4/2 rounded-2xl object-cover">
+            <img src="$bannerUrl" alt="Banner da loja $nome" class="w-full aspect-4/3 rounded-2xl object-cover">
         HTML;
     } else {
         $banner = '<i data-lucide="store" class="h-12 w-12 text-slate-300"></i>';
     }
 
     return <<<HTML
-        <article class="card min-w-[84%] shrink-0 snap-start rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
+        <article class="card flex min-w-[84%] min-h-[340px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
             <div class="mb-4 flex aspect-[5/3] items-center justify-center rounded-2xl bg-slate-100">
                 $banner
             </div>
-            <div class="space-y-3">
+            <div class="flex flex-1 flex-col space-y-3">
                 <div>
-                    <h3 class="text-lg font-semibold text-slate-900">$nome</h3>
-                    <p class="mt-1 text-sm text-slate-500">$cidade $estado</p>
+                    <h3 class="min-h-[56px] text-lg font-semibold text-slate-900">$nome</h3>
+                    <p class="mt-1 min-h-[20px] text-sm text-slate-500">$cidade $estado</p>
                 </div>
-                <div class="flex items-center justify-between">
+                <div class="mt-auto flex items-center justify-between">
                     <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Marketplace</span>
                     <a href="../catalogo" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">Explorar</a>
                 </div>
@@ -169,6 +171,10 @@ foreach ($departamentos as $departamento) {
     $departamentosCarousel .= renderizarCardDepartamento($departamento);
 }
 
+//pegar produtos com maior desconto
+usort($produtos, function ($a, $b) {
+    return (int)($b['desconto'] ?? 0) <=> (int)($a['desconto'] ?? 0);
+});
 $produtosCarousel = '';
 foreach (array_slice($produtos, 0, 6) as $produto) {
     $produtosCarousel .= renderizarCardProdutoHome($produto);
@@ -198,7 +204,7 @@ $content = <<<HTML
                     Monte, compare e descubra os destaques da TechnoUp.
                 </h1>
                 <p class="max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
-                    A home foi organizada para destacar departamentos, produtos e lojas parceiras em uma navegacao horizontal mais direta, seguindo a ideia comercial da Terabyte sem perder o visual limpo do projeto.
+                    A TechnoUp é uma plataforma que conecta consumidores e lojistas em um marketplace focado em tecnologia, reunindo produtos, ofertas e lojas parceiras numa experiência simples, organizada e acessivel.
                 </p>
             </div>
             <div class="flex flex-wrap gap-3">
@@ -250,8 +256,8 @@ $content = <<<HTML
         <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
             <i data-lucide="sparkles" class="h-6 w-6"></i>
         </div>
-        <h2 class="text-xl font-semibold text-slate-900">Descoberta rapida</h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600">Os carrosseis deixam a home mais dinamica no mobile e ajudam a priorizar colecoes e campanhas.</p>
+        <h2 class="text-xl font-semibold text-slate-900">Experiencia acessivel</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-600">A plataforma que facilita a busca de produtos e aproxima lojas parceiras a consumidores.</p>
     </article>
 </section>
 HTML;

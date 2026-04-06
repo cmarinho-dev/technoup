@@ -30,13 +30,13 @@ if (count($lojas) > 0) {
                 $descricao = 'imagem da loja ' . $loja['nome_loja'];
                 $img = <<<IMG
                         <img src="{$loja['banner_img']}" alt="$descricao"
-                            class="w-full h-full object-cover z-10 rounded-t-xl">
+                            class="w-full aspect-4/3 rounded-2xl fit-cover z-10">
                     IMG;
             }
         }
         $carrousel_content .= <<<CARD
         <div data-nome-loja="{$loja['nome_loja']}" class="card min-w-[85%] snap-start rounded-xl border border-gray-300 bg-white transition-shadow hover:shadow-xl sm:min-w-[320px]">
-            <div class="relative bg-gray-200 w-full rounded-t-xl aspect-5/3 mb-3 flex items-center justify-center">
+            <div class="relative bg-gray-200 w-full rounded-t-xl aspect-4/3 mb-3 flex items-center justify-center">
                 <i data-lucide="store" class="absolute w-12 h-12 text-gray-400"></i>
                 $img
             </div>
@@ -72,8 +72,13 @@ $content .= <<<HTML
                 focus:outline-none focus:border-blue-500 appearance-none">
                 <option value="">Todos os tipos</option>
                 <option value="computador">Computador</option>
-                <option value="Periférico">Periférico</option>
-                <option value="eletronico">Eletrônico</option>
+                <option value="hardware">Hardware</option>
+                <option value="periferico">Periférico</option>
+                <option value="monitor">Monitor</option>
+                <option value="ergonomia">Ergonomia</option>
+                <option value="armazenamento">Armazenamento</option>
+                <option value="memoria">Memória</option>
+                <option value="placa de video">Placa de vídeo</option>
             </select>
             <i data-lucide="chevron-down" class="absolute text-zinc-500 bg-white end-0 me-3 z-10 pointer-events-none"></i>
         </div>
@@ -117,7 +122,7 @@ if ($total_produtos > 0) {
                 $imagem_url = $imagem['caminho'] . $imagem['arquivo'];
                 $img = <<<IMG
                         <img src="$imagem_url" alt="{$imagem['descricao']}"
-                            class="w-full h-full object-cover z-10 rounded-t-xl">
+                            class="w-full h-full object-contain z-10 rounded-t-xl">
                     IMG;
             }
         }

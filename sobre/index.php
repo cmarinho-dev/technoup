@@ -50,7 +50,7 @@ $content = <<<HTML
   </div>
 </div>
 
-<div class="my-3"></div>
+<div class="my-10"></div>
 
 <h1 class="text-xl font-semibold">Tipos de Usuários</h1>
 <div class="my-px"></div>

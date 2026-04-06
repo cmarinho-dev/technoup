@@ -119,7 +119,7 @@ if ($resultado_produtos) {
         $content .= <<<HTML
     <tr class="*:text-gray-900 *:first:font-medium">
       <td class="px-3 py-2 whitespace-nowrap">
-        <div class="flex gap-2">
+        <div class="flex gap-2 w-min">
           <a href="./?request=update&id=$id"
             class="w-full p-2 bg-blue-600 hover:shadow-xl
               text-white rounded-xl shadow-sm transition-all ease-in-out duration-200 

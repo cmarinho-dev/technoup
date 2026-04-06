@@ -6,12 +6,12 @@ USE technoup;
 CREATE TABLE IF NOT EXISTS conta
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
-    nome      VARCHAR(200)                                                       NOT NULL,
-    email     VARCHAR(100)                                                       NOT NULL UNIQUE,
-    senha     VARCHAR(255)                                                       NOT NULL,
-    tipo      ENUM ('consumidor','lojista','administrador') DEFAULT 'consumidor' NOT NULL,
-    ativo     TINYINT(1)                                    DEFAULT 1,
-    criado_em DATETIME                                      DEFAULT CURRENT_TIMESTAMP
+    nome      VARCHAR(200)                                  NOT NULL,
+    email     VARCHAR(100)                                  NOT NULL UNIQUE,
+    senha     VARCHAR(255)                                  NOT NULL,
+    tipo      ENUM ('consumidor','lojista','administrador') NOT NULL DEFAULT 'consumidor',
+    ativo     TINYINT(1)                                             DEFAULT 1,
+    criado_em DATETIME                                               DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS loja
@@ -36,16 +36,18 @@ CREATE TABLE IF NOT EXISTS loja
 CREATE TABLE IF NOT EXISTS produto
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    loja_id     INT                NOT NULL,
-    nome        VARCHAR(100)       NOT NULL,
-    preco       DECIMAL(10, 2)     NOT NULL,
+    loja_id     INT            NOT NULL,
+    nome        VARCHAR(100)   NOT NULL,
+    preco       DECIMAL(10, 2) NOT NULL,
     tipo        VARCHAR(50),
     marca       VARCHAR(50),
     modelo      VARCHAR(50),
     descricao   TEXT,
-    desconto    INT      DEFAULT 0 NOT NULL,
-    preco_final DECIMAL(10, 2) GENERATED ALWAYS AS (preco * (1 - desconto / 100)) VIRTUAL,
-    criado_em   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    desconto    INT            NOT NULL DEFAULT 0,
+    preco_final DECIMAL(10, 2) GENERATED ALWAYS AS (
+        preco * (1 - desconto / 100)
+        ) VIRTUAL,
+    criado_em   DATETIME                DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE
 );
 
@@ -76,9 +78,9 @@ VALUES (1, 'Pixau', 'Rua das Flores', '12345678901', '12345678000199', '01001000
         '320', '41977778888', '../_arquivosmidia/lojas/bytestorm.jpg', 4);
 
 INSERT IGNORE INTO produto (id, loja_id, nome, preco, tipo, descricao, modelo, marca, desconto)
-VALUES (1, 1, 'SSD NVMe 1TB', 499.90, 'Armazenamento', 'SSD NVMe M.2 com alta performance', 'M.2 2280', 'FastDisk', 0),
-       (2, 1, 'Memória RAM 16GB (2x8) DDR4', 249.99, 'Memória', 'Kit 16GB 3200MHz', 'UDIMM', 'HyperMem', 0),
-       (3, 2, 'Monitor 27" 144Hz', 1299.00, 'Periférico', 'Monitor 27 polegadas 144Hz Full HD', 'VG27', 'ViewPro', 0),
+VALUES (1, 1, 'SSD NVMe 1TB', 499.90, 'Armazenamento', 'SSD NVMe M.2 com alta performance', 'M.2 2280', 'FastDisk', 5),
+       (2, 1, 'Memória RAM 16GB (2x8) DDR4', 249.99, 'Memória', 'Kit 16GB 3200MHz', 'UDIMM', 'HyperMem', 1),
+       (3, 2, 'Monitor 27\" 144Hz', 1299.00, 'Periférico', 'Monitor 27 polegadas 144Hz Full HD', 'VG27', 'ViewPro', 0),
        (4, 2, 'Teclado Mecânico RGB', 199.50, 'Periférico', 'Teclado mecânico com switches vermelhos', 'MK-Red',
         'KeyPro', 0),
        (5, 2, 'Placa de Vídeo GTX 1660 6GB', 1599.00, 'Placa de Vídeo', 'GPU 6GB GDDR5 para jogos', 'GTX1660',
@@ -88,21 +90,21 @@ VALUES (1, 1, 'SSD NVMe 1TB', 499.90, 'Armazenamento', 'SSD NVMe M.2 com alta pe
        (7, 1, 'Gabinete Mid Tower RGB', 279.90, 'Hardware', 'Gabinete com lateral em vidro e 3 fans inclusas',
         'Glass X3', 'DarkCase', 15),
        (8, 1, 'SSD SATA 480GB', 189.90, 'Armazenamento', 'SSD SATA 2.5 para upgrade rapido', 'S480', 'FastDisk', 0),
-       (9, 2, 'Mouse Gamer RGB 7200 DPI', 129.90, 'Periférico', 'Mouse com 6 botoes programaveis', 'GM7200',
-        'KeyPro', 5),
-       (10, 2, 'Headset USB Surround', 219.90, 'Periférico',
-        'Headset com microfone destacavel e audio virtual 7.1', 'HS700', 'SoundMax', 12),
+       (9, 2, 'Mouse Gamer RGB 7200 DPI', 129.90, 'Periférico', 'Mouse com 6 botoes programaveis', 'GM7200', 'KeyPro',
+        5),
+       (10, 2, 'Headset USB Surround', 219.90, 'Periférico', 'Headset com microfone destacavel e audio virtual 7.1',
+        'HS700', 'SoundMax', 12),
        (11, 2, 'Webcam Full HD', 179.90, 'Periférico', 'Webcam 1080p para stream e reunioes', 'Cam1080', 'ViewPro', 0),
-       (12, 3, 'Notebook Ryzen 7 16GB 512GB SSD', 3899.90, 'Notebook',
-        'Notebook para produtividade e multitarefa', 'NotePro 15', 'ByteTech', 8),
-       (13, 3, 'Cadeira Gamer Ajustavel', 899.90, 'Cadeira',
-        'Cadeira com apoio lombar e reclinacao de 180 graus', 'SeatPro X', 'ComfortPlay', 20),
-       (14, 3, 'Monitor Ultrawide 29" 100Hz', 1499.90, 'Monitor',
-        'Monitor ultrawide IPS para trabalho e jogos', 'UW29', 'ViewPro', 7),
-       (15, 3, 'Kit Teclado e Mouse Sem Fio', 159.90, 'Periférico',
-        'Combo sem fio para escritorio e uso diario', 'KM200', 'OfficeGo', 0),
-       (16, 3, 'Placa Mae B550 AM4', 799.90, 'Hardware',
-        'Placa mae com suporte a Ryzen serie 5000', 'B550M Pro', 'BoardMax', 10);
+       (12, 3, 'Notebook Ryzen 7 16GB 512GB SSD', 3899.90, 'Notebook', 'Notebook para produtividade e multitarefa',
+        'NotePro 15', 'ByteTech', 8),
+       (13, 3, 'Cadeira Gamer Ajustavel', 899.90, 'Ergonomia', 'Cadeira com apoio lombar e reclinacao de 180 graus',
+        'SeatPro X', 'ComfortPlay', 20),
+       (14, 3, 'Monitor Ultrawide 29\" 100Hz', 1499.90, 'Monitor', 'Monitor ultrawide IPS para trabalho e jogos',
+        'UW29', 'ViewPro', 7),
+       (15, 3, 'Kit Teclado e Mouse Sem Fio', 159.90, 'Periférico', 'Combo sem fio para escritorio e uso diario',
+        'KM200', 'OfficeGo', 0),
+       (16, 3, 'Placa Mae B550 AM4', 799.90, 'Hardware', 'Placa mae com suporte a Ryzen serie 5000', 'B550M Pro',
+        'BoardMax', 10);
 
 INSERT IGNORE INTO imagem_produto (produto_id, arquivo, caminho)
 VALUES (1, 'ssd_kingston.jpg', '../_arquivosmidia/produtos/'),
