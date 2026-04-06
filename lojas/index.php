@@ -1,76 +1,201 @@
 <?php
+require_once '../_php/valida_lojista.php';
 require_once '../_php/crud.php';
+require_once '../_componentes/modal.php';
 
 $content = '';
-session_start();
-if (!empty($_SESSION['usuario']) && $_SESSION['usuario']['tipo'] === 'lojista') {
-    $content = include 'gerenciar_produtos.php';
+
+$modal_content = '<div class="flex w-full flex-row-reverse gap-16 px-6">
+                <!--<div class="hidden md:flex flex-col text-center items-center justify-center">
+                ADICIONAR IMAGEM
+                </div>-->
+                <div class="space-y-6">';
+
+// ifs para verificar se desejar DELETAR, ATUALIZAR ou CRIAR
+if (!empty($_GET['id']) && !empty($_GET['request'])) {
+    //deletar
+    if ($_GET['request'] == 'delete') {
+        deletarProduto($_GET['id']);
+    } //atualizar
+    elseif ($_GET['request'] == 'update'
+        && !empty($_POST['nome'])
+        && !empty($_POST['preco'])) {
+        atualizarProduto($_GET['id']);
+    } //exibir modal com formulario de atualizacao de produto
+    elseif ($_GET['request'] == 'update') {
+        $id = $_GET['id'];
+
+        // a seguir é retornado todas as colunas, ate as que nao presisam ser mudadas
+        //    -> entao abaixo vamos tirar as colunas desnecessarias
+        $selecionado = ler('produto', $id)->fetch_assoc();
+
+        unset($selecionado['criado_em']);
+        unset($selecionado['preco_final']);
+        unset($selecionado['id']);
+        unset($selecionado['loja_id']);
+
+        foreach ($selecionado as $chave => $valor) {
+            $label = ucwords(str_replace('_', ' ', $chave));
+            $modal_content .= <<<HTML
+      <div class="relative focus:font-bold">
+          <input type="text" id="$chave" name="$chave" value="$valor"
+              class="peer w-full px-6 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors shadow-sm" />
+          <label for="$chave"
+              class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 transition-colors transform">
+              {$label}
+            </label>
+      </div>
+      HTML;
+        }
+        $content .= getModal($modal_content . '</div></div>', 'Atualizar produto');
+    }
+} //criar
+elseif (!empty($_POST['nome'])
+    && !empty($_POST['preco'])) {
+    criarProduto();
 }
-session_abort();
+//exibir modal com formulario de criacao de produto
+$campos = [
+    'nome' => 'Nome',
+    'preco' => 'Preço',
+    'tipo' => 'Tipo',
+    'modelo' => 'Modelo',
+    'marca' => 'Marca',
+    'descricao' => 'Descrição',
+    'desconto' => 'Desconto (%)'
+];
+foreach ($campos as $chave => $label) {
+    $modal_content .= <<<HTML
+    <div class="relative focus:font-bold">
+      <input type="text" id="$chave" name="$chave" value=""
+          class="peer w-full px-6 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-colors shadow-sm" />
+      <label for="$chave"
+          class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 transition-colors transform">
+          {$label}
+        </label>
+    </div>
+    HTML;
+}
+$content .= getModal($modal_content . '</div></div>', 'Novo produto', 'modal_criar', false);
 
-$resultado_loja = ler('loja');
-$lojas = [];
 
-if ($resultado_loja) {
-    while ($loja = mysqli_fetch_assoc($resultado_loja)) {
-        $lojas[] = $loja;
+//mostrar tabela com produtos da loja
+$content .= <<<HTML
+<div class="flex flex-col gap-8 mb-12">
+  <div id="lojista_header" class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold">Sua loja</h1>
+    <button onclick="document.querySelector('#modal_criar').style.display = 'grid'" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm">
+      Adicionar produto </button>
+  </div>
+  <div class="max-h-58 overflow-x-auto">
+    <table class="min-w-full divide-y-2 divide-gray-200">
+      <thead class="sticky top-0 bg-white ltr:text-left rtl:text-right">
+        <tr class="*:font-bold *:text-gray-900">
+          <th class="px-3 py-2 whitespace-nowrap">#</th>
+          <th class="px-3 py-2 whitespace-nowrap">Nome</th>
+          <th class="px-3 py-2 whitespace-nowrap">Tipo</th>
+          <th class="px-3 py-2 whitespace-nowrap">Marca</th>
+          <th class="px-3 py-2 whitespace-nowrap">Modelo</th>
+          <th class="px-3 py-2 whitespace-nowrap">Data criação</th>
+          <th class="px-3 py-2 whitespace-nowrap">Descrição</th>
+          <th class="px-3 py-2 whitespace-nowrap">Preço_Base</th>
+          <th class="px-3 py-2 whitespace-nowrap">Desconto</th>
+          <th class="px-3 py-2 whitespace-nowrap">Preço_Final</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+HTML;
+
+$resultado_produtos = ler('produto', $_SESSION['loja']['id'], 'loja_id');
+if ($resultado_produtos) {
+    while ($produto = $resultado_produtos->fetch_assoc()) {
+
+        $produto['desconto'] .= '%';
+        if ($produto['desconto'] == '0%') {
+            $produto['desconto'] = '';
+        }
+
+        $id = $produto['id'];
+        $content .= <<<HTML
+    <tr class="*:text-gray-900 *:first:font-medium">
+      <td class="px-3 py-2 whitespace-nowrap">
+        <div class="flex gap-2">
+          <a href="./?request=update&id=$id"
+            class="w-full p-2 bg-blue-600 hover:shadow-xl
+              text-white rounded-xl shadow-sm transition-all ease-in-out duration-200 
+              active:scale-[0.98] outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+            <i data-lucide="pencil" class="size-4"></i>
+          </a>
+          <a href="./?request=delete&id=$id"
+            class="w-full p-2 bg-red-500 hover:shadow-xl
+              text-white rounded-xl shadow-sm transition-all ease-in-out duration-200 
+              active:scale-[0.98] outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+            <i data-lucide="trash" class="size-4"></i>
+          </a>
+        </div>
+      </td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['nome']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['tipo']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['marca']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['modelo']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['criado_em']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['descricao']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['preco']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['desconto']}</td>
+      <td class="px-3 py-2 whitespace-nowrap">{$produto['preco_final']}</td>
+    </tr>
+  HTML;
     }
 }
 
 $content .= <<<HTML
-<div class="flex items-center gap-8">
-    <div id="loja_header">
-        <h1 class="text-3xl font-bold">Lojas disponiveis</h1>
-    </div>
-    <div id="pesquisa_loja" class="flex gap-3 flex-wrap">
-        <div id="pesquisa_nome" class="relative flex items-center border-box max-w-64">   
-            <input type="text" name="search" id="search" placeholder="Pesquisar lojas..." 
-                class="box-border flex-1 px-3 py-2 border-zinc-200 border-2 rounded-lg 
-                max-w-64 hover:border-blue-300 focus:outline-none focus:border-blue-500"> 
-            <i data-lucide="search" class="absolute text-zinc-500 bg-white end-0 me-3 z-10 pointer-events-none"></i>
-        </div>
-    </div>
+      </tbody>
+    </table>
+  </div>
 </div>
-<div id="lojas_grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-
 HTML;
 
+require_once '../_componentes/layout.php';
 
-// Gera cards de lojas
-if (count($lojas) > 0) {
-    foreach ($lojas as $loja) {
-        $img = '';
-        if ($loja['banner_img']) {
-            if (file_exists($loja['banner_img'])) {
-                $descricao = 'imagem da loja ' . $loja['nome_loja'];
-                $img = <<<IMG
-                        <img src="{$loja['banner_img']}" alt="$descricao"
-                            class="w-full h-full object-cover z-10 rounded-t-xl">
-                    IMG;
-            }
-        }
-        $content .= <<<CARD
-        <div class="bg-white rounded-xl border border-gray-300 hover:shadow-xl transition-shadow">
-            <div class="relative bg-gray-200 w-full rounded-t-xl aspect-5/3 mb-3 flex items-center justify-center">
-                <i data-lucide="store" class="absolute w-12 h-12 text-gray-400"></i>
-                $img
-            </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-lg mb-2">{$loja['nome_loja']}</h3>
-                <p class="text-gray-600 text-sm mb-3">{$loja['cidade']}</p>
-            </div>
-        </div>
-        CARD;
-    }
-} else {
-    $content .= <<<EMPTY
-    <div class="col-span-full text-center py-12 border border-gray-300 rounded-2xl">
-        <i data-lucide="store" class="w-16 h-16 text-gray-300 mx-auto mb-3"></i>
-        <p class="text-lg">Nenhuma loja encontrada</p>
-    </div>
-EMPTY;
+
+function deletarProduto($id)
+{
+    deletar('produto', $id);
+
+    header("Location: .");
+    exit;
 }
 
-$content .= '</div>';
+function atualizarProduto($id)
+{
+    $dados = [];
+    $dados['nome'] = $_POST['nome'];
+    $dados['preco'] = $_POST['preco'];
+    $dados['tipo'] = $_POST['tipo'];
+    $dados['descricao'] = $_POST['descricao'];
+    $dados['modelo'] = $_POST['modelo'];
+    $dados['marca'] = $_POST['marca'];
+    $dados['desconto'] = $_POST['desconto'] ?? 0;
+    atualizar('produto', $id, $dados);
 
-require_once '../_componentes/layout.php';
+    header("Location: .");
+    exit;
+}
+
+function criarProduto()
+{
+    $dados = [];
+    $dados['loja_id'] = $_SESSION['loja']['id'];
+    $dados['nome'] = $_POST['nome'];
+    $dados['preco'] = $_POST['preco'];
+    $dados['tipo'] = $_POST['tipo'];
+    $dados['descricao'] = $_POST['descricao'];
+    $dados['modelo'] = $_POST['modelo'];
+    $dados['marca'] = $_POST['marca'];
+    $dados['desconto'] = $_POST['desconto'] ?? 0;
+
+    criar('produto', $dados);
+
+    header("Location: .");
+    exit;
+}
