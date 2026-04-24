@@ -1,2 +1,9 @@
-/.idea
-/.vs
+.claude/
+.cursor/
+.aider*
+
+.vscode/
+.vs/
+.idea/
+*.swp
+.DS_Store
