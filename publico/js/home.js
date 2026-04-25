@@ -34,24 +34,26 @@ async function carregarHome() {
 
 // Constrói o HTML do card de um produto
 function construirCardProduto(produto) {
+    const nomeLoja     = produto.nome_loja || 'Loja parceira';
     const desconto     = parseInt(produto.desconto || 0);
     const precoFinal   = parseFloat(produto.preco_final || produto.preco);
+
+    // Formata os preços para exibição
     const preco        = formatarMoeda(precoFinal);
     const precoOriginal = formatarMoeda(parseFloat(produto.preco));
-    const nomeLoja     = produto.nome_loja || 'Loja parceira';
 
     let imagemHtml = '<i data-lucide="package" class="h-12 w-12 text-slate-300"></i>';
     if (produto.imagem) {
         const src = produto.imagem.caminho + produto.imagem.arquivo;
-        imagemHtml = `<img src="${src}" alt="${produto.nome}" class="h-full w-full rounded-2xl object-contain" onerror="this.style.display='none'">`;
+        imagemHtml = `<img src="${src}" alt="${produto.nome}" class="h-[230px] w-full rounded-2xl object-contain" onerror="this.style.display='none'">`;
     }
 
     let precoMarkup = '';
     if (desconto > 0) {
         precoMarkup = `
-            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">De ${precoOriginal}</p>
+            <p class="text-sm tracking-[0.2em] text-slate-400">De <s>${precoOriginal}</s></p>
             <div class="flex items-center gap-3">
-                <p class="text-2xl font-bold tracking-tight text-slate-900">${preco}</p>
+                <p class="text-2xl font-bold tracking-tight text-slate-900">Por ${preco}</p>
                 <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">-${desconto}%</span>
             </div>
         `;
@@ -63,11 +65,11 @@ function construirCardProduto(produto) {
     }
 
     return `
-        <article class="flex min-w-[84%] min-h-[460px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
-            <div class="mb-4 flex aspect-square items-center justify-center rounded-2xl bg-slate-100">
+        <article class="flex min-w-[84%] h-[460px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
+            <div class="mb-4 flex h-[230px] items-center justify-center rounded-2xl bg-white">
                 ${imagemHtml}
             </div>
-            <div class="flex flex-1 flex-col space-y-3">
+            <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
                 <div class="flex items-center justify-between gap-3">
                     <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">${produto.tipo || 'Produto'}</span>
                     <span class="text-xs font-medium text-slate-500">${produto.marca || ''}</span>
@@ -140,14 +142,14 @@ function renderizarCarousel(id, titulo, cards) {
         <div class="flex items-center gap-8 mb-3">
             <h2 class="text-3xl font-bold">${titulo}</h2>
         </div>
-        <div class="relative mb-8">
+        <div class="relative mb-8 overflow-x-hidden">
             <button type="button" id="${prevId}"
                 class="absolute -left-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full border border-gray-200 bg-white/90 p-2 text-gray-700 shadow-md backdrop-blur sm:flex"
                 aria-label="Voltar">
                 <i data-lucide="chevron-left" class="h-5 w-5"></i>
             </button>
             <div id="${id}"
-                class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4 pt-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-8 pt-2 px-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 ${cards.join('')}
             </div>
             <button type="button" id="${nextId}"

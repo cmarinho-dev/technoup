@@ -71,11 +71,11 @@ VALUES (1, 'João Silva', 'loja@g.com', 'loja', 'lojista', 1),
 INSERT IGNORE INTO loja
 (id, nome_loja, logradouro, cpf, cnpj, cep, estado, cidade, bairro, numero, telefone, banner_img, conta_id)
 VALUES (1, 'Pixau', 'Rua das Flores', '12345678901', '12345678000199', '01001000', 'PR', 'Curitiba', 'Centro', '100',
-        '11999999999', '../_arquivosmidia/lojas/pichau.png', 1),
+        '11999999999', '../imagens/lojas/pichau.png', 1),
        (2, 'The Market.', 'Av. Paulista', '98765432100', '98765432000188', '01311000', 'PR', 'Curitiba', 'Barreirinha',
-        '2000', '11888888888', '../_arquivosmidia/lojas/kabum.jpg', 2),
+        '2000', '11888888888', '../imagens/lojas/kabum.jpg', 2),
        (3, 'ByteStorm', 'Rua XV de Novembro', '45612378901', '45612378000155', '80020000', 'PR', 'Curitiba', 'Centro',
-        '320', '41977778888', '../_arquivosmidia/lojas/bytestorm.jpg', 4);
+        '320', '41977778888', '../imagens/lojas/bytestorm.jpg', 4);
 
 INSERT IGNORE INTO produto (id, loja_id, nome, preco, tipo, descricao, modelo, marca, desconto)
 VALUES (1, 1, 'SSD NVMe 1TB', 499.90, 'Armazenamento', 'SSD NVMe M.2 com alta performance', 'M.2 2280', 'FastDisk', 5),
@@ -107,19 +107,19 @@ VALUES (1, 1, 'SSD NVMe 1TB', 499.90, 'Armazenamento', 'SSD NVMe M.2 com alta pe
         'BoardMax', 10);
 
 INSERT IGNORE INTO imagem_produto (produto_id, arquivo, caminho)
-VALUES (1, 'ssd_kingston.jpg', '../_arquivosmidia/produtos/'),
-       (2, 'ram.jpg', '../_arquivosmidia/produtos/'),
-       (3, 'monitor_tuf.jpg', '../_arquivosmidia/produtos/'),
-       (4, 'teclado_hyperx.jpg', '../_arquivosmidia/produtos/'),
-       (5, 'rx5600.jpg', '../_arquivosmidia/produtos/'),
-       (6, 'fonte_650w.jpg', '../_arquivosmidia/produtos/'),
-       (7, 'gabinete_rgb.jpg', '../_arquivosmidia/produtos/'),
-       (8, 'ssd_sata_480.jpg', '../_arquivosmidia/produtos/'),
-       (9, 'mouse_gamer_rgb.jpg', '../_arquivosmidia/produtos/'),
-       (10, 'headset_usb.jpg', '../_arquivosmidia/produtos/'),
-       (11, 'webcam_fullhd.jpg', '../_arquivosmidia/produtos/'),
-       (12, 'notebook_ryzen7.jpg', '../_arquivosmidia/produtos/'),
-       (13, 'cadeira_gamer.jpg', '../_arquivosmidia/produtos/'),
-       (14, 'monitor_ultrawide.jpg', '../_arquivosmidia/produtos/'),
-       (15, 'kit_teclado_mouse.jpg', '../_arquivosmidia/produtos/'),
-       (16, 'placa_mae_b550.jpg', '../_arquivosmidia/produtos/');
+VALUES (1, 'ssd_kingston.jpg', '../imagens/produtos/'),
+       (2, 'ram.jpg', '../imagens/produtos/'),
+       (3, 'monitor_tuf.jpg', '../imagens/produtos/'),
+       (4, 'teclado_hyperx.jpg', '../imagens/produtos/'),
+       (5, 'rx5600.jpg', '../imagens/produtos/'),
+       (6, 'fonte_650w.jpg', '../imagens/produtos/'),
+       (7, 'gabinete_rgb.jpg', '../imagens/produtos/'),
+       (8, 'ssd_sata_480.jpg', '../imagens/produtos/'),
+       (9, 'mouse_gamer_rgb.jpg', '../imagens/produtos/'),
+       (10, 'headset_usb.jpg', '../imagens/produtos/'),
+       (11, 'webcam_fullhd.jpg', '../imagens/produtos/'),
+       (12, 'notebook_ryzen7.jpg', '../imagens/produtos/'),
+       (13, 'cadeira_gamer.jpg', '../imagens/produtos/'),
+       (14, 'monitor_ultrawide.jpg', '../imagens/produtos/'),
+       (15, 'kit_teclado_mouse.jpg', '../imagens/produtos/'),
+       (16, 'placa_mae_b550.jpg', '../imagens/produtos/');

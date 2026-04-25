@@ -78,39 +78,83 @@ function aplicarFiltros() {
 
 // Constrói o HTML do card de um produto
 function construirCardProduto(produto) {
+    const nomeLoja     = produto.nome_loja || 'Loja parceira';
     const desconto     = parseInt(produto.desconto || 0);
     const precoFinal   = parseFloat(produto.preco_final || produto.preco);
+
+    // Formata os preços para exibição
     const preco        = formatarMoeda(precoFinal);
     const precoOriginal = formatarMoeda(parseFloat(produto.preco));
-    const nomeLoja     = produto.nome_loja || '';
 
-    let imgHtml = '<i data-lucide="package" class="absolute w-12 h-12 text-gray-400"></i>';
+    let imagemHtml = '<i data-lucide="package" class="h-12 w-12 text-slate-300"></i>';
     if (produto.imagem) {
         const src = produto.imagem.caminho + produto.imagem.arquivo;
-        imgHtml = `<img src="${src}" alt="${produto.nome}" class="w-full h-full object-contain z-10 rounded-t-xl" onerror="this.style.display='none'">`;
+        imagemHtml = `<img src="${src}" alt="${produto.nome}" class="h-[230px] w-full rounded-2xl object-contain" onerror="this.style.display='none'">`;
     }
 
     let precoMarkup = '';
     if (desconto > 0) {
         precoMarkup = `
-            <span class="text-sm font-medium text-slate-400 line-through">De ${precoOriginal}</span>
-            <span class="text-xl tracking-tighter font-bold text-blue-600 text-nowrap">Por ${preco}</span>
+            <p class="text-sm tracking-[0.2em] text-slate-400"><s>${precoOriginal}</s></p>
+            <div class="flex items-center gap-3">
+                <p class="text-2xl font-bold tracking-tight text-slate-900">${preco}</p>
+                <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">-${desconto}%</span>
+            </div>
         `;
     } else {
-        precoMarkup = `<span class="text-xl tracking-tighter font-bold text-blue-600 text-nowrap">${preco}</span>`;
+        precoMarkup = `
+            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Preço atual</p>
+            <p class="text-2xl font-bold tracking-tight text-slate-900">${preco}</p>
+        `;
     }
 
     return `
-        <div class="bg-white rounded-xl border border-gray-300 hover:shadow-xl transition-shadow">
-            <div class="relative bg-gray-200 w-full rounded-t-xl aspect-square mb-3 flex items-center justify-center">
-                ${imgHtml}
+        <article class="flex min-w-[84%] h-[460px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
+            <div class="mb-4 flex h-[230px] items-center justify-center rounded-2xl bg-white">
+                ${imagemHtml}
             </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-lg mb-2">${produto.nome}</h3>
-                <p class="text-gray-600 text-sm mb-3">${nomeLoja}</p>
-                <div class="flex flex-col gap-1">${precoMarkup}</div>
+            <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">${produto.tipo || 'Produto'}</span>
+                    <span class="text-xs font-medium text-slate-500">${produto.marca || ''}</span>
+                </div>
+                <div>
+                    <h3 class="min-h-[56px] text-lg font-semibold text-slate-900">${produto.nome}</h3>
+                    <p class="mt-1 text-sm text-slate-500">${nomeLoja}</p>
+                </div>
+                <div class="mt-auto">
+                    <div class="space-y-1">${precoMarkup}</div>
+                </div>
             </div>
-        </div>
+        </article>
+    `;
+}
+
+function construirCardLoja(loja) {
+    const cidade = loja.cidade || 'Brasil';
+    const estado = loja.estado || '';
+
+    let bannerHtml = '<i data-lucide="store" class="h-12 w-12 text-slate-300"></i>';
+    if (loja.banner_img) {
+        bannerHtml = `<img src="${loja.banner_img}" alt="Banner da loja ${loja.nome_loja}" class="w-full aspect-[4/3] rounded-2xl object-cover" onerror="this.style.display='none'">`;
+    }
+
+    return `
+        <article class="flex min-w-[84%] min-h-[340px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
+            <div class="mb-4 flex aspect-[5/3] items-center justify-center rounded-2xl bg-slate-100">
+                ${bannerHtml}
+            </div>
+            <div class="flex flex-1 flex-col space-y-3">
+                <div>
+                    <h3 class="min-h-[56px] text-lg font-semibold text-slate-900">${loja.nome_loja}</h3>
+                    <p class="mt-1 text-sm text-slate-500">${cidade} ${estado}</p>
+                </div>
+                <div class="mt-auto flex items-center justify-between">
+                    <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Marketplace</span>
+                    <a href="./catalogo.html" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">Explorar</a>
+                </div>
+            </div>
+        </article>
     `;
 }
 
@@ -119,23 +163,7 @@ function renderizarCarouselLojas(lojas) {
     const container = document.getElementById('carousel_lojas_container');
     if (!container || lojas.length === 0) return;
 
-    const cards = lojas.map(loja => {
-        let imgHtml = '<i data-lucide="store" class="absolute w-12 h-12 text-gray-400"></i>';
-        if (loja.banner_img) {
-            imgHtml = `<img src="${loja.banner_img}" alt="${loja.nome_loja}" class="w-full aspect-[4/3] rounded-2xl object-cover z-10" onerror="this.style.display='none'">`;
-        }
-        return `
-            <div class="min-w-[85%] snap-start rounded-xl border border-gray-300 bg-white transition-shadow hover:shadow-xl sm:min-w-[320px]">
-                <div class="relative bg-gray-200 w-full rounded-t-xl aspect-[4/3] mb-3 flex items-center justify-center">
-                    ${imgHtml}
-                </div>
-                <div class="p-4">
-                    <h3 class="font-semibold text-lg mb-1">${loja.nome_loja}</h3>
-                    <p class="text-gray-600 text-sm">${loja.cidade || ''}</p>
-                </div>
-            </div>
-        `;
-    });
+    const cards = lojas.map(loja => { return construirCardLoja(loja); });
 
     container.innerHTML = `
         <div class="flex items-center mb-3">
