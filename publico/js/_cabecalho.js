@@ -13,7 +13,7 @@ async function iniciarMenuUsuario() {
 
         if (json.status === 'ok' && json.data && json.data.usuario) {
             menuEl.innerHTML = construirMenuLogado(json.data.usuario);
-            iniciarDropdown();
+            iniciarMenuDropdown();
         } else {
             menuEl.innerHTML = menuDeslogado();
         }
@@ -78,7 +78,7 @@ function construirMenuLogado(usuario) {
 
     return `
         <div class="relative inline-block text-left" id="profile-menu-container">
-            <button type="button" onclick="toggleDropdown()"
+            <button type="button" onclick="abrirFecharMenuDropdown()"
                 class="flex items-center gap-2 rounded-full border-none bg-white p-1 px-3 transition-all hover:bg-slate-50 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2"
                 id="menu-button" aria-expanded="false" aria-haspopup="true">
                 <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold">
@@ -115,12 +115,12 @@ function construirMenuLogado(usuario) {
     `;
 }
 
-function toggleDropdown() {
+function abrirFecharMenuDropdown() {
     const dropdown = document.getElementById('profile-dropdown');
     if (dropdown) dropdown.classList.toggle('hidden');
 }
 
-function iniciarDropdown() {
+function iniciarMenuDropdown() {
     // Fecha o dropdown ao clicar fora
     window.addEventListener('click', function (e) {
         const dropdown = document.getElementById('profile-dropdown');
