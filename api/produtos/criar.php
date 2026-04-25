@@ -1,6 +1,13 @@
 <?php
 include_once '../conexao.php';
 
+// Envia resposta JSON e encerra o script
+function respostaJson($status, $mensagem = '', $dados = []) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
+    exit;
+}
+
 session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'lojista') {
     session_write_close();
@@ -13,20 +20,18 @@ if (empty($lojaId)) {
     respostaJson('nok', 'Loja não encontrada na sessão. Cadastre sua loja primeiro.');
 }
 
-$dados = receberJson();
-
-$nome      = trim($dados['nome'] ?? '');
-$preco     = (float)($dados['preco'] ?? 0);
-$desconto  = (int)($dados['desconto'] ?? 0);
+$nome      = trim($_POST['nome'] ?? '');
+$preco     = (float)($_POST['preco'] ?? 0);
+$desconto  = (int)($_POST['desconto'] ?? 0);
 
 if (empty($nome) || $preco <= 0) {
     respostaJson('nok', 'Nome e preço são obrigatórios.');
 }
 
-$tipo      = $dados['tipo'] ?? '';
-$modelo    = $dados['modelo'] ?? '';
-$marca     = $dados['marca'] ?? '';
-$descricao = $dados['descricao'] ?? '';
+$tipo      = $_POST['tipo'] ?? '';
+$modelo    = $_POST['modelo'] ?? '';
+$marca     = $_POST['marca'] ?? '';
+$descricao = $_POST['descricao'] ?? '';
 
 // preco_final é uma coluna GERADA pelo banco — não incluir no INSERT
 $stmt = $conexao->prepare("

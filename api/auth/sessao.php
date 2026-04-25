@@ -1,21 +1,20 @@
 <?php
+// Envia resposta JSON e encerra o script
+function respostaJson($status, $mensagem = '', $dados = []) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
+    exit;
+}
+
+// (Não usa receberJson; retorna estado da sessão)
+
 session_start();
 
-header('Content-Type: application/json; charset=utf-8');
-
 if (isset($_SESSION['usuario'])) {
-    echo json_encode([
-        'status'   => 'ok',
-        'mensagem' => '',
-        'data'     => [
-            'usuario' => $_SESSION['usuario'],
-            'loja'    => $_SESSION['loja'] ?? null
-        ]
+    respostaJson('ok', '', [
+        'usuario' => $_SESSION['usuario'],
+        'loja'    => $_SESSION['loja'] ?? null
     ]);
 } else {
-    echo json_encode([
-        'status'   => 'nok',
-        'mensagem' => 'Sessão não iniciada.',
-        'data'     => []
-    ]);
+    respostaJson('nok', 'Sessão não iniciada.');
 }

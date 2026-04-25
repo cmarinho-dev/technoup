@@ -1,10 +1,15 @@
 <?php
 include_once '../conexao.php';
 
-$dados = receberJson();
+// Envia resposta JSON e encerra o script
+function respostaJson($status, $mensagem = '', $dados = []) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
+    exit;
+}
 
-$email = trim($dados['email'] ?? '');
-$senha = trim($dados['senha'] ?? '');
+$email = trim($_POST['email'] ?? '');
+$senha = trim($_POST['senha'] ?? '');
 
 if (empty($email) || empty($senha)) {
     respostaJson('nok', 'Email e senha são obrigatórios.');
@@ -49,7 +54,6 @@ if ($usuario['tipo'] === 'lojista') {
 }
 
 $conexao->close();
-
 respostaJson('ok', 'Login realizado com sucesso.', [
     'usuario' => $usuario,
     'loja'    => $loja

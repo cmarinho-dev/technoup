@@ -1,6 +1,13 @@
 <?php
 include_once '../conexao.php';
 
+// Envia resposta JSON e encerra o script
+function respostaJson($status, $mensagem = '', $dados = []) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
+    exit;
+}
+
 session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'lojista') {
     session_write_close();
@@ -9,8 +16,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'lojista') 
 $lojaId = (int)($_SESSION['loja']['id'] ?? 0);
 session_write_close();
 
-$dados = receberJson();
-$id    = (int)($dados['id'] ?? 0);
+$id    = (int)($_POST['id'] ?? 0);
 
 if (empty($id)) {
     respostaJson('nok', 'ID do produto é obrigatório.');

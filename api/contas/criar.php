@@ -1,12 +1,17 @@
 <?php
 include_once '../conexao.php';
 
-$dados = receberJson();
+// Envia resposta JSON e encerra o script
+function respostaJson($status, $mensagem = '', $dados = []) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
+    exit;
+}
 
-$nome  = trim($dados['nome'] ?? '');
-$email = trim($dados['email'] ?? '');
-$senha = trim($dados['senha'] ?? '');
-$tipo  = trim($dados['tipo'] ?? 'consumidor');
+$nome  = trim($_POST['nome'] ?? '');
+$email = trim($_POST['email'] ?? '');
+$senha = trim($_POST['senha'] ?? '');
+$tipo  = trim($_POST['tipo'] ?? 'consumidor');
 
 if (empty($nome) || empty($email) || empty($senha)) {
     respostaJson('nok', 'Nome, email e senha são obrigatórios.');

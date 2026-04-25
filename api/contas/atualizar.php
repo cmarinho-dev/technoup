@@ -1,6 +1,13 @@
 <?php
 include_once '../conexao.php';
 
+// Envia resposta JSON e encerra o script
+function respostaJson($status, $mensagem = '', $dados = []) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
+    exit;
+}
+
 session_start();
 if (!isset($_SESSION['usuario'])) {
     session_write_close();
@@ -9,11 +16,9 @@ if (!isset($_SESSION['usuario'])) {
 $idUsuario = (int)$_SESSION['usuario']['id'];
 session_write_close();
 
-$dados = receberJson();
-
-$nome  = trim($dados['nome'] ?? '');
-$email = trim($dados['email'] ?? '');
-$senha = trim($dados['senha'] ?? '');
+$nome  = trim($_POST['nome'] ?? '');
+$email = trim($_POST['email'] ?? '');
+$senha = trim($_POST['senha'] ?? '');
 
 if (empty($nome) || empty($email)) {
     respostaJson('nok', 'Nome e email são obrigatórios.');

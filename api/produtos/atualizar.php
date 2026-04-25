@@ -1,6 +1,13 @@
 <?php
 include_once '../conexao.php';
 
+// Envia resposta JSON e encerra o script
+function respostaJson($status, $mensagem = '', $dados = []) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
+    exit;
+}
+
 session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'lojista') {
     session_write_close();
@@ -9,21 +16,19 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'lojista') 
 $lojaId = (int)($_SESSION['loja']['id'] ?? 0);
 session_write_close();
 
-$dados = receberJson();
-
-$id    = (int)($dados['id'] ?? 0);
-$nome  = trim($dados['nome'] ?? '');
-$preco = (float)($dados['preco'] ?? 0);
+$id    = (int)($_POST['id'] ?? 0);
+$nome  = trim($_POST['nome'] ?? '');
+$preco = (float)($_POST['preco'] ?? 0);
 
 if (empty($id) || empty($nome) || $preco <= 0) {
     respostaJson('nok', 'ID, nome e preço são obrigatórios.');
 }
 
-$desconto  = (int)($dados['desconto'] ?? 0);
-$tipo      = $dados['tipo'] ?? '';
-$modelo    = $dados['modelo'] ?? '';
-$marca     = $dados['marca'] ?? '';
-$descricao = $dados['descricao'] ?? '';
+$desconto  = (int)($_POST['desconto'] ?? 0);
+$tipo      = $_POST['tipo'] ?? '';
+$modelo    = $_POST['modelo'] ?? '';
+$marca     = $_POST['marca'] ?? '';
+$descricao = $_POST['descricao'] ?? '';
 
 // preco_final é uma coluna GERADA — não incluir no UPDATE
 $stmt = $conexao->prepare("

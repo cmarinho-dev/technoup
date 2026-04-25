@@ -1,6 +1,13 @@
 <?php
 include_once '../conexao.php';
 
+// Envia resposta JSON e encerra o script
+function respostaJson($status, $mensagem = '', $dados = []) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
+    exit;
+}
+
 session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'lojista') {
     session_write_close();
@@ -9,23 +16,21 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'lojista') 
 $contaId = (int)$_SESSION['usuario']['id'];
 session_write_close();
 
-$dados = receberJson();
-
-$nomeLoja = trim($dados['nome_loja'] ?? '');
-$cnpj     = trim($dados['cnpj'] ?? '');
+$nomeLoja = trim($_POST['nome_loja'] ?? '');
+$cnpj     = trim($_POST['cnpj'] ?? '');
 
 if (empty($nomeLoja) || empty($cnpj)) {
     respostaJson('nok', 'Nome da loja e CNPJ são obrigatórios.');
 }
 
-$telefone   = $dados['telefone'] ?? '';
-$cpf        = $dados['cpf'] ?? '';
-$cep        = $dados['cep'] ?? '';
-$estado     = $dados['estado'] ?? '';
-$cidade     = $dados['cidade'] ?? '';
-$bairro     = $dados['bairro'] ?? '';
-$logradouro = $dados['logradouro'] ?? '';
-$numero     = $dados['numero'] ?? '';
+$telefone   = $_POST['telefone'] ?? '';
+$cpf        = $_POST['cpf'] ?? '';
+$cep        = $_POST['cep'] ?? '';
+$estado     = $_POST['estado'] ?? '';
+$cidade     = $_POST['cidade'] ?? '';
+$bairro     = $_POST['bairro'] ?? '';
+$logradouro = $_POST['logradouro'] ?? '';
+$numero     = $_POST['numero'] ?? '';
 
 $stmt = $conexao->prepare("
     UPDATE loja
