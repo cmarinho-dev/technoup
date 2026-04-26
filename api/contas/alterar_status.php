@@ -1,5 +1,5 @@
 <?php
-// Altera o status de uma conta de lojista
+// Altera o status de uma conta
 // Requer autenticação de administrador
 
 include_once '../conexao.php';
@@ -18,7 +18,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'administra
 }
 session_write_close();
 
-$contaId = (int)($_POST['conta_id'] ?? 0);
+$contaId = (int)($_POST['id'] ?? 0);
 
 if (empty($contaId)) {
     respostaJson('nok', 'ID da conta é obrigatório.');

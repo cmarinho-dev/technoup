@@ -17,12 +17,18 @@ function respostaJson($status, $mensagem = '', $dados = []) {
 //}
 //session_write_close();
 
+
+// Consulta para obter todas as contas
+// A senha não deve ser retornada, mas como é apenas para testes, deixei para facilitar a visualização
 $sql = "
     SELECT
-        conta.email,
         conta.senha,
+        conta.id,
+        conta.nome,
+        conta.email,
         conta.tipo,
-        conta.ativo
+        conta.ativo,
+        conta.criado_em
     FROM conta
     ORDER BY conta.tipo DESC
 ";

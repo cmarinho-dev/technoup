@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administração de Lojas - TechnoUp</title>
+    <title>Administração de Contas - TechnoUp</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -40,32 +40,28 @@
     <div class="flex flex-col gap-8 mb-12">
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <div>
-                <h1 class="text-3xl font-bold">Administração de lojas</h1>
-                <p class="text-sm text-slate-500 mt-2">Gerencie logins de lojistas, status da conta e dados da loja vinculada.</p>
+                <h1 class="text-3xl font-bold">Administração de contas</h1>
+                <p class="text-sm text-slate-500 mt-2">Gerencie logins e status das contas</p>
             </div>
         </div>
 
         <!-- Mensagem de feedback -->
         <div id="mensagemFeedback" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
 
-        <!-- Tabela de lojistas -->
+        <!-- Tabela de contas -->
         <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
             <table class="min-w-full divide-y divide-slate-200">
                 <thead class="bg-slate-50 text-left">
                     <tr class="*:px-4 *:py-3 *:text-xs *:font-semibold *:uppercase *:tracking-[0.16em] *:text-slate-500">
-                        <th>Ações</th>
-                        <th>Status</th>
-                        <th>Responsável</th>
+                        <th>AÇÕES</th>
+                        <th>STATUS</th>
+                        <th>TIPO</th>
+                        <th>Nome</th>
                         <th>Email</th>
-                        <th>Loja</th>
-                        <th>Telefone</th>
-                        <th>CNPJ</th>
-                        <th>Cidade</th>
-                        <th>Endereço</th>
                         <th>Criado em</th>
                     </tr>
                 </thead>
-                <tbody id="tabelaLojistasBody" class="divide-y divide-slate-200">
+                <tbody id="tabelaContasBody" class="divide-y divide-slate-200">
                     <tr><td colspan="10" class="px-4 py-8 text-center text-sm text-slate-400">Carregando...</td></tr>
                 </tbody>
             </table>
@@ -86,7 +82,7 @@
     const CAMINHO_FRONTEND = '../..';
 </script>
 <script src="../../js/_cabecalho.js"></script>
-<script src="js/lojas.js"></script>
+<script src="js/contas.js"></script>
 <script>lucide.createIcons();</script>
 </body>
 </html>

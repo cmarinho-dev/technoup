@@ -15,13 +15,29 @@ $lojaId = isset($_GET['loja_id']) && $_GET['loja_id'] !== '' ? (int)$_GET['loja_
 
 // Monta consulta conforme parâmetros
 if ($id !== null) {
-    $stmt = $conexao->prepare("SELECT * FROM produto WHERE id = ?");
+    $stmt = $conexao->prepare("SELECT produto.* FROM produto
+    JOIN loja ON produto.loja_id = loja.id
+    JOIN conta ON loja.conta_id = conta.id
+    WHERE conta.tipo = 'lojista'
+    AND conta.ativo = 1
+    AND produto.id = ?");
     $stmt->bind_param('i', $id);
 } elseif ($lojaId !== null) {
-    $stmt = $conexao->prepare("SELECT * FROM produto WHERE loja_id = ? ORDER BY criado_em DESC");
+    $stmt = $conexao->prepare("SELECT produto.* FROM produto
+    JOIN loja ON produto.loja_id = loja.id
+    JOIN conta ON loja.conta_id = conta.id
+    WHERE conta.tipo = 'lojista'
+    AND conta.ativo = 1
+    AND produto.loja_id = ? 
+    ORDER BY criado_em DESC");
     $stmt->bind_param('i', $lojaId);
 } else {
-    $stmt = $conexao->prepare("SELECT * FROM produto ORDER BY desconto DESC, criado_em DESC");
+    $stmt = $conexao->prepare("SELECT produto.* FROM produto
+    JOIN loja ON produto.loja_id = loja.id
+    JOIN conta ON loja.conta_id = conta.id
+    WHERE conta.tipo = 'lojista'
+    AND conta.ativo = 1
+    ORDER BY desconto DESC, criado_em DESC");
 }
 
 $stmt->execute();

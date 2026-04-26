@@ -18,7 +18,11 @@ if (isset($_GET['conta_id']) && $_GET['conta_id'] !== '') {
     $stmt = $conexao->prepare("SELECT * FROM loja WHERE id = ?");
     $stmt->bind_param('i', $id);
 } else {
-    $stmt = $conexao->prepare("SELECT * FROM loja ORDER BY nome_loja");
+    $stmt = $conexao->prepare("SELECT loja.* FROM loja 
+    JOIN conta ON loja.conta_id = conta.id
+    WHERE conta.tipo = 'lojista'
+    AND conta.ativo = 1
+    ORDER BY nome_loja");
 }
 
 $stmt->execute();

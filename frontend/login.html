@@ -90,11 +90,6 @@
                             ${conta.email} |
                             ${conta.senha}<br>
                     `).join('')}
-                    ${json.data.map(conta => `
-                            ${conta.tipo} <br>
-                            ${conta.email} |
-                            ${conta.senha}<br>
-                    `).join('')}
             `;
         } catch (error) {
             return '';

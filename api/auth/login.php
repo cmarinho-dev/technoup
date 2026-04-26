@@ -32,6 +32,12 @@ if ($usuario['senha'] !== $senha) {
     respostaJson('nok', 'Credenciais inválidas.');
 }
 
+if ($usuario['ativo'] == 0 && $usuario['tipo'] === 'lojista') {
+    respostaJson('nok', 'Sua unidade de trabalho está inativa. Entre em contato com o administrador para mais informações.');
+} elseif ($usuario['ativo'] == 0) {
+    respostaJson('nok', 'Sua conta está inativa. Entre em contato com o administrador para mais informações.');
+}
+
 // Remove a senha antes de salvar na sessão
 unset($usuario['senha']);
 

@@ -73,6 +73,13 @@ function construirMenuLogado(usuario) {
                     Gerenciar lojas
                 </div>
             </a>
+            <a href="${CAMINHO_FRONTEND}/protegido/admin/contas.html"
+               class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="users" class="h-4 w-4 text-slate-400"></i>
+                    Gerenciar contas
+                </div>
+            </a>
         `;
     }
 
