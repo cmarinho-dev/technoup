@@ -64,9 +64,9 @@ CREATE TABLE IF NOT EXISTS imagem_produto
 INSERT IGNORE INTO conta (id, nome, email, senha, tipo, ativo)
 VALUES (1, 'João Silva', 'loja@g.com', 'loja', 'lojista', 1),
        (2, 'Maria Souza', 'maria@example.com', 'senha123', 'lojista', 1),
-       (3, 'Pedro Alves', 'pedro@example.com', 'pedro_pass', 'consumidor', 1),
-       (4, 'Lucas Martins', 'lucas@g.co', 'lucas', 'lojista', 1),
-       (5, 'Administrador', 'admin@g.co', 'admin123', 'administrador', 1);
+       (3, 'Pedro Alves', 'pedro@g.com', 'pedro', 'consumidor', 1),
+       (4, 'Lucas Martins', 'lucas@g.com', 'lucas', 'lojista', 1),
+       (5, 'Administrador', 'admin@g.com', 'admin', 'administrador', 1);
 
 INSERT IGNORE INTO loja
 (id, nome_loja, logradouro, cpf, cnpj, cep, estado, cidade, bairro, numero, telefone, banner_img, conta_id)

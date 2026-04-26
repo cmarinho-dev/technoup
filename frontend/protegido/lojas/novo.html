@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro da Loja - TechnoUp</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-optical-sizing: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; color: #1a1a1a; line-height: 1.6; }
+        h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    </style>
+</head>
+<body>
+
+<div class="flex flex-row-reverse min-h-screen w-full bg-white">
+    <!-- Coluna do formulário -->
+    <div class="flex-1 flex flex-col justify-center px-8 lg:flex-none lg:w-1/2 lg:px-16 xl:px-24">
+        <div class="w-full max-w-sm mx-auto">
+            <div class="mb-5 text-blue-600 inline-block">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-12 h-12">
+                    <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor"/>
+                    <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor"/>
+                </svg>
+            </div>
+
+            <h1 id="tituloCadastro" class="mb-5 text-3xl font-bold tracking-tight text-slate-900">Cadastro da loja</h1>
+
+            <!-- Mensagem de feedback -->
+            <div id="mensagemFeedback" class="hidden mb-4 rounded-xl border px-4 py-3 text-sm"></div>
+
+            <!-- Formulário sem action — JS cuida do envio -->
+            <div id="cadastroBox" class="space-y-3">
+                <div class="space-y-6 py-3 px-2 pe-4 max-h-96 overflow-y-scroll">
+
+                    <div class="relative">
+                        <input type="text" id="inputNomeLoja" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputNomeLoja" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Nome da loja</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputTelefone" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputTelefone" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Telefone</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputCpf" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputCpf" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">CPF</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputCnpj" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputCnpj" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">CNPJ</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputCep" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputCep" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">CEP</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputEstado" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputEstado" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Estado</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputCidade" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputCidade" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Cidade</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputBairro" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputBairro" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Bairro</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputLogradouro" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputLogradouro" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Logradouro</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="text" id="inputNumero" placeholder=" "
+                            class="peer w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                        <label for="inputNumero" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Número</label>
+                    </div>
+                </div>
+
+                
+                <div class="flex wrap text-center gap-2">
+                    <!----
+                    <a id="btnVoltar" href="../../home.html"
+                        class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg shadow-sm transition-all ease-in-out duration-200 active:scale-[0.98] outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2">
+                        Voltar
+                    </a>
+                    -->
+                    <button id="btnSalvarLoja"
+                        class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-sm transition-all ease-in-out duration-200 active:scale-[0.98] outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 cursor-pointer">
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Imagem lateral -->
+    <div class="hidden lg:block lg:flex-1 relative">
+        <img class="absolute inset-0 w-full h-full object-cover"
+             src="https://images.unsplash.com/photo-1563986768817-257bf91c5753?q=80&w=1510&auto=format&fit=crop"
+             alt="Ambiente de trabalho moderno">
+        <div class="absolute inset-0 bg-slate-900/5"></div>
+    </div>
+</div>
+
+<script>
+    const CAMINHO_API     = '../../../api';
+    const CAMINHO_FRONTEND = '../..';
+</script>
+<script src="js/novo.js"></script>
+</body>
+</html>
