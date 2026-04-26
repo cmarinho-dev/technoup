@@ -132,8 +132,9 @@ async function salvarProduto() {
     const descricao = document.getElementById('campoDescricao').value.trim();
     const desconto = parseInt(document.getElementById('campoDesconto').value || 0);
 
-    if (!nome || !preco) {
-        mostrarFeedback('Nome e preço são obrigatórios.', false);
+    if (!nome || !preco || !tipo) {
+        mostrarAlert('Nome, preço e tipo são obrigatórios.', false);
+        //mostrarFeedback('Nome, preço e tipo são obrigatórios.', false);
         return;
     }
 
@@ -187,6 +188,10 @@ async function deletarProduto(id) {
     } else {
         mostrarFeedback(json.mensagem || 'Erro ao deletar.', false);
     }
+}
+
+function mostrarAlert(mensagem) {
+    alert(mensagem);
 }
 
 function mostrarFeedback(mensagem, sucesso) {
