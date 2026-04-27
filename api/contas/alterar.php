@@ -24,6 +24,10 @@ if (empty($nome) || empty($email)) {
     respostaJson('nok', 'Nome e email são obrigatórios.');
 }
 
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    respostaJson('nok', 'Email inválido.');
+}
+
 // Atualiza com ou sem nova senha
 if (!empty($senha)) {
     $stmt = $conexao->prepare("UPDATE conta SET nome = ?, email = ?, senha = ? WHERE id = ?");

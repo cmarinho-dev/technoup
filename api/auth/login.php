@@ -15,6 +15,10 @@ if (empty($email) || empty($senha)) {
     respostaJson('nok', 'Email e senha são obrigatórios.');
 }
 
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    respostaJson('nok', 'Email inválido.');
+}
+
 // Busca a conta pelo email
 $stmt = $conexao->prepare("SELECT * FROM conta WHERE email = ?");
 $stmt->bind_param('s', $email);

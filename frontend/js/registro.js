@@ -22,6 +22,11 @@ async function criarConta() {
         return;
     }
 
+    if (!email.includes('@')) {
+        mostrarErro('Digite um email válido.');
+        return;
+    }
+
     if (senha !== confirmarSenha) {
         erroSenhaEl.classList.remove('hidden');
         return;

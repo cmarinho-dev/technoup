@@ -35,6 +35,11 @@ async function salvarAlteracoes() {
         return;
     }
 
+    if (!email.includes('@')) {
+        mostrarErro('Digite um email válido.');
+        return;
+    }
+
     const btn = document.getElementById('btnSalvar');
     btn.disabled = true;
     btn.textContent = 'Salvando...';

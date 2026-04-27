@@ -17,6 +17,10 @@ if (empty($nome) || empty($email) || empty($senha)) {
     respostaJson('nok', 'Nome, email e senha são obrigatórios.');
 }
 
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    respostaJson('nok', 'Email inválido.');
+}
+
 // Verifica se o email já está cadastrado
 $stmtVerifica = $conexao->prepare("SELECT id FROM conta WHERE email = ?");
 $stmtVerifica->bind_param('s', $email);

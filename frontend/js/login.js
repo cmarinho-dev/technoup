@@ -20,6 +20,11 @@ async function fazerLogin() {
         return;
     }
 
+    if (!email.includes('@')) {
+        mostrarErro('Digite um email válido.');
+        return;
+    }
+
     // Desabilita o botão durante a requisição
     const btn = document.getElementById('btnEntrar');
     btn.disabled = true;
