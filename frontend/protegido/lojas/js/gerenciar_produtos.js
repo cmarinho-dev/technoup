@@ -2,6 +2,10 @@
 
 let lojaId = null; // ID da loja do lojista logado
 
+function cls(name) {
+    return window.TechnoUpStyle?.cls(name) || '';
+}
+
 async function iniciarGerenciar() {
     // Verifica sessão e garante que é lojista
     const resposta = await fetch(CAMINHO_API + '/auth/sessao.php', { credentials: 'include' });
@@ -46,7 +50,7 @@ function renderizarTabela(produtos) {
     const tbody = document.getElementById('tabelaProdutosBody');
 
     if (produtos.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" class="px-3 py-8 text-center text-slate-400">Nenhum produto cadastrado ainda.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" class="${cls('storeTableEmpty')}">Nenhum produto cadastrado ainda.</td></tr>`;
         return;
     }
 
@@ -57,28 +61,28 @@ function renderizarTabela(produtos) {
             : '-';
 
         return `
-            <tr class="align-center *:px-4 *:py-4 *:text-sm *:text-slate-700">
-                <td class="whitespace-nowrap">
-                    <div class="flex gap-2">
+            <tr class="${cls('tableRow')}">
+                <td class="${cls('tableCellNowrap')}">
+                    <div class="${cls('tableActionWrap')}">
                         <button onclick="abrirModalEditar(${produto.id})"
-                            class="rounded-xl bg-blue-600 px-3 py-3 text-xs font-semibold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
-                            <i data-lucide="pencil" class="size-4"></i>
+                            class="${cls('storeActionEdit')}">
+                            <i data-lucide="pencil" class="${cls('storeActionIcon')}"></i>
                         </button>
                         <button onclick="deletarProduto(${produto.id})"
-                            class="rounded-xl bg-red-600 px-3 py-3 text-xs font-semibold text-white shadow-sm transition-all hover:bg-red-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2">
-                            <i data-lucide="trash" class="size-4"></i>
+                            class="${cls('storeActionDelete')}">
+                            <i data-lucide="trash" class="${cls('storeActionIcon')}"></i>
                         </button>
                     </div>
                 </td>
-                <td class="font-medium text-slate-900">${produto.nome}</td>
-                <td class="">${produto.tipo || '-'}</td>
-                <td class="">${produto.marca || '-'}</td>
-                <td class="">${produto.modelo || '-'}</td>
-                <td class="whitespace-nowrap">${produto.criado_em || '-'}</td>
-                <td class="">${produto.descricao || '-'}</td>
-                <td class="">R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}</td>
-                <td class="">${desconto}</td>
-                <td class="">${precoFinal}</td>
+                <td class="${cls('tableStrong')}">${produto.nome}</td>
+                <td>${produto.tipo || '-'}</td>
+                <td>${produto.marca || '-'}</td>
+                <td>${produto.modelo || '-'}</td>
+                <td class="${cls('tableCellNowrap')}">${produto.criado_em || '-'}</td>
+                <td>${produto.descricao || '-'}</td>
+                <td>R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}</td>
+                <td>${desconto}</td>
+                <td>${precoFinal}</td>
             </tr>
         `;
     }).join('');
@@ -198,8 +202,8 @@ function mostrarFeedback(mensagem, sucesso) {
     const el = document.getElementById('mensagemFeedback');
     el.textContent = mensagem;
     el.className = sucesso
-        ? 'rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700'
-        : 'rounded-xl border border-red-200   bg-red-50   px-4 py-3 text-sm text-red-700';
+        ? cls('feedbackSuccess')
+        : cls('feedbackError');
     el.classList.remove('hidden');
     setTimeout(() => el.classList.add('hidden'), 4000);
 }

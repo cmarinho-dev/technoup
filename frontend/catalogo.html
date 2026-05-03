@@ -6,28 +6,25 @@
     <title>Catálogo - TechnoUp</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-optical-sizing: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; color: #1a1a1a; line-height: 1.6; }
-        h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
-    </style>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
 <!-- CABEÇALHO -->
-<header class="bg-white shadow-sm border-b border-slate-200">
-    <div class="mx-auto flex h-16 md:mx-12 lg:mx-28 items-center gap-8 px-4 sm:px-6">
-        <a href="./home.html" class="block text-blue-600">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
+<header>
+    <div>
+        <a href="./home.html">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor"/>
                 <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor"/>
             </svg>
         </a>
-        <div class="flex flex-1 items-center justify-end md:justify-between">
-            <nav aria-label="Global" class="hidden md:block">
-                <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
-                    <li><a class="transition hover:text-blue-600" href="./home.html">Home</a></li>
-                    <li><a class="font-semibold text-blue-600" href="./catalogo.html">Catálogo</a></li>
-                    <li><a class="transition hover:text-blue-600" href="./sobre.html">Sobre</a></li>
+        <div>
+            <nav aria-label="Global">
+                <ul>
+                    <li><a href="./home.html">Home</a></li>
+                    <li><a href="./catalogo.html">Catálogo</a></li>
+                    <li><a href="./sobre.html">Sobre</a></li>
                 </ul>
             </nav>
             <div id="menuUsuario"></div>
@@ -36,19 +33,19 @@
 </header>
 
 <!-- CONTEÚDO PRINCIPAL -->
-<main class="flex flex-col gap-4 sm:mx-8 md:mx-16 lg:mx-24 px-8 py-8 my-8">
+<main>
 
     <!-- Carrossel de lojas (preenchido pelo JS) -->
     <div id="carousel_lojas_container"></div>
 
     <!-- Cabeçalho do catálogo com filtros -->
-    <div id="catalogo_header" class="flex flex-row flex-wrap justify-between items-center mb-3 mt-4">
-        <h1 class="text-3xl font-bold mb-2">Catálogo de Produtos</h1>
-        <div class="flex gap-3 mb-6 flex-wrap">
+    <div id="catalogo_header">
+        <h1>Catálogo de Produtos</h1>
+        <div>
             <!-- Filtro por tipo -->
-            <div class="relative flex items-center max-w-64">
+            <div>
                 <select id="filtraTipo"
-                    class="box-border flex-1 px-3 pe-10 py-2 border-zinc-200 border rounded-lg max-w-64 hover:border-blue-300 focus:outline-none focus:border-blue-500 appearance-none">
+                   >
                     <option value="">Todos os tipos</option>
                     <option value="computador">Computador</option>
                     <option value="hardware">Hardware</option>
@@ -59,70 +56,70 @@
                     <option value="memoria">Memória</option>
                     <option value="placa de video">Placa de Vídeo</option>
                 </select>
-                <i data-lucide="chevron-down" class="absolute text-zinc-500 bg-white end-0 me-3 z-10 pointer-events-none"></i>
+                <i data-lucide="chevron-down"></i>
             </div>
             <!-- Filtro por preço mínimo -->
             <input id="filtroPrecoMin" type="number" placeholder="Min R$"
-                class="box-border flex-1 px-3 py-2 border-zinc-200 border rounded-lg max-w-24 hover:border-blue-300 focus:outline-none focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+               >
             <!-- Filtro por preço máximo -->
             <input id="filtroPrecoMax" type="number" placeholder="Max R$"
-                class="box-border flex-1 px-3 py-2 border-zinc-200 border rounded-lg max-w-24 hover:border-blue-300 focus:outline-none focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+               >
             <!-- Busca por nome -->
-            <div class="relative flex items-center max-w-64">
+            <div>
                 <input type="text" id="filtraNome" placeholder="Pesquisar produtos..."
-                    class="box-border flex-1 px-3 py-2 border-zinc-200 border-2 rounded-lg max-w-64 hover:border-blue-300 focus:outline-none focus:border-blue-500">
-                <i data-lucide="search" class="absolute text-zinc-500 bg-white end-0 me-3 z-10 pointer-events-none"></i>
+                   >
+                <i data-lucide="search"></i>
             </div>
         </div>
     </div>
 
     <!-- Contador de produtos -->
-    <p id="catalogo_contador" class="text-gray-700"></p>
+    <p id="catalogo_contador"></p>
 
     <!-- Grade de produtos (preenchida pelo JS) -->
-    <div id="catalogo_items_grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
-        <p class="col-span-full text-center text-slate-400 py-8">Carregando produtos...</p>
+    <div id="catalogo_items_grid">
+        <p>Carregando produtos...</p>
     </div>
 </main>
 
 <!-- RODAPÉ -->
-<footer class="border-t border-slate-200 bg-white">
-    <div class="mx-auto grid gap-10 px-8 py-10 sm:mx-8 md:mx-16 lg:mx-24 lg:grid-cols-[1.3fr_0.7fr_0.7fr_0.9fr]">
+<footer>
+    <div>
         <div>
-            <div class="flex items-center gap-3 text-blue-600">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10">
+            <div>
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor"/>
                     <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor"/>
                 </svg>
                 <div>
-                    <p class="text-lg font-semibold text-slate-900">TechnoUp</p>
-                    <p class="text-sm text-slate-500">Marketplace de tecnologia e lojas parceiras.</p>
+                    <p>TechnoUp</p>
+                    <p>Marketplace de tecnologia e lojas parceiras.</p>
                 </div>
             </div>
         </div>
         <div>
-            <h2 class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">Navegacao</h2>
-            <div class="mt-4 flex flex-col gap-3 text-sm text-slate-600">
-                <a class="transition hover:text-blue-600" href="./home.html">Home</a>
-                <a class="transition hover:text-blue-600" href="./catalogo.html">Catalogo</a>
-                <a class="transition hover:text-blue-600" href="./sobre.html">Sobre</a>
+            <h2>Navegacao</h2>
+            <div>
+                <a href="./home.html">Home</a>
+                <a href="./catalogo.html">Catalogo</a>
+                <a href="./sobre.html">Sobre</a>
             </div>
         </div>
         <div>
-            <h2 class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">Categorias</h2>
-            <div class="mt-4 flex flex-col gap-3 text-sm text-slate-600">
+            <h2>Categorias</h2>
+            <div>
                 <span>Hardware</span><span>Perifericos</span><span>Monitores</span><span>PC Gamer</span>
             </div>
         </div>
         <div>
-            <h2 class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">Contato</h2>
-            <div class="mt-4 flex flex-col gap-3 text-sm text-slate-600">
+            <h2>Contato</h2>
+            <div>
                 <span>atendimento@technoup.local</span>
                 <span>Seg a Sex, 9h as 18h</span>
             </div>
         </div>
     </div>
-    <div class="border-t border-slate-200 px-8 py-4 text-center text-sm text-slate-500">
+    <div>
         TechnoUp &copy; 2026. Todos os direitos reservados.
     </div>
 </footer>
@@ -132,6 +129,7 @@
     const CAMINHO_API     = '../api';
     const CAMINHO_FRONTEND = '.';
 </script>
+<script src="./css/style.js"></script>
 <script src="./js/_cabecalho.js"></script>
 <script src="./js/catalogo.js"></script>
 <script>lucide.createIcons();</script>

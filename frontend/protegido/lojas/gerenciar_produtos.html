@@ -6,28 +6,25 @@
     <title>Gerenciar Produtos - TechnoUp</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-optical-sizing: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; color: #1a1a1a; line-height: 1.6; }
-        h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
-    </style>
+    <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
 
 <!-- CABEÇALHO -->
-<header class="bg-white shadow-sm border-b border-slate-200">
-    <div class="mx-auto flex h-16 md:mx-12 lg:mx-28 items-center gap-8 px-4 sm:px-6">
-        <a href="../../home.html" class="block text-blue-600">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
+<header>
+    <div>
+        <a href="../../home.html">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor"/>
                 <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor"/>
             </svg>
         </a>
-        <div class="flex flex-1 items-center justify-end md:justify-between">
-            <nav aria-label="Global" class="hidden md:block">
-                <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
-                    <li><a class="transition hover:text-blue-600" href="../../home.html">Home</a></li>
-                    <li><a class="transition hover:text-blue-600" href="../../catalogo.html">Catálogo</a></li>
-                    <li><a class="transition hover:text-blue-600" href="../../sobre.html">Sobre</a></li>
+        <div>
+            <nav aria-label="Global">
+                <ul>
+                    <li><a href="../../home.html">Home</a></li>
+                    <li><a href="../../catalogo.html">Catálogo</a></li>
+                    <li><a href="../../sobre.html">Sobre</a></li>
                 </ul>
             </nav>
             <div id="menuUsuario"></div>
@@ -36,38 +33,38 @@
 </header>
 
 <!-- CONTEÚDO PRINCIPAL -->
-<main class="flex flex-col gap-4 sm:mx-8 md:mx-16 lg:mx-24 px-8 py-8 my-8">
-    <div class="flex flex-col gap-8 mb-12">
-        <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-bold">Sua loja</h1>
+<main>
+    <div>
+        <div>
+            <h1>Sua loja</h1>
             <button id="btnNovoProduct"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm">
+               >
                 Adicionar produto
             </button>
         </div>
 
         <!-- Mensagem de feedback -->
-        <div id="mensagemFeedback" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
+        <div id="mensagemFeedback"></div>
 
         <!-- Tabela de produtos -->
-        <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <table class="min-w-full divide-y divide-slate-200">
-                <thead class="bg-slate-50 text-left">
-                    <tr class="*:px-4 *:py-3 *:text-xs *:font-semibold *:uppercase *:tracking-[0.16em] *:text-slate-500">
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Ações</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Nome</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Tipo</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Marca</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Modelo</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Criado em</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Descrição</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Preço</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Desconto</th>
-                        <th class="px-3 py-2 whitespace-nowrap text-left">Preço Final</th>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ações</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Criado em</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Desconto</th>
+                        <th>Preço Final</th>
                     </tr>
                 </thead>
-                <tbody id="tabelaProdutosBody" class="divide-y divide-slate-200">
-                    <tr><td colspan="10" class="px-4 py-8 text-center text-slate-400">Carregando produtos...</td></tr>
+                <tbody id="tabelaProdutosBody">
+                    <tr><td colspan="10">Carregando produtos...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -75,25 +72,25 @@
 </main>
 
 <!-- MODAL DE CRIAR / EDITAR PRODUTO -->
-<div id="modalProduto" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
-    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
-        <h2 id="modalTitulo" class="text-xl font-bold mb-6">Novo produto</h2>
+<div id="modalProduto">
+    <div>
+        <h2 id="modalTitulo">Novo produto</h2>
 
         <!-- Campos do produto -->
-        <div class="space-y-4">
-            <div class="relative">
+        <div>
+            <div>
                 <input type="text" id="campoNome" placeholder=" "
-                    class="peer w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
-                <label for="campoNome" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Nome</label>
+                   >
+                <label for="campoNome">Nome</label>
             </div>
-            <div class="relative">
+            <div>
                 <input type="number" id="campoPreco" placeholder=" " step="0.01"
-                    class="peer w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
-                <label for="campoPreco" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Preço (R$)</label>
+                   >
+                <label for="campoPreco">Preço (R$)</label>
             </div>
-            <div class="relative">
+            <div>
                 <input type="text" id="campoTipo" placeholder=" " list="tiposDatalist"
-                    class="peer w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                   >
                 <datalist id="tiposDatalist">
                     <option value="Armazenamento">
                     <option value="Placa de Vídeo">
@@ -107,27 +104,27 @@
                     <option value="Ergonomia">
                     <option value="Acessórios">
                 </datalist>
-                <label for="campoTipo" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Tipo</label>
+                <label for="campoTipo">Tipo</label>
             </div>
-            <div class="relative">
+            <div>
                 <input type="text" id="campoModelo" placeholder=" "
-                    class="peer w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
-                <label for="campoModelo" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Modelo</label>
+                   >
+                <label for="campoModelo">Modelo</label>
             </div>
-            <div class="relative">
+            <div>
                 <input type="text" id="campoMarca" placeholder=" "
-                    class="peer w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
-                <label for="campoMarca" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Marca</label>
+                   >
+                <label for="campoMarca">Marca</label>
             </div>
-            <div class="relative">
+            <div>
                 <input type="text" id="campoDescricao" placeholder=" "
-                    class="peer w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
-                <label for="campoDescricao" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Descrição</label>
+                   >
+                <label for="campoDescricao">Descrição</label>
             </div>
-            <div class="relative">
+            <div>
                 <input type="number" id="campoDesconto" placeholder=" " min="0" max="100"
-                    class="peer w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
-                <label for="campoDesconto" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Desconto (%)</label>
+                   >
+                <label for="campoDesconto">Desconto (%)</label>
             </div>
         </div>
 
@@ -135,13 +132,13 @@
         <input type="hidden" id="campoIdProduto">
 
         <!-- Botões do modal -->
-        <div class="flex gap-3 mt-6">
+        <div>
             <button id="btnSalvarProduto"
-                class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all">
+               >
                 Salvar
             </button>
             <button id="btnFecharModal"
-                class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-all">
+               >
                 Cancelar
             </button>
         </div>
@@ -149,8 +146,8 @@
 </div>
 
 <!-- RODAPÉ -->
-<footer class="border-t border-slate-200 bg-white">
-    <div class="mx-auto px-8 py-4 text-center text-sm text-slate-500">
+<footer>
+    <div>
         TechnoUp &copy; 2026. Todos os direitos reservados.
     </div>
 </footer>
@@ -160,6 +157,7 @@
     const CAMINHO_API     = '../../../api';
     const CAMINHO_FRONTEND = '../..';
 </script>
+<script src="../../css/style.js"></script>
 <script src="../../js/_cabecalho.js"></script>
 <script src="js/gerenciar_produtos.js"></script>
 <script>lucide.createIcons();</script>

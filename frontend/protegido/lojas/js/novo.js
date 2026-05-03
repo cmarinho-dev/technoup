@@ -1,5 +1,9 @@
 // novo.js — formulário de criação de loja (apenas criação)
 
+function cls(name) {
+    return window.TechnoUpStyle?.cls(name) || '';
+}
+
 async function iniciarNovoLoja() {
     const resposta = await fetch(CAMINHO_API + '/auth/sessao.php', { credentials: 'include' });
     const json = await resposta.json();
@@ -78,9 +82,7 @@ async function salvarLoja() {
 function mostrarFeedback(mensagem, sucesso) {
     const el = document.getElementById('mensagemFeedback');
     el.textContent = mensagem;
-    el.className = sucesso
-        ? 'rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700'
-        : 'rounded-xl border border-red-200   bg-red-50   px-4 py-3 text-sm text-red-700';
+    el.className = sucesso ? cls('feedbackSuccess') : cls('feedbackError');
     el.classList.remove('hidden');
 }
 
