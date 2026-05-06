@@ -68,6 +68,16 @@ function construirMenuLogado(usuario) {
                 </div>
             </a>
         `;
+    } else if (usuario.tipo === 'consumidor') {
+        opcoes += `
+            <a href="${CAMINHO_FRONTEND}/protegido/comprador/chat.html"
+               class="${cls('menuItem')}">
+                <div class="${cls('menuItemInner')}">
+                    <i data-lucide="messages-square" class="${cls('menuItemIcon')}"></i>
+                    Chat da loja
+                </div>
+            </a>
+        `;
     } else if (usuario.tipo === 'administrador') {
         opcoes += `
             <a href="${CAMINHO_FRONTEND}/protegido/admin/lojas.html"

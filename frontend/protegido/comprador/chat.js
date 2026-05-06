@@ -1,0 +1,209 @@
+const intervaloAtualizacaoMs = 4000;
+
+let ultimoId = 0;
+let carregando = false;
+let pollingId = null;
+let usuarioAtual = null;
+let chatInicializado = false;
+
+const listaMensagens = document.getElementById('listaMensagens');
+const formChat = document.getElementById('formChat');
+const campoMensagem = document.getElementById('campoMensagem');
+const btnEnviar = document.getElementById('btnEnviar');
+const mensagemErro = document.getElementById('mensagemErro');
+const lojaNome = document.getElementById('lojaNome');
+const lojaBanner = document.getElementById('lojaBanner');
+const lojaIcone = document.getElementById('lojaIcone');
+
+lojaBanner.addEventListener('load', () => {
+    lojaBanner.classList.remove('hidden');
+    lojaIcone.classList.add('hidden');
+});
+
+lojaBanner.addEventListener('error', () => {
+    lojaBanner.removeAttribute('src');
+    lojaBanner.classList.add('hidden');
+    lojaIcone.classList.remove('hidden');
+});
+
+function mostrarErro(texto) {
+    mensagemErro.textContent = texto;
+    mensagemErro.classList.remove('hidden');
+}
+
+function limparErro() {
+    mensagemErro.textContent = '';
+    mensagemErro.classList.add('hidden');
+}
+
+function escaparHtml(texto) {
+    const div = document.createElement('div');
+    div.textContent = texto;
+    return div.innerHTML;
+}
+
+function formatarHora(data) {
+    return new Intl.DateTimeFormat('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(new Date(data.replace(' ', 'T')));
+}
+
+function renderizarMensagem(mensagem) {
+    const enviadaPelaLoja = Number(mensagem.is_cliente) === 1;
+    const souConsumidor = usuarioAtual?.tipo === 'consumidor';
+    const minhaMensagem = souConsumidor ? !enviadaPelaLoja : enviadaPelaLoja;
+    const lado = minhaMensagem ? 'mine' : 'other';
+    const autor = minhaMensagem ? 'Você' : (enviadaPelaLoja ? 'Loja' : 'Consumidor');
+
+    return `
+        <div class="chat-message-row chat-message-row--${lado}">
+            <div class="chat-message-bubble chat-message-bubble--${lado}">
+                <div class="chat-message-meta chat-message-meta--${lado}">
+                    <span>${autor}</span>
+                    <span>${formatarHora(mensagem.criado_em)}</span>
+                </div>
+                <p class="chat-message-text">${escaparHtml(mensagem.mensagem)}</p>
+            </div>
+        </div>
+    `;
+}
+
+function adicionarMensagens(mensagens) {
+    if (!mensagens.length) return;
+
+    if (ultimoId === 0) {
+        listaMensagens.innerHTML = '';
+    }
+
+    const estavaNoFim = listaMensagens.scrollHeight - listaMensagens.scrollTop - listaMensagens.clientHeight < 80;
+    listaMensagens.insertAdjacentHTML('beforeend', mensagens.map(renderizarMensagem).join(''));
+    ultimoId = Math.max(...mensagens.map((mensagem) => Number(mensagem.id)), ultimoId);
+
+    if (estavaNoFim) {
+        listaMensagens.scrollTop = listaMensagens.scrollHeight;
+    }
+}
+
+function renderizarVazio() {
+    if (ultimoId > 0) return;
+    listaMensagens.innerHTML = `
+        <div class="m-auto max-w-sm text-center">
+            <i data-lucide="messages-square" class="mx-auto mb-3 h-10 w-10 text-slate-300"></i>
+            <p class="text-sm font-medium text-slate-700">Comece a conversa com a loja.</p>
+            <p class="mt-1 text-sm text-slate-500">Este MVP usa a loja de ID 1 como destino fixo.</p>
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+function caminhoImagem(caminho) {
+    if (!caminho) return '';
+    if (/^(https?:)?\/\//.test(caminho) || caminho.startsWith('/')) return caminho;
+    return `${CAMINHO_FRONTEND}/${caminho}`;
+}
+
+async function carregarMensagens() {
+    if (carregando || document.visibilityState !== 'visible') return;
+
+    carregando = true;
+    try {
+        const resposta = await fetch(`${CAMINHO_API}/chat/get.php?ultimo_id=${ultimoId}`, {
+            credentials: 'include'
+        });
+        const json = await resposta.json();
+
+        if (json.status !== 'ok') {
+            mostrarErro(json.mensagem || 'Não foi possível carregar o chat.');
+            return;
+        }
+
+        limparErro();
+        usuarioAtual = json.data.usuario;
+        lojaNome.textContent = json.data.loja?.nome_loja || 'Chat da loja';
+
+        if (json.data.loja?.banner_img) {
+            lojaBanner.src = caminhoImagem(json.data.loja.banner_img);
+            lojaBanner.alt = `Banner da loja ${lojaNome.textContent}`;
+        } else {
+            lojaBanner.removeAttribute('src');
+            lojaBanner.classList.add('hidden');
+            lojaIcone.classList.remove('hidden');
+        }
+
+        adicionarMensagens(json.data.mensagens || []);
+        chatInicializado = true;
+        if (ultimoId === 0) renderizarVazio();
+    } catch (erro) {
+        mostrarErro('Falha ao conectar com o chat.');
+    } finally {
+        carregando = false;
+    }
+}
+
+async function enviarMensagem(evento) {
+    evento.preventDefault();
+
+    const mensagem = campoMensagem.value.trim();
+    if (!mensagem) return;
+
+    btnEnviar.disabled = true;
+    limparErro();
+
+    const dados = new FormData();
+    dados.append('mensagem', mensagem);
+
+    try {
+        const resposta = await fetch(`${CAMINHO_API}/chat/enviar.php`, {
+            method: 'POST',
+            body: dados,
+            credentials: 'include'
+        });
+        const json = await resposta.json();
+
+        if (json.status !== 'ok') {
+            mostrarErro(json.mensagem || 'Não foi possível enviar a mensagem.');
+            return;
+        }
+
+        campoMensagem.value = '';
+        adicionarMensagens([json.data]);
+        listaMensagens.scrollTop = listaMensagens.scrollHeight;
+    } catch (erro) {
+        mostrarErro('Falha ao enviar mensagem.');
+    } finally {
+        btnEnviar.disabled = false;
+        campoMensagem.focus();
+    }
+}
+
+function iniciarPolling() {
+    if (pollingId || document.visibilityState !== 'visible') return;
+    if (!chatInicializado) carregarMensagens();
+    pollingId = setInterval(carregarMensagens, intervaloAtualizacaoMs);
+}
+
+function pararPolling() {
+    if (!pollingId) return;
+    clearInterval(pollingId);
+    pollingId = null;
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        iniciarPolling();
+    } else {
+        pararPolling();
+    }
+});
+
+window.addEventListener('beforeunload', pararPolling);
+formChat.addEventListener('submit', enviarMensagem);
+campoMensagem.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Enter' && !evento.shiftKey) {
+        evento.preventDefault();
+        formChat.requestSubmit();
+    }
+});
+
+iniciarPolling();
