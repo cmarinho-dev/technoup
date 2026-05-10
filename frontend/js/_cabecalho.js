@@ -67,6 +67,13 @@ function construirMenuLogado(usuario) {
                     Cadastro da loja
                 </div>
             </a>
+            <a href="${CAMINHO_FRONTEND}/protegido/lojas/avaliacoes.html"
+               class="${cls('menuItem')}">
+                <div class="${cls('menuItemInner')}">
+                    <i data-lucide="clipboard-list" class="${cls('menuItemIcon')}"></i>
+                    Avaliações de peças
+                </div>
+            </a>
         `;
     } else if (usuario.tipo === 'consumidor') {
         opcoes += `

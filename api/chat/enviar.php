@@ -7,54 +7,66 @@ function respostaJson($status, $mensagem = '', $dados = []) {
     exit;
 }
 
-function buscarOuCriarChat($conexao, $usuario, $lojaId) {
-    $consumidorId = (int)$usuario['id'];
+function lojaDaSessao($conexao, $usuario) {
+    if ($usuario['tipo'] !== 'lojista') return null;
+    if (isset($_SESSION['loja']['id'])) return (int)$_SESSION['loja']['id'];
 
-    if ($usuario['tipo'] !== 'consumidor') {
-        $consumidorId = 3;
+    $contaId = (int)$usuario['id'];
+    $stmt = $conexao->prepare("SELECT id FROM loja WHERE conta_id = ? LIMIT 1");
+    $stmt->bind_param('i', $contaId);
+    $stmt->execute();
+    $loja = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    return $loja ? (int)$loja['id'] : null;
+}
+
+function carregarChatPermitido($conexao, $usuario, $lojaId) {
+    $avaliacaoId = isset($_POST['avaliacao_id']) ? (int)$_POST['avaliacao_id'] : 0;
+    $chatId = isset($_POST['chat_id']) ? (int)$_POST['chat_id'] : 0;
+
+    if ($chatId <= 0 && $avaliacaoId <= 0) {
+        respostaJson('nok', 'Informe uma avaliação aceita ou um chat.');
     }
 
-    $stmtLoja = $conexao->prepare("
-        SELECT loja.id
-        FROM loja
-        JOIN conta ON conta.id = loja.conta_id
-        WHERE loja.id = ? AND conta.ativo = 1
-        LIMIT 1
-    ");
-    $stmtLoja->bind_param('i', $lojaId);
-    $stmtLoja->execute();
-    $loja = $stmtLoja->get_result()->fetch_assoc();
-    $stmtLoja->close();
+    $params = [];
+    $types = '';
+    $where = $chatId > 0 ? 'chat_cotacao_usado.id = ?' : 'avaliacao_peca.id = ?';
+    $params[] = $chatId > 0 ? $chatId : $avaliacaoId;
+    $types .= 'i';
 
-    if (!$loja) {
-        respostaJson('nok', 'Loja fixa do chat não encontrada.');
+    if ($usuario['tipo'] === 'consumidor') {
+        $where .= ' AND avaliacao_peca.consumidor_id = ?';
+        $params[] = (int)$usuario['id'];
+        $types .= 'i';
+    } elseif ($usuario['tipo'] === 'lojista') {
+        if (!$lojaId) respostaJson('nok', 'Loja não encontrada na sessão.');
+        $where .= ' AND avaliacao_peca.loja_id = ?';
+        $params[] = $lojaId;
+        $types .= 'i';
+    } elseif ($usuario['tipo'] !== 'administrador') {
+        respostaJson('nok', 'Acesso restrito.');
     }
 
-    $stmt = $conexao->prepare("
-        SELECT id
+    $sql = "
+        SELECT chat_cotacao_usado.id, avaliacao_peca.status
         FROM chat_cotacao_usado
-        WHERE consumidor_id = ? AND loja_id = ?
+        JOIN avaliacao_peca ON avaliacao_peca.id = chat_cotacao_usado.avaliacao_id
+        WHERE {$where}
         LIMIT 1
-    ");
-    $stmt->bind_param('ii', $consumidorId, $lojaId);
+    ";
+
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $chat = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
-    if ($chat) {
-        return (int)$chat['id'];
+    if (!$chat || $chat['status'] !== 'aceita') {
+        respostaJson('nok', 'Este chat ainda não foi liberado pela loja.');
     }
 
-    $stmt = $conexao->prepare("
-        INSERT INTO chat_cotacao_usado (consumidor_id, loja_id)
-        VALUES (?, ?)
-    ");
-    $stmt->bind_param('ii', $consumidorId, $lojaId);
-    $stmt->execute();
-    $chatId = $stmt->insert_id;
-    $stmt->close();
-
-    return (int)$chatId;
+    return (int)$chat['id'];
 }
 
 session_start();
@@ -63,6 +75,7 @@ if (!isset($_SESSION['usuario'])) {
     respostaJson('nok', 'Acesso restrito a usuários logados.');
 }
 $usuario = $_SESSION['usuario'];
+$lojaId = lojaDaSessao($conexao, $usuario);
 session_write_close();
 
 $mensagem = trim($_POST['mensagem'] ?? '');
@@ -75,8 +88,7 @@ if ($tamanhoMensagem > 1000) {
     respostaJson('nok', 'A mensagem deve ter no máximo 1000 caracteres.');
 }
 
-$lojaId = 1;
-$chatId = buscarOuCriarChat($conexao, $usuario, $lojaId);
+$chatId = carregarChatPermitido($conexao, $usuario, $lojaId);
 $isCliente = $usuario['tipo'] === 'consumidor' ? 0 : 1;
 
 $stmt = $conexao->prepare("

@@ -61,15 +61,32 @@ CREATE TABLE IF NOT EXISTS imagem_produto
     FOREIGN KEY (produto_id) REFERENCES produto (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS avaliacao_peca
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    consumidor_id INT                                  NOT NULL,
+    loja_id       INT                                  NOT NULL,
+    nome_peca     VARCHAR(120)                         NOT NULL,
+    categoria     VARCHAR(80)                          NOT NULL,
+    estado        VARCHAR(80)                          NOT NULL,
+    detalhes      TEXT,
+    status        ENUM ('pendente','aceita','recusada') NOT NULL DEFAULT 'pendente',
+    criado_em     DATETIME                                      DEFAULT CURRENT_TIMESTAMP,
+    respondido_em DATETIME,
+    FOREIGN KEY (consumidor_id) REFERENCES conta (id) ON DELETE CASCADE,
+    FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS chat_cotacao_usado
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
     consumidor_id INT      NOT NULL,
     loja_id       INT      NOT NULL,
+    avaliacao_id  INT      NOT NULL UNIQUE,
     criado_em     DATETIME DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY uk_chat_consumidor_loja (consumidor_id, loja_id),
     FOREIGN KEY (consumidor_id) REFERENCES conta (id) ON DELETE CASCADE,
-    FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE
+    FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE,
+    FOREIGN KEY (avaliacao_id) REFERENCES avaliacao_peca (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS mensagem_cotacao_usado

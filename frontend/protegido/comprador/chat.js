@@ -5,6 +5,11 @@ let carregando = false;
 let pollingId = null;
 let usuarioAtual = null;
 let chatInicializado = false;
+let chatAtual = null;
+
+const parametros = new URLSearchParams(window.location.search);
+const avaliacaoId = parametros.get('avaliacao_id') || '';
+const chatIdInicial = parametros.get('chat_id') || '';
 
 const listaMensagens = document.getElementById('listaMensagens');
 const formChat = document.getElementById('formChat');
@@ -91,7 +96,7 @@ function renderizarVazio() {
         <div class="m-auto max-w-sm text-center">
             <i data-lucide="messages-square" class="mx-auto mb-3 h-10 w-10 text-slate-300"></i>
             <p class="text-sm font-medium text-slate-700">Comece a conversa com a loja.</p>
-            <p class="mt-1 text-sm text-slate-500">Este MVP usa a loja de ID 1 como destino fixo.</p>
+            <p class="mt-1 text-sm text-slate-500">A conversa foi liberada a partir da avaliação aceita.</p>
         </div>
     `;
     lucide.createIcons();
@@ -108,7 +113,16 @@ async function carregarMensagens() {
 
     carregando = true;
     try {
-        const resposta = await fetch(`${CAMINHO_API}/chat/get.php?ultimo_id=${ultimoId}`, {
+        const params = new URLSearchParams({ ultimo_id: ultimoId });
+        if (chatAtual?.id) {
+            params.set('chat_id', chatAtual.id);
+        } else if (chatIdInicial) {
+            params.set('chat_id', chatIdInicial);
+        } else if (avaliacaoId) {
+            params.set('avaliacao_id', avaliacaoId);
+        }
+
+        const resposta = await fetch(`${CAMINHO_API}/chat/get.php?${params.toString()}`, {
             credentials: 'include'
         });
         const json = await resposta.json();
@@ -120,6 +134,7 @@ async function carregarMensagens() {
 
         limparErro();
         usuarioAtual = json.data.usuario;
+        chatAtual = json.data.chat;
         lojaNome.textContent = json.data.loja?.nome_loja || 'Chat da loja';
 
         if (json.data.loja?.banner_img) {
@@ -152,6 +167,13 @@ async function enviarMensagem(evento) {
 
     const dados = new FormData();
     dados.append('mensagem', mensagem);
+    if (chatAtual?.id) {
+        dados.append('chat_id', chatAtual.id);
+    } else if (chatIdInicial) {
+        dados.append('chat_id', chatIdInicial);
+    } else if (avaliacaoId) {
+        dados.append('avaliacao_id', avaliacaoId);
+    }
 
     try {
         const resposta = await fetch(`${CAMINHO_API}/chat/enviar.php`, {

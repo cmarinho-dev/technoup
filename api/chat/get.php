@@ -7,59 +7,90 @@ function respostaJson($status, $mensagem = '', $dados = []) {
     exit;
 }
 
-function buscarOuCriarChat($conexao, $usuario, $lojaId) {
-    $consumidorId = (int)$usuario['id'];
+function lojaDaSessao($conexao, $usuario) {
+    if ($usuario['tipo'] !== 'lojista') return null;
+    if (isset($_SESSION['loja']['id'])) return (int)$_SESSION['loja']['id'];
 
-    if ($usuario['tipo'] !== 'consumidor') {
-        $consumidorId = 3;
+    $contaId = (int)$usuario['id'];
+    $stmt = $conexao->prepare("SELECT id FROM loja WHERE conta_id = ? LIMIT 1");
+    $stmt->bind_param('i', $contaId);
+    $stmt->execute();
+    $loja = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    return $loja ? (int)$loja['id'] : null;
+}
+
+function carregarChatPermitido($conexao, $usuario, $lojaId) {
+    $avaliacaoId = isset($_GET['avaliacao_id']) ? (int)$_GET['avaliacao_id'] : 0;
+    $chatId = isset($_GET['chat_id']) ? (int)$_GET['chat_id'] : 0;
+
+    $params = [];
+    $types = '';
+    $where = '';
+
+    if ($chatId > 0) {
+        $where = 'chat_cotacao_usado.id = ?';
+        $params[] = $chatId;
+        $types .= 'i';
+    } elseif ($avaliacaoId > 0) {
+        $where = 'avaliacao_peca.id = ?';
+        $params[] = $avaliacaoId;
+        $types .= 'i';
+    } else {
+        $where = 'avaliacao_peca.status = \'aceita\'';
     }
 
-    $stmtLoja = $conexao->prepare("
-        SELECT loja.id, loja.nome_loja, loja.banner_img, loja.conta_id
-        FROM loja
-        JOIN conta ON conta.id = loja.conta_id
-        WHERE loja.id = ? AND conta.ativo = 1
-        LIMIT 1
-    ");
-    $stmtLoja->bind_param('i', $lojaId);
-    $stmtLoja->execute();
-    $loja = $stmtLoja->get_result()->fetch_assoc();
-    $stmtLoja->close();
-
-    if (!$loja) {
-        respostaJson('nok', 'Loja fixa do chat não encontrada.');
+    if ($usuario['tipo'] === 'consumidor') {
+        $where .= ' AND avaliacao_peca.consumidor_id = ?';
+        $params[] = (int)$usuario['id'];
+        $types .= 'i';
+    } elseif ($usuario['tipo'] === 'lojista') {
+        if (!$lojaId) respostaJson('nok', 'Loja não encontrada na sessão.');
+        $where .= ' AND avaliacao_peca.loja_id = ?';
+        $params[] = $lojaId;
+        $types .= 'i';
+    } elseif ($usuario['tipo'] !== 'administrador') {
+        respostaJson('nok', 'Acesso restrito.');
     }
 
-    $stmt = $conexao->prepare("
-        SELECT id, consumidor_id, loja_id, criado_em
+    $sql = "
+        SELECT
+            chat_cotacao_usado.id,
+            chat_cotacao_usado.consumidor_id,
+            chat_cotacao_usado.loja_id,
+            chat_cotacao_usado.avaliacao_id,
+            chat_cotacao_usado.criado_em,
+            loja.nome_loja,
+            loja.banner_img,
+            avaliacao_peca.nome_peca,
+            avaliacao_peca.categoria,
+            avaliacao_peca.estado,
+            avaliacao_peca.detalhes,
+            avaliacao_peca.status
         FROM chat_cotacao_usado
-        WHERE consumidor_id = ? AND loja_id = ?
+        JOIN avaliacao_peca ON avaliacao_peca.id = chat_cotacao_usado.avaliacao_id
+        JOIN loja ON loja.id = chat_cotacao_usado.loja_id
+        WHERE {$where}
+        ORDER BY chat_cotacao_usado.id DESC
         LIMIT 1
-    ");
-    $stmt->bind_param('ii', $consumidorId, $lojaId);
+    ";
+
+    $stmt = $conexao->prepare($sql);
+    if ($types !== '') $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $chat = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
     if (!$chat) {
-        $stmt = $conexao->prepare("
-            INSERT INTO chat_cotacao_usado (consumidor_id, loja_id)
-            VALUES (?, ?)
-        ");
-        $stmt->bind_param('ii', $consumidorId, $lojaId);
-        $stmt->execute();
-        $chatId = $stmt->insert_id;
-        $stmt->close();
-
-        $chat = [
-            'id' => $chatId,
-            'consumidor_id' => $consumidorId,
-            'loja_id' => $lojaId,
-            'criado_em' => date('Y-m-d H:i:s')
-        ];
+        respostaJson('nok', 'Nenhum chat liberado. A loja precisa aceitar uma solicitação de avaliação primeiro.');
     }
 
-    return [$chat, $loja];
+    if ($chat['status'] !== 'aceita') {
+        respostaJson('nok', 'Este chat ainda não foi liberado pela loja.');
+    }
+
+    return $chat;
 }
 
 session_start();
@@ -68,12 +99,11 @@ if (!isset($_SESSION['usuario'])) {
     respostaJson('nok', 'Acesso restrito a usuários logados.');
 }
 $usuario = $_SESSION['usuario'];
+$lojaId = lojaDaSessao($conexao, $usuario);
 session_write_close();
 
-$lojaId = 1;
 $ultimoId = isset($_GET['ultimo_id']) ? (int)$_GET['ultimo_id'] : 0;
-
-[$chat, $loja] = buscarOuCriarChat($conexao, $usuario, $lojaId);
+$chat = carregarChatPermitido($conexao, $usuario, $lojaId);
 
 $stmt = $conexao->prepare("
     SELECT id, is_cliente, chat_id, mensagem, criado_em
@@ -93,8 +123,26 @@ $stmt->close();
 $conexao->close();
 
 respostaJson('ok', '', [
-    'chat' => $chat,
-    'loja' => $loja,
+    'chat' => [
+        'id' => (int)$chat['id'],
+        'consumidor_id' => (int)$chat['consumidor_id'],
+        'loja_id' => (int)$chat['loja_id'],
+        'avaliacao_id' => (int)$chat['avaliacao_id'],
+        'criado_em' => $chat['criado_em']
+    ],
+    'loja' => [
+        'id' => (int)$chat['loja_id'],
+        'nome_loja' => $chat['nome_loja'],
+        'banner_img' => $chat['banner_img']
+    ],
+    'avaliacao' => [
+        'id' => (int)$chat['avaliacao_id'],
+        'nome_peca' => $chat['nome_peca'],
+        'categoria' => $chat['categoria'],
+        'estado' => $chat['estado'],
+        'detalhes' => $chat['detalhes'],
+        'status' => $chat['status']
+    ],
     'usuario' => [
         'id' => (int)$usuario['id'],
         'nome' => $usuario['nome'],
