@@ -130,6 +130,10 @@ function construirCardProduto(produto) {
                 </div>
                 <div class="${cls('productBottom')}">
                     <div class="${cls('productBottomInner')}">${precoMarkup}</div>
+                    <a href="./vender_peca.html?loja_id=${produto.loja_id}" class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100">
+                        <i data-lucide="badge-dollar-sign" class="h-4 w-4"></i>
+                        Cotar peça usada
+                    </a>
                 </div>
             </div>
         </article>
@@ -157,7 +161,7 @@ function construirCardLoja(loja) {
                 </div>
                 <div class="${cls('storeBottom')}">
                     <span class="${cls('storeBadge')}">Marketplace</span>
-                    <a href="./catalogo.html" class="${cls('storeLink')}">Explorar</a>
+                    <a href="./vender_peca.html?loja_id=${loja.id}" class="${cls('storeLink')}">Avaliar peça</a>
                 </div>
             </div>
         </article>

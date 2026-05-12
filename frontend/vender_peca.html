@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venda sua peça - TechnoUp</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="bg-slate-50">
+<header>
+    <div>
+        <a href="./home.html">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor"/>
+                <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor"/>
+            </svg>
+        </a>
+        <div>
+            <nav aria-label="Global">
+                <ul>
+                    <li><a href="./home.html">Home</a></li>
+                    <li><a href="./catalogo.html">Catálogo</a></li>
+                    <li><a href="./sobre.html">Sobre</a></li>
+                    <li><a href="./vender_peca.html">Venda sua peça</a></li>
+                </ul>
+            </nav>
+            <div id="menuUsuario"></div>
+        </div>
+    </div>
+</header>
+
+<main class="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-8">
+    <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-600">Cotação</p>
+        <h1 class="mt-2 text-3xl font-bold text-slate-950">Avaliação de peça</h1>
+        <p class="mt-2 text-sm leading-6 text-slate-600">Envie as informações para a loja analisar. O chat será liberado se a loja aceitar sua solicitação.</p>
+
+        <div id="mensagemFeedback" class="hidden mt-5 rounded-xl border px-4 py-3 text-sm"></div>
+
+        <form id="formAvaliacao" class="mt-6 space-y-5">
+            <div>
+                <label for="campoLoja" class="mb-1.5 block text-sm font-medium text-slate-700">Loja destino</label>
+                <select id="campoLoja" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"></select>
+            </div>
+
+            <div>
+                <label for="campoNome" class="mb-1.5 block text-sm font-medium text-slate-700">Nome da peça</label>
+                <input id="campoNome" type="text" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
+            </div>
+
+            <div>
+                <label for="campoTipo" class="mb-1.5 block text-sm font-medium text-slate-700">Tipo da peça</label>
+                <select id="campoTipo" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
+                    <option value="">Selecione...</option>
+                    <option>Processador</option>
+                    <option>Placa de vídeo</option>
+                    <option>Memória RAM</option>
+                    <option>Armazenamento</option>
+                    <option>Fonte</option>
+                    <option>Monitor</option>
+                    <option>Periférico</option>
+                    <option>Outro</option>
+                </select>
+            </div>
+
+            <fieldset>
+                <legend class="mb-2 text-sm font-medium text-slate-700">Estado da peça</legend>
+                <div class="grid gap-2 text-sm text-slate-700">
+                    <label class="flex items-center gap-2"><input type="radio" name="estado" value="Funcionando perfeitamente" required> Funcionando perfeitamente</label>
+                    <label class="flex items-center gap-2"><input type="radio" name="estado" value="Funcionando com avarias"> Funcionando com avarias</label>
+                    <label class="flex items-center gap-2"><input type="radio" name="estado" value="Não funciona"> Não funciona</label>
+                </div>
+            </fieldset>
+
+            <div>
+                <label for="campoDetalhes" class="mb-1.5 block text-sm font-medium text-slate-700">Detalhes / defeitos</label>
+                <textarea id="campoDetalhes" rows="5" class="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"></textarea>
+            </div>
+
+            <button id="btnEnviarAvaliacao" type="submit" class="w-full rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300">
+                Enviar avaliação
+            </button>
+        </form>
+    </section>
+</main>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script>
+    const CAMINHO_API = '../api';
+    const CAMINHO_FRONTEND = '.';
+</script>
+<script src="./css/style.js"></script>
+<script src="./js/_cabecalho.js"></script>
+<script src="./js/vender_peca.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

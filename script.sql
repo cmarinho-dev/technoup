@@ -83,7 +83,12 @@ CREATE TABLE IF NOT EXISTS chat_cotacao_usado
     consumidor_id INT      NOT NULL,
     loja_id       INT      NOT NULL,
     avaliacao_id  INT      NOT NULL UNIQUE,
-    criado_em     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status        ENUM ('aberto','fechado') NOT NULL DEFAULT 'aberto',
+    criado_em     DATETIME                           DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em DATETIME                           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    fechado_em    DATETIME,
+    lido_consumidor_em DATETIME,
+    lido_lojista_em    DATETIME,
     FOREIGN KEY (consumidor_id) REFERENCES conta (id) ON DELETE CASCADE,
     FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE,
     FOREIGN KEY (avaliacao_id) REFERENCES avaliacao_peca (id) ON DELETE CASCADE

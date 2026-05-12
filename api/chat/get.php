@@ -60,6 +60,7 @@ function carregarChatPermitido($conexao, $usuario, $lojaId) {
             chat_cotacao_usado.consumidor_id,
             chat_cotacao_usado.loja_id,
             chat_cotacao_usado.avaliacao_id,
+            chat_cotacao_usado.status AS chat_status,
             chat_cotacao_usado.criado_em,
             loja.nome_loja,
             loja.banner_img,
@@ -128,6 +129,7 @@ respostaJson('ok', '', [
         'consumidor_id' => (int)$chat['consumidor_id'],
         'loja_id' => (int)$chat['loja_id'],
         'avaliacao_id' => (int)$chat['avaliacao_id'],
+        'status' => $chat['chat_status'],
         'criado_em' => $chat['criado_em']
     ],
     'loja' => [

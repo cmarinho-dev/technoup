@@ -49,7 +49,7 @@ function carregarChatPermitido($conexao, $usuario, $lojaId) {
     }
 
     $sql = "
-        SELECT chat_cotacao_usado.id, avaliacao_peca.status
+        SELECT chat_cotacao_usado.id, chat_cotacao_usado.status AS chat_status, avaliacao_peca.status AS avaliacao_status
         FROM chat_cotacao_usado
         JOIN avaliacao_peca ON avaliacao_peca.id = chat_cotacao_usado.avaliacao_id
         WHERE {$where}
@@ -62,8 +62,12 @@ function carregarChatPermitido($conexao, $usuario, $lojaId) {
     $chat = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
-    if (!$chat || $chat['status'] !== 'aceita') {
+    if (!$chat || $chat['avaliacao_status'] !== 'aceita') {
         respostaJson('nok', 'Este chat ainda não foi liberado pela loja.');
+    }
+
+    if ($chat['chat_status'] !== 'aberto') {
+        respostaJson('nok', 'Este chat foi fechado.');
     }
 
     return (int)$chat['id'];
@@ -105,6 +109,11 @@ if ($stmt->affected_rows <= 0) {
 }
 
 $mensagemId = $stmt->insert_id;
+$stmt->close();
+
+$stmt = $conexao->prepare("UPDATE chat_cotacao_usado SET atualizado_em = NOW() WHERE id = ?");
+$stmt->bind_param('i', $chatId);
+$stmt->execute();
 $stmt->close();
 
 $stmt = $conexao->prepare("

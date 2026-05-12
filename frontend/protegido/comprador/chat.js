@@ -19,6 +19,7 @@ const mensagemErro = document.getElementById('mensagemErro');
 const lojaNome = document.getElementById('lojaNome');
 const lojaBanner = document.getElementById('lojaBanner');
 const lojaIcone = document.getElementById('lojaIcone');
+const btnFecharChat = document.getElementById('btnFecharChat');
 
 lojaBanner.addEventListener('load', () => {
     lojaBanner.classList.remove('hidden');
@@ -108,6 +109,28 @@ function caminhoImagem(caminho) {
     return `${CAMINHO_FRONTEND}/${caminho}`;
 }
 
+async function marcarComoLida() {
+    if (!chatAtual?.id) return;
+    const dados = new FormData();
+    dados.append('chat_id', chatAtual.id);
+    await fetch(`${CAMINHO_API}/chat/marcar_lida.php`, {
+        method: 'POST',
+        body: dados,
+        credentials: 'include'
+    });
+}
+
+function aplicarEstadoChat() {
+    const fechado = chatAtual?.status === 'fechado';
+    campoMensagem.disabled = fechado;
+    btnEnviar.disabled = fechado;
+    btnFecharChat.disabled = fechado;
+    if (fechado) {
+        campoMensagem.placeholder = 'Este chat foi fechado.';
+        btnFecharChat.textContent = 'Chat fechado';
+    }
+}
+
 async function carregarMensagens() {
     if (carregando || document.visibilityState !== 'visible') return;
 
@@ -136,6 +159,7 @@ async function carregarMensagens() {
         usuarioAtual = json.data.usuario;
         chatAtual = json.data.chat;
         lojaNome.textContent = json.data.loja?.nome_loja || 'Chat da loja';
+        aplicarEstadoChat();
 
         if (json.data.loja?.banner_img) {
             lojaBanner.src = caminhoImagem(json.data.loja.banner_img);
@@ -148,6 +172,7 @@ async function carregarMensagens() {
 
         adicionarMensagens(json.data.mensagens || []);
         chatInicializado = true;
+        marcarComoLida();
         if (ultimoId === 0) renderizarVazio();
     } catch (erro) {
         mostrarErro('Falha ao conectar com o chat.');
@@ -226,6 +251,24 @@ campoMensagem.addEventListener('keydown', (evento) => {
         evento.preventDefault();
         formChat.requestSubmit();
     }
+});
+
+btnFecharChat.addEventListener('click', async () => {
+    if (!chatAtual?.id || !confirm('Deseja fechar este chat?')) return;
+    const dados = new FormData();
+    dados.append('chat_id', chatAtual.id);
+    const resposta = await fetch(`${CAMINHO_API}/chat/fechar.php`, {
+        method: 'POST',
+        body: dados,
+        credentials: 'include'
+    });
+    const json = await resposta.json();
+    if (json.status !== 'ok') {
+        mostrarErro(json.mensagem || 'Não foi possível fechar o chat.');
+        return;
+    }
+    chatAtual.status = 'fechado';
+    aplicarEstadoChat();
 });
 
 iniciarPolling();
