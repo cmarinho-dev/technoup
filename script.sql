@@ -33,6 +33,21 @@ CREATE TABLE IF NOT EXISTS loja
     FOREIGN KEY (conta_id) REFERENCES conta (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS avaliacao_peca (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    consumidor_id INT NOT NULL, 
+    loja_id INT NOT NULL,       
+    nome_peca VARCHAR(100) NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    estado VARCHAR(50) NOT NULL,
+    detalhes TEXT,
+    resposta_lojista TEXT,      
+    status ENUM('pendente', 'respondida') DEFAULT 'pendente',
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (consumidor_id) REFERENCES conta(id) ON DELETE CASCADE,
+    FOREIGN KEY (loja_id) REFERENCES loja(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS produto
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
