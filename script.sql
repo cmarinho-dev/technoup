@@ -76,6 +76,49 @@ CREATE TABLE IF NOT EXISTS imagem_produto
     FOREIGN KEY (produto_id) REFERENCES produto (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS avaliacao_peca
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    consumidor_id INT                                  NOT NULL,
+    loja_id       INT                                  NOT NULL,
+    nome_peca     VARCHAR(120)                         NOT NULL,
+    categoria     VARCHAR(80)                          NOT NULL,
+    estado        VARCHAR(80)                          NOT NULL,
+    detalhes      TEXT,
+    status        ENUM ('pendente','aceita','recusada') NOT NULL DEFAULT 'pendente',
+    criado_em     DATETIME                                      DEFAULT CURRENT_TIMESTAMP,
+    respondido_em DATETIME,
+    FOREIGN KEY (consumidor_id) REFERENCES conta (id) ON DELETE CASCADE,
+    FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS chat_cotacao_usado
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    consumidor_id INT      NOT NULL,
+    loja_id       INT      NOT NULL,
+    avaliacao_id  INT      NOT NULL UNIQUE,
+    status        ENUM ('aberto','fechado') NOT NULL DEFAULT 'aberto',
+    criado_em     DATETIME                           DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em DATETIME                           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    fechado_em    DATETIME,
+    lido_consumidor_em DATETIME,
+    lido_lojista_em    DATETIME,
+    FOREIGN KEY (consumidor_id) REFERENCES conta (id) ON DELETE CASCADE,
+    FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE,
+    FOREIGN KEY (avaliacao_id) REFERENCES avaliacao_peca (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS mensagem_cotacao_usado
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    is_cliente TINYINT(1) NOT NULL DEFAULT 0,
+    chat_id    INT        NOT NULL,
+    mensagem   TEXT       NOT NULL,
+    criado_em  DATETIME   DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (chat_id) REFERENCES chat_cotacao_usado (id) ON DELETE CASCADE
+);
+
 INSERT IGNORE INTO conta (id, nome, email, senha, tipo, ativo)
 VALUES (1, 'João Silva', 'loja@g.com', 'loja', 'lojista', 1),
        (2, 'Maria Souza', 'maria@example.com', 'senha123', 'lojista', 1),

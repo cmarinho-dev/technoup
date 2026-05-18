@@ -25,7 +25,7 @@
         productPriceNew: 'text-2xl font-bold tracking-tight text-slate-900',
         productDiscount: 'inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700',
         productPriceLabel: 'text-xs uppercase tracking-[0.2em] text-slate-400',
-        productCard: 'flex min-w-[84%] h-[460px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]',
+        productCard: 'flex min-w-[84%] min-h-[520px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]',
         productMedia: 'mb-4 flex h-[230px] items-center justify-center rounded-2xl bg-white',
         productBody: 'flex flex-1 flex-col space-y-3 overflow-hidden',
         productMeta: 'flex items-center justify-between gap-3',

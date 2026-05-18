@@ -67,6 +67,37 @@ function construirMenuLogado(usuario) {
                     Cadastro da loja
                 </div>
             </a>
+            <a href="${CAMINHO_FRONTEND}/protegido/lojas/avaliacoes.html"
+               class="${cls('menuItem')}">
+                <div class="${cls('menuItemInner')}">
+                    <i data-lucide="clipboard-list" class="${cls('menuItemIcon')}"></i>
+                    Avaliações de peças
+                </div>
+            </a>
+            <a href="${CAMINHO_FRONTEND}/protegido/lojas/chats.html"
+               class="${cls('menuItem')}">
+                <div class="${cls('menuItemInner')}">
+                    <i data-lucide="messages-square" class="${cls('menuItemIcon')}"></i>
+                    Chats da loja
+                </div>
+            </a>
+        `;
+    } else if (usuario.tipo === 'consumidor') {
+        opcoes += `
+            <a href="${CAMINHO_FRONTEND}/vender_peca.html"
+               class="${cls('menuItem')}">
+                <div class="${cls('menuItemInner')}">
+                    <i data-lucide="badge-dollar-sign" class="${cls('menuItemIcon')}"></i>
+                    Venda sua peça
+                </div>
+            </a>
+            <a href="${CAMINHO_FRONTEND}/protegido/comprador/conversas.html"
+               class="${cls('menuItem')}">
+                <div class="${cls('menuItemInner')}">
+                    <i data-lucide="messages-square" class="${cls('menuItemIcon')}"></i>
+                    Minhas conversas
+                </div>
+            </a>
         `;
     } else if (usuario.tipo === 'administrador') {
         opcoes += `
