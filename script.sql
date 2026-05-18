@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS avaliacao_item (
     detalhes TEXT,
     resposta_lojista TEXT,      
     status ENUM('pendente', 'aceita', 'recusada') DEFAULT 'pendente',
+    status_avaliacao ENUM('aguardando_envio', 'recebido', 'em_avaliacao', 'avaliado', 'proposta_enviada', 'finalizado') DEFAULT 'aguardando_envio',
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     respondido_em DATETIME NULL,
     FOREIGN KEY (consumidor_id) REFERENCES conta(id) ON DELETE CASCADE,

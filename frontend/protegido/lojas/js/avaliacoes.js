@@ -39,10 +39,39 @@ function textoStatus(status) {
     return 'Pendente';
 }
 
+function textoStatusAvaliacao(status) {
+    const mapa = {
+        aguardando_envio: 'Aguardando envio',
+        recebido: 'Recebido',
+        em_avaliacao: 'Em avaliação',
+        avaliado: 'Avaliado',
+        proposta_enviada: 'Proposta enviada',
+        finalizado: 'Finalizado'
+    };
+    return mapa[status] || 'Aguardando envio';
+}
+
+function optionsStatusAvaliacao(statusAtual) {
+    const opcoes = [
+        ['aguardando_envio', 'Aguardando envio'],
+        ['recebido', 'Recebido'],
+        ['em_avaliacao', 'Em avaliação'],
+        ['avaliado', 'Avaliado'],
+        ['proposta_enviada', 'Proposta enviada'],
+        ['finalizado', 'Finalizado']
+    ];
+
+    return opcoes.map(([valor, label]) => {
+        const selected = valor === (statusAtual || 'aguardando_envio') ? 'selected' : '';
+        return `<option value="${valor}" ${selected}>${label}</option>`;
+    }).join('');
+}
+
 function cardAvaliacao(avaliacao) {
     const pendente = avaliacao.status === 'pendente';
     const aceita = avaliacao.status === 'aceita';
     const detalhes = avaliacao.detalhes || 'Sem detalhes adicionais.';
+    const statusAvaliacao = avaliacao.status_avaliacao || 'aguardando_envio';
 
     return `
         <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -67,12 +96,26 @@ function cardAvaliacao(avaliacao) {
                     <p class="mt-1 text-sm font-semibold text-slate-800">${escaparHtml(avaliacao.estado)}</p>
                 </div>
                 <div class="rounded-xl bg-slate-50 p-4">
-                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Resposta</p>
-                    <p class="mt-1 text-sm font-semibold text-slate-800">${avaliacao.respondido_em ? formatarData(avaliacao.respondido_em) : 'Aguardando'}</p>
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Andamento</p>
+                    <p class="mt-1 text-sm font-semibold text-slate-800">${textoStatusAvaliacao(statusAvaliacao)}</p>
                 </div>
             </div>
 
             <p class="mt-4 text-sm leading-6 text-slate-600">${escaparHtml(detalhes)}</p>
+
+            ${aceita ? `
+                <div class="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <label for="statusAvaliacao${avaliacao.id}" class="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Status do item</label>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <select id="statusAvaliacao${avaliacao.id}" data-id="${avaliacao.id}" class="campoStatusAvaliacao flex-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
+                            ${optionsStatusAvaliacao(statusAvaliacao)}
+                        </select>
+                        <button type="button" data-id="${avaliacao.id}" class="btnStatusAvaliacao rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">
+                            Salvar status
+                        </button>
+                    </div>
+                </div>
+            ` : ''}
 
             <div class="mt-5 flex flex-wrap gap-3">
                 ${pendente ? `
@@ -94,6 +137,39 @@ function cardAvaliacao(avaliacao) {
             </div>
         </article>
     `;
+}
+
+async function atualizarStatusAvaliacao(botao) {
+    const avaliacaoId = botao.dataset.id;
+    const campo = document.querySelector(`.campoStatusAvaliacao[data-id="${avaliacaoId}"]`);
+    if (!campo) return;
+
+    const dados = new FormData();
+    dados.append('avaliacao_id', avaliacaoId);
+    dados.append('status_avaliacao', campo.value);
+
+    botao.disabled = true;
+
+    try {
+        const resposta = await fetch(`${CAMINHO_API}/avaliacoes/atualizar_status.php`, {
+            method: 'POST',
+            body: dados,
+            credentials: 'include'
+        });
+        const json = await resposta.json();
+
+        if (json.status !== 'ok') {
+            mostrarFeedback(json.mensagem || 'Não foi possível atualizar o status.', false);
+            return;
+        }
+
+        mostrarFeedback(json.mensagem || 'Status atualizado.');
+        await carregarAvaliacoes();
+    } catch (erro) {
+        mostrarFeedback('Falha ao atualizar status.', false);
+    } finally {
+        botao.disabled = false;
+    }
 }
 
 async function carregarAvaliacoes() {
@@ -161,7 +237,13 @@ document.querySelectorAll('.filtroStatus').forEach((botao) => {
 
 listaAvaliacoes.addEventListener('click', (evento) => {
     const botao = evento.target.closest('.btnResponder');
-    if (botao) responderAvaliacao(botao);
+    if (botao) {
+        responderAvaliacao(botao);
+        return;
+    }
+
+    const botaoStatus = evento.target.closest('.btnStatusAvaliacao');
+    if (botaoStatus) atualizarStatusAvaliacao(botaoStatus);
 });
 
 carregarAvaliacoes();

@@ -98,6 +98,13 @@ function construirMenuLogado(usuario) {
                     Minhas conversas
                 </div>
             </a>
+            <a href="${CAMINHO_FRONTEND}/protegido/consumidor/avaliacoes.html"
+               class="${cls('menuItem')}">
+                <div class="${cls('menuItemInner')}">
+                    <i data-lucide="clipboard-list" class="${cls('menuItemIcon')}"></i>
+                    Minhas avaliações
+                </div>
+            </a>
         `;
     } else if (usuario.tipo === 'administrador') {
         opcoes += `
