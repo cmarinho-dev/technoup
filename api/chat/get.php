@@ -30,24 +30,24 @@ function carregarChatPermitido($conexao, $usuario, $lojaId) {
     $where = '';
 
     if ($chatId > 0) {
-        $where = 'chat_cotacao_usado.id = ?';
+        $where = 'chat_cotacao_item.id = ?';
         $params[] = $chatId;
         $types .= 'i';
     } elseif ($avaliacaoId > 0) {
-        $where = 'avaliacao_peca.id = ?';
+        $where = 'avaliacao_item.id = ?';
         $params[] = $avaliacaoId;
         $types .= 'i';
     } else {
-        $where = 'avaliacao_peca.status = \'aceita\'';
+        $where = 'avaliacao_item.status = \'aceita\'';
     }
 
     if ($usuario['tipo'] === 'consumidor') {
-        $where .= ' AND avaliacao_peca.consumidor_id = ?';
+        $where .= ' AND avaliacao_item.consumidor_id = ?';
         $params[] = (int)$usuario['id'];
         $types .= 'i';
     } elseif ($usuario['tipo'] === 'lojista') {
         if (!$lojaId) respostaJson('nok', 'Loja não encontrada na sessão.');
-        $where .= ' AND avaliacao_peca.loja_id = ?';
+        $where .= ' AND avaliacao_item.loja_id = ?';
         $params[] = $lojaId;
         $types .= 'i';
     } elseif ($usuario['tipo'] !== 'administrador') {
@@ -56,24 +56,24 @@ function carregarChatPermitido($conexao, $usuario, $lojaId) {
 
     $sql = "
         SELECT
-            chat_cotacao_usado.id,
-            chat_cotacao_usado.consumidor_id,
-            chat_cotacao_usado.loja_id,
-            chat_cotacao_usado.avaliacao_id,
-            chat_cotacao_usado.status AS chat_status,
-            chat_cotacao_usado.criado_em,
+            chat_cotacao_item.id,
+            chat_cotacao_item.consumidor_id,
+            chat_cotacao_item.loja_id,
+            chat_cotacao_item.avaliacao_id,
+            chat_cotacao_item.status AS chat_status,
+            chat_cotacao_item.criado_em,
             loja.nome_loja,
             loja.banner_img,
-            avaliacao_peca.nome_peca,
-            avaliacao_peca.categoria,
-            avaliacao_peca.estado,
-            avaliacao_peca.detalhes,
-            avaliacao_peca.status
-        FROM chat_cotacao_usado
-        JOIN avaliacao_peca ON avaliacao_peca.id = chat_cotacao_usado.avaliacao_id
-        JOIN loja ON loja.id = chat_cotacao_usado.loja_id
+            avaliacao_item.nome_item,
+            avaliacao_item.categoria,
+            avaliacao_item.estado,
+            avaliacao_item.detalhes,
+            avaliacao_item.status
+        FROM chat_cotacao_item
+        JOIN avaliacao_item ON avaliacao_item.id = chat_cotacao_item.avaliacao_id
+        JOIN loja ON loja.id = chat_cotacao_item.loja_id
         WHERE {$where}
-        ORDER BY chat_cotacao_usado.id DESC
+        ORDER BY chat_cotacao_item.id DESC
         LIMIT 1
     ";
 
@@ -108,7 +108,7 @@ $chat = carregarChatPermitido($conexao, $usuario, $lojaId);
 
 $stmt = $conexao->prepare("
     SELECT id, is_cliente, chat_id, mensagem, criado_em
-    FROM mensagem_cotacao_usado
+    FROM mensagem_cotacao_item
     WHERE chat_id = ? AND id > ?
     ORDER BY id ASC
 ");
@@ -139,7 +139,7 @@ respostaJson('ok', '', [
     ],
     'avaliacao' => [
         'id' => (int)$chat['avaliacao_id'],
-        'nome_peca' => $chat['nome_peca'],
+        'nome_item' => $chat['nome_item'],
         'categoria' => $chat['categoria'],
         'estado' => $chat['estado'],
         'detalhes' => $chat['detalhes'],

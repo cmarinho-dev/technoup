@@ -71,7 +71,7 @@ function construirMenuLogado(usuario) {
                class="${cls('menuItem')}">
                 <div class="${cls('menuItemInner')}">
                     <i data-lucide="clipboard-list" class="${cls('menuItemIcon')}"></i>
-                    Avaliações de peças
+                    Avaliações de items
                 </div>
             </a>
             <a href="${CAMINHO_FRONTEND}/protegido/lojas/chats.html"
@@ -84,14 +84,14 @@ function construirMenuLogado(usuario) {
         `;
     } else if (usuario.tipo === 'consumidor') {
         opcoes += `
-            <a href="${CAMINHO_FRONTEND}/vender_peca.html"
+            <a href="${CAMINHO_FRONTEND}/formulario.html"
                class="${cls('menuItem')}">
                 <div class="${cls('menuItemInner')}">
                     <i data-lucide="badge-dollar-sign" class="${cls('menuItemIcon')}"></i>
-                    Venda sua peça
+                    Venda seu item
                 </div>
             </a>
-            <a href="${CAMINHO_FRONTEND}/protegido/comprador/conversas.html"
+            <a href="${CAMINHO_FRONTEND}/protegido/consumidor/conversas.html"
                class="${cls('menuItem')}">
                 <div class="${cls('menuItemInner')}">
                     <i data-lucide="messages-square" class="${cls('menuItemIcon')}"></i>

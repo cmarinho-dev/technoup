@@ -40,7 +40,7 @@ if ($avaliacaoId <= 0 || !in_array($acao, ['aceitar', 'recusar'], true)) {
 
 $stmt = $conexao->prepare("
     SELECT id, consumidor_id, loja_id, status
-    FROM avaliacao_peca
+    FROM avaliacao_item
     WHERE id = ? AND loja_id = ?
     LIMIT 1
 ");
@@ -60,7 +60,7 @@ if ($avaliacao['status'] !== 'pendente') {
 $novoStatus = $acao === 'aceitar' ? 'aceita' : 'recusada';
 
 $stmt = $conexao->prepare("
-    UPDATE avaliacao_peca
+    UPDATE avaliacao_item
     SET status = ?, respondido_em = NOW()
     WHERE id = ? AND loja_id = ?
 ");
@@ -72,7 +72,7 @@ $chatId = null;
 if ($novoStatus === 'aceita') {
     $consumidorId = (int)$avaliacao['consumidor_id'];
     $stmt = $conexao->prepare("
-        INSERT INTO chat_cotacao_usado (consumidor_id, loja_id, avaliacao_id)
+        INSERT INTO chat_cotacao_item (consumidor_id, loja_id, avaliacao_id)
         VALUES (?, ?, ?)
     ");
     $stmt->bind_param('iii', $consumidorId, $lojaId, $avaliacaoId);

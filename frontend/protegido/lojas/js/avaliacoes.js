@@ -49,7 +49,7 @@ function cardAvaliacao(avaliacao) {
             <div class="flex flex-wrap items-start justify-between gap-4">
                 <div>
                     <div class="flex flex-wrap items-center gap-2">
-                        <h2 class="text-xl font-bold text-slate-950">${escaparHtml(avaliacao.nome_peca)}</h2>
+                        <h2 class="text-xl font-bold text-slate-950">${escaparHtml(avaliacao.nome_item)}</h2>
                         <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] ${classeStatus(avaliacao.status)}">${textoStatus(avaliacao.status)}</span>
                     </div>
                     <p class="mt-1 text-sm text-slate-500">${escaparHtml(avaliacao.consumidor_nome)} · ${escaparHtml(avaliacao.consumidor_email)}</p>
@@ -86,7 +86,7 @@ function cardAvaliacao(avaliacao) {
                     </button>
                 ` : ''}
                 ${aceita ? `
-                    <a href="../comprador/chat.html?avaliacao_id=${avaliacao.id}" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+                    <a href="./chat.html?avaliacao_id=${avaliacao.id}" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
                         <i data-lucide="messages-square" class="h-4 w-4"></i>
                         Abrir chat
                     </a>

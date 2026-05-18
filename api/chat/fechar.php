@@ -23,20 +23,16 @@ $where = 'id = ?';
 $params = [$chatId];
 $types = 'i';
 
-if ($usuario['tipo'] === 'consumidor') {
-    $where .= ' AND consumidor_id = ?';
-    $params[] = (int)$usuario['id'];
-    $types .= 'i';
-} elseif ($usuario['tipo'] === 'lojista') {
-    if ($lojaId <= 0) respostaJson('nok', 'Loja não encontrada na sessão.');
-    $where .= ' AND loja_id = ?';
-    $params[] = $lojaId;
-    $types .= 'i';
-} elseif ($usuario['tipo'] !== 'administrador') {
-    respostaJson('nok', 'Acesso restrito.');
+if ($usuario['tipo'] !== 'lojista') {
+    respostaJson('nok', 'Apenas a loja pode fechar este chat.');
 }
 
-$stmt = $conexao->prepare("UPDATE chat_cotacao_usado SET status = 'fechado', fechado_em = NOW() WHERE {$where}");
+if ($lojaId <= 0) respostaJson('nok', 'Loja não encontrada na sessão.');
+$where .= ' AND loja_id = ?';
+$params[] = $lojaId;
+$types .= 'i';
+
+$stmt = $conexao->prepare("UPDATE chat_cotacao_item SET status = 'fechado', fechado_em = NOW() WHERE {$where}");
 $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $alterados = $stmt->affected_rows;

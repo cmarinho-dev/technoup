@@ -31,17 +31,17 @@ function carregarChatPermitido($conexao, $usuario, $lojaId) {
 
     $params = [];
     $types = '';
-    $where = $chatId > 0 ? 'chat_cotacao_usado.id = ?' : 'avaliacao_peca.id = ?';
+    $where = $chatId > 0 ? 'chat_cotacao_item.id = ?' : 'avaliacao_item.id = ?';
     $params[] = $chatId > 0 ? $chatId : $avaliacaoId;
     $types .= 'i';
 
     if ($usuario['tipo'] === 'consumidor') {
-        $where .= ' AND avaliacao_peca.consumidor_id = ?';
+        $where .= ' AND avaliacao_item.consumidor_id = ?';
         $params[] = (int)$usuario['id'];
         $types .= 'i';
     } elseif ($usuario['tipo'] === 'lojista') {
         if (!$lojaId) respostaJson('nok', 'Loja não encontrada na sessão.');
-        $where .= ' AND avaliacao_peca.loja_id = ?';
+        $where .= ' AND avaliacao_item.loja_id = ?';
         $params[] = $lojaId;
         $types .= 'i';
     } elseif ($usuario['tipo'] !== 'administrador') {
@@ -49,9 +49,9 @@ function carregarChatPermitido($conexao, $usuario, $lojaId) {
     }
 
     $sql = "
-        SELECT chat_cotacao_usado.id, chat_cotacao_usado.status AS chat_status, avaliacao_peca.status AS avaliacao_status
-        FROM chat_cotacao_usado
-        JOIN avaliacao_peca ON avaliacao_peca.id = chat_cotacao_usado.avaliacao_id
+        SELECT chat_cotacao_item.id, chat_cotacao_item.status AS chat_status, avaliacao_item.status AS avaliacao_status
+        FROM chat_cotacao_item
+        JOIN avaliacao_item ON avaliacao_item.id = chat_cotacao_item.avaliacao_id
         WHERE {$where}
         LIMIT 1
     ";
@@ -96,7 +96,7 @@ $chatId = carregarChatPermitido($conexao, $usuario, $lojaId);
 $isCliente = $usuario['tipo'] === 'consumidor' ? 0 : 1;
 
 $stmt = $conexao->prepare("
-    INSERT INTO mensagem_cotacao_usado (is_cliente, chat_id, mensagem)
+    INSERT INTO mensagem_cotacao_item (is_cliente, chat_id, mensagem)
     VALUES (?, ?, ?)
 ");
 $stmt->bind_param('iis', $isCliente, $chatId, $mensagem);
@@ -111,14 +111,14 @@ if ($stmt->affected_rows <= 0) {
 $mensagemId = $stmt->insert_id;
 $stmt->close();
 
-$stmt = $conexao->prepare("UPDATE chat_cotacao_usado SET atualizado_em = NOW() WHERE id = ?");
+$stmt = $conexao->prepare("UPDATE chat_cotacao_item SET atualizado_em = NOW() WHERE id = ?");
 $stmt->bind_param('i', $chatId);
 $stmt->execute();
 $stmt->close();
 
 $stmt = $conexao->prepare("
     SELECT id, is_cliente, chat_id, mensagem, criado_em
-    FROM mensagem_cotacao_usado
+    FROM mensagem_cotacao_item
     WHERE id = ?
 ");
 $stmt->bind_param('i', $mensagemId);

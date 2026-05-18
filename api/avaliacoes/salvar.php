@@ -7,11 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $loja_id = (int) $_POST['loja_id'];
     $nome = mysqli_real_escape_string($conn, $_POST['nome']);
-    $categoria = mysqli_real_escape_string($conn, $_POST['tipopeca']);
+    $categoria = mysqli_real_escape_string($conn, $_POST['tipoitem']);
     $estado = mysqli_real_escape_string($conn, $_POST['estado']);
     $detalhes = mysqli_real_escape_string($conn, $_POST['detalhes']);
 
-    $sql = "INSERT INTO avaliacao_peca (consumidor_id, loja_id, nome_peca, categoria, estado, detalhes) 
+    $sql = "INSERT INTO avaliacao_item (consumidor_id, loja_id, nome_item, categoria, estado, detalhes) 
             VALUES ('$consumidor_id', '$loja_id', '$nome', '$categoria', '$estado', '$detalhes')";
 
     if (mysqli_query($conn, $sql)) {

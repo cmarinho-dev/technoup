@@ -18,9 +18,9 @@ function formatarData(data) {
 
 function renderizarConversa(chat) {
     const titulo = TIPO_LISTA_CHAT === 'lojista' ? chat.consumidor_nome : chat.nome_loja;
-    const subtitulo = `${chat.nome_peca} · ${chat.categoria}`;
+    const subtitulo = `${chat.nome_item} · ${chat.categoria}`;
     const link = TIPO_LISTA_CHAT === 'lojista'
-        ? `../comprador/chat.html?chat_id=${chat.chat_id}`
+        ? `./chat.html?chat_id=${chat.chat_id}`
         : `./chat.html?chat_id=${chat.chat_id}`;
     const lidoEm = TIPO_LISTA_CHAT === 'lojista' ? chat.lido_lojista_em : chat.lido_consumidor_em;
     const naoLida = chat.ultima_mensagem_em && (!lidoEm || new Date(chat.ultima_mensagem_em.replace(' ', 'T')) > new Date(lidoEm.replace(' ', 'T')));

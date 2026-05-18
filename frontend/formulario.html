@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliar Peça - TechnoUp</title>
+    <title>Avaliar Item - TechnoUp</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>body { font-family: 'Inter', sans-serif; }</style>
@@ -24,7 +24,7 @@
                     <li><a href="./home.html">Home</a></li>
                     <li><a href="./catalogo.html">Catálogo</a></li>
                     <li><a href="./sobre.html">Sobre</a></li>
-                    <li><a href="./formulario.html">Venda sua peça</a></li>
+                    <li><a href="./formulario.html">Venda seu item</a></li>
                 </ul>
             </nav>
             <div id="menuUsuario"></div>
@@ -34,8 +34,8 @@
 
 <main class="mx-auto max-w-2xl px-4 py-12">
     <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <h1 class="text-2xl font-bold text-slate-900 mb-2">Avaliação de Peça</h1>
-        <p class="text-sm text-slate-600 mb-6">Preencha os dados abaixo para enviar a peça para análise .</p>
+        <h1 class="text-2xl font-bold text-slate-900 mb-2">Avaliação de Item</h1>
+        <p class="text-sm text-slate-600 mb-6">Preencha os dados abaixo para enviar o item para análise .</p>
 
         <form action="../api/avaliacoes/salvar.php" method="POST" class="space-y-5">
             
@@ -50,13 +50,13 @@
             </div>
 
             <div>
-                <label for="nome" class="block text-sm font-medium text-slate-700 mb-1.5">Nome da peça</label>
+                <label for="nome" class="block text-sm font-medium text-slate-700 mb-1.5">Nome do item</label>
                 <input type="text" name="nome" id="nome" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
-            </div>
+            </div>  
 
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1.5">Tipo da peça</label>
-                <select name="tipopeca" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Tipo do item</label>
+                <select name="tipoitem" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
                     <option value="">Selecione...</option>
                     <option value="Computador">Computador</option>
                     <option value="Hardware">Hardware</option>
@@ -70,7 +70,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-2">Estado da peça</label>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Estado do item</label>
                 <div class="space-y-2">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="radio" name="estado" value="Funcionando perfeitamente" required class="w-4 h-4 text-blue-600">

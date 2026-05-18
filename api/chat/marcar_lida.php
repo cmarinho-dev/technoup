@@ -20,15 +20,15 @@ $chatId = (int)($_POST['chat_id'] ?? 0);
 if ($chatId <= 0) respostaJson('nok', 'Chat inválido.');
 
 if ($usuario['tipo'] === 'consumidor') {
-    $stmt = $conexao->prepare("UPDATE chat_cotacao_usado SET lido_consumidor_em = NOW() WHERE id = ? AND consumidor_id = ?");
+    $stmt = $conexao->prepare("UPDATE chat_cotacao_item SET lido_consumidor_em = NOW() WHERE id = ? AND consumidor_id = ?");
     $usuarioId = (int)$usuario['id'];
     $stmt->bind_param('ii', $chatId, $usuarioId);
 } elseif ($usuario['tipo'] === 'lojista') {
     if ($lojaId <= 0) respostaJson('nok', 'Loja não encontrada na sessão.');
-    $stmt = $conexao->prepare("UPDATE chat_cotacao_usado SET lido_lojista_em = NOW() WHERE id = ? AND loja_id = ?");
+    $stmt = $conexao->prepare("UPDATE chat_cotacao_item SET lido_lojista_em = NOW() WHERE id = ? AND loja_id = ?");
     $stmt->bind_param('ii', $chatId, $lojaId);
 } else {
-    $stmt = $conexao->prepare("UPDATE chat_cotacao_usado SET lido_consumidor_em = NOW(), lido_lojista_em = NOW() WHERE id = ?");
+    $stmt = $conexao->prepare("UPDATE chat_cotacao_item SET lido_consumidor_em = NOW(), lido_lojista_em = NOW() WHERE id = ?");
     $stmt->bind_param('i', $chatId);
 }
 

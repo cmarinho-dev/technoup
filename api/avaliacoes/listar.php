@@ -36,29 +36,29 @@ $status = trim($_GET['status'] ?? '');
 if ($status !== '') {
     $stmt = $conexao->prepare("
         SELECT
-            avaliacao_peca.*,
+            avaliacao_item.*,
             conta.nome AS consumidor_nome,
             conta.email AS consumidor_email,
-            chat_cotacao_usado.id AS chat_id
-        FROM avaliacao_peca
-        JOIN conta ON conta.id = avaliacao_peca.consumidor_id
-        LEFT JOIN chat_cotacao_usado ON chat_cotacao_usado.avaliacao_id = avaliacao_peca.id
-        WHERE avaliacao_peca.loja_id = ? AND avaliacao_peca.status = ?
-        ORDER BY avaliacao_peca.criado_em DESC
+            chat_cotacao_item.id AS chat_id
+        FROM avaliacao_item
+        JOIN conta ON conta.id = avaliacao_item.consumidor_id
+        LEFT JOIN chat_cotacao_item ON chat_cotacao_item.avaliacao_id = avaliacao_item.id
+        WHERE avaliacao_item.loja_id = ? AND avaliacao_item.status = ?
+        ORDER BY avaliacao_item.criado_em DESC
     ");
     $stmt->bind_param('is', $lojaId, $status);
 } else {
     $stmt = $conexao->prepare("
         SELECT
-            avaliacao_peca.*,
+            avaliacao_item.*,
             conta.nome AS consumidor_nome,
             conta.email AS consumidor_email,
-            chat_cotacao_usado.id AS chat_id
-        FROM avaliacao_peca
-        JOIN conta ON conta.id = avaliacao_peca.consumidor_id
-        LEFT JOIN chat_cotacao_usado ON chat_cotacao_usado.avaliacao_id = avaliacao_peca.id
-        WHERE avaliacao_peca.loja_id = ?
-        ORDER BY FIELD(avaliacao_peca.status, 'pendente', 'aceita', 'recusada'), avaliacao_peca.criado_em DESC
+            chat_cotacao_item.id AS chat_id
+        FROM avaliacao_item
+        JOIN conta ON conta.id = avaliacao_item.consumidor_id
+        LEFT JOIN chat_cotacao_item ON chat_cotacao_item.avaliacao_id = avaliacao_item.id
+        WHERE avaliacao_item.loja_id = ?
+        ORDER BY FIELD(avaliacao_item.status, 'pendente', 'aceita', 'recusada'), avaliacao_item.criado_em DESC
     ");
     $stmt->bind_param('i', $lojaId);
 }

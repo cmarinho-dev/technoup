@@ -35,12 +35,12 @@ $params = [];
 $types = '';
 
 if ($usuario['tipo'] === 'consumidor') {
-    $where = 'chat_cotacao_usado.consumidor_id = ?';
+    $where = 'chat_cotacao_item.consumidor_id = ?';
     $params[] = (int)$usuario['id'];
     $types .= 'i';
 } elseif ($usuario['tipo'] === 'lojista') {
     if (!$lojaId) respostaJson('nok', 'Loja não encontrada na sessão.');
-    $where = 'chat_cotacao_usado.loja_id = ?';
+    $where = 'chat_cotacao_item.loja_id = ?';
     $params[] = $lojaId;
     $types .= 'i';
 } elseif ($usuario['tipo'] === 'administrador') {
@@ -51,33 +51,33 @@ if ($usuario['tipo'] === 'consumidor') {
 
 $sql = "
     SELECT
-        chat_cotacao_usado.id AS chat_id,
-        chat_cotacao_usado.status AS chat_status,
-        chat_cotacao_usado.avaliacao_id,
-        chat_cotacao_usado.atualizado_em,
-        chat_cotacao_usado.lido_consumidor_em,
-        chat_cotacao_usado.lido_lojista_em,
-        avaliacao_peca.nome_peca,
-        avaliacao_peca.categoria,
-        avaliacao_peca.estado,
+        chat_cotacao_item.id AS chat_id,
+        chat_cotacao_item.status AS chat_status,
+        chat_cotacao_item.avaliacao_id,
+        chat_cotacao_item.atualizado_em,
+        chat_cotacao_item.lido_consumidor_em,
+        chat_cotacao_item.lido_lojista_em,
+        avaliacao_item.nome_item,
+        avaliacao_item.categoria,
+        avaliacao_item.estado,
         loja.nome_loja,
         loja.banner_img,
         conta.nome AS consumidor_nome,
         ultima.mensagem AS ultima_mensagem,
         ultima.criado_em AS ultima_mensagem_em
-    FROM chat_cotacao_usado
-    JOIN avaliacao_peca ON avaliacao_peca.id = chat_cotacao_usado.avaliacao_id
-    JOIN loja ON loja.id = chat_cotacao_usado.loja_id
-    JOIN conta ON conta.id = chat_cotacao_usado.consumidor_id
-    LEFT JOIN mensagem_cotacao_usado ultima ON ultima.id = (
-        SELECT mensagem_cotacao_usado.id
-        FROM mensagem_cotacao_usado
-        WHERE mensagem_cotacao_usado.chat_id = chat_cotacao_usado.id
-        ORDER BY mensagem_cotacao_usado.id DESC
+    FROM chat_cotacao_item
+    JOIN avaliacao_item ON avaliacao_item.id = chat_cotacao_item.avaliacao_id
+    JOIN loja ON loja.id = chat_cotacao_item.loja_id
+    JOIN conta ON conta.id = chat_cotacao_item.consumidor_id
+    LEFT JOIN mensagem_cotacao_item ultima ON ultima.id = (
+        SELECT mensagem_cotacao_item.id
+        FROM mensagem_cotacao_item
+        WHERE mensagem_cotacao_item.chat_id = chat_cotacao_item.id
+        ORDER BY mensagem_cotacao_item.id DESC
         LIMIT 1
     )
     WHERE {$where}
-    ORDER BY chat_cotacao_usado.atualizado_em DESC, chat_cotacao_usado.id DESC
+    ORDER BY chat_cotacao_item.atualizado_em DESC, chat_cotacao_item.id DESC
 ";
 
 $stmt = $conexao->prepare($sql);
