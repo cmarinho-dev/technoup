@@ -87,6 +87,7 @@ function construirCardProduto(produto) {
     const nomeLoja     = produto.nome_loja || 'Loja parceira';
     const desconto     = parseInt(produto.desconto || 0);
     const precoFinal   = parseFloat(produto.preco_final || produto.preco);
+    const notaLoja     = formatarNotaLoja(produto);
 
     // Formata os preços para exibição
     const preco        = formatarMoeda(precoFinal);
@@ -127,6 +128,7 @@ function construirCardProduto(produto) {
                 <div>
                     <h3 class="${cls('productTitle')}">${produto.nome}</h3>
                     <p class="${cls('productStore')}">${nomeLoja}</p>
+                    ${notaLoja}
                 </div>
                 <div class="${cls('productBottom')}">
                     <div class="${cls('productBottomInner')}">${precoMarkup}</div>
@@ -143,6 +145,7 @@ function construirCardProduto(produto) {
 function construirCardLoja(loja) {
     const cidade = loja.cidade || 'Brasil';
     const estado = loja.estado || '';
+    const notaLoja = formatarNotaLoja(loja);
 
     let bannerHtml = `<i data-lucide="store" class="${cls('storeIcon')}"></i>`;
     if (loja.banner_img) {
@@ -158,6 +161,7 @@ function construirCardLoja(loja) {
                 <div>
                     <h3 class="${cls('storeTitle')}">${loja.nome_loja}</h3>
                     <p class="${cls('storeLocation')}">${cidade} ${estado}</p>
+                    ${notaLoja}
                 </div>
                 <div class="${cls('storeBottom')}">
                     <span class="${cls('storeBadge')}">Marketplace</span>
@@ -207,6 +211,17 @@ function renderizarCarouselLojas(lojas) {
 // Remove acentos e deixa em minúsculo para comparação
 function normalizar(texto) {
     return texto.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+function formatarNotaLoja(item) {
+    const total = Number(item.total_avaliacoes_atendimento || 0);
+    if (total <= 0) {
+        return '<p class="mt-2 inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500"><i data-lucide="star" class="h-3.5 w-3.5"></i> Sem notas</p>';
+    }
+
+    const media = Number(item.media_atendimento || 0).toFixed(1).replace('.', ',');
+    const texto = total === 1 ? '1 avaliação' : `${total} avaliações`;
+    return `<p class="mt-2 inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700"><i data-lucide="star" class="h-3.5 w-3.5 fill-amber-400 text-amber-400"></i> ${media} (${texto})</p>`;
 }
 
 // Formata um número como moeda brasileira

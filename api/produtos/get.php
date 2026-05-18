@@ -15,26 +15,65 @@ $lojaId = isset($_GET['loja_id']) && $_GET['loja_id'] !== '' ? (int)$_GET['loja_
 
 // Monta consulta conforme parâmetros
 if ($id !== null) {
-    $stmt = $conexao->prepare("SELECT produto.* FROM produto
+    $stmt = $conexao->prepare("SELECT
+        produto.*,
+        loja.nome_loja,
+        COALESCE(notas.media_atendimento, 0) AS media_atendimento,
+        COALESCE(notas.total_avaliacoes_atendimento, 0) AS total_avaliacoes_atendimento
+    FROM produto
     JOIN loja ON produto.loja_id = loja.id
     JOIN conta ON loja.conta_id = conta.id
+    LEFT JOIN (
+        SELECT
+            loja_id,
+            ROUND(AVG(nota), 1) AS media_atendimento,
+            COUNT(id) AS total_avaliacoes_atendimento
+        FROM avaliacao_atendimento
+        GROUP BY loja_id
+    ) notas ON notas.loja_id = loja.id
     WHERE conta.tipo = 'lojista'
     AND conta.ativo = 1
     AND produto.id = ?");
     $stmt->bind_param('i', $id);
 } elseif ($lojaId !== null) {
-    $stmt = $conexao->prepare("SELECT produto.* FROM produto
+    $stmt = $conexao->prepare("SELECT
+        produto.*,
+        loja.nome_loja,
+        COALESCE(notas.media_atendimento, 0) AS media_atendimento,
+        COALESCE(notas.total_avaliacoes_atendimento, 0) AS total_avaliacoes_atendimento
+    FROM produto
     JOIN loja ON produto.loja_id = loja.id
     JOIN conta ON loja.conta_id = conta.id
+    LEFT JOIN (
+        SELECT
+            loja_id,
+            ROUND(AVG(nota), 1) AS media_atendimento,
+            COUNT(id) AS total_avaliacoes_atendimento
+        FROM avaliacao_atendimento
+        GROUP BY loja_id
+    ) notas ON notas.loja_id = loja.id
     WHERE conta.tipo = 'lojista'
     AND conta.ativo = 1
     AND produto.loja_id = ? 
     ORDER BY criado_em DESC");
     $stmt->bind_param('i', $lojaId);
 } else {
-    $stmt = $conexao->prepare("SELECT produto.* FROM produto
+    $stmt = $conexao->prepare("SELECT
+        produto.*,
+        loja.nome_loja,
+        COALESCE(notas.media_atendimento, 0) AS media_atendimento,
+        COALESCE(notas.total_avaliacoes_atendimento, 0) AS total_avaliacoes_atendimento
+    FROM produto
     JOIN loja ON produto.loja_id = loja.id
     JOIN conta ON loja.conta_id = conta.id
+    LEFT JOIN (
+        SELECT
+            loja_id,
+            ROUND(AVG(nota), 1) AS media_atendimento,
+            COUNT(id) AS total_avaliacoes_atendimento
+        FROM avaliacao_atendimento
+        GROUP BY loja_id
+    ) notas ON notas.loja_id = loja.id
     WHERE conta.tipo = 'lojista'
     AND conta.ativo = 1
     ORDER BY desconto DESC, criado_em DESC");
@@ -52,14 +91,6 @@ while ($produto = $resultado->fetch_assoc()) {
     $resultadoImg = $stmtImg->get_result();
     $stmtImg->close();
     $produto['imagem'] = $resultadoImg->num_rows > 0 ? $resultadoImg->fetch_assoc() : null;
-
-    // Busca o nome da loja
-    $stmtLoja = $conexao->prepare("SELECT nome_loja FROM loja WHERE id = ?");
-    $stmtLoja->bind_param('i', $produto['loja_id']);
-    $stmtLoja->execute();
-    $resultadoLoja = $stmtLoja->get_result();
-    $stmtLoja->close();
-    $produto['nome_loja'] = $resultadoLoja->num_rows > 0 ? $resultadoLoja->fetch_assoc()['nome_loja'] : 'Loja parceira';
 
     $produtos[] = $produto;
 }

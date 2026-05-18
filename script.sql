@@ -105,6 +105,21 @@ CREATE TABLE IF NOT EXISTS mensagem_cotacao_item
     FOREIGN KEY (chat_id) REFERENCES chat_cotacao_item (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS avaliacao_atendimento
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    avaliacao_id  INT        NOT NULL UNIQUE,
+    consumidor_id INT        NOT NULL,
+    loja_id       INT        NOT NULL,
+    nota          TINYINT    NOT NULL,
+    comentario    TEXT,
+    criado_em     DATETIME   DEFAULT CURRENT_TIMESTAMP,
+    CHECK (nota BETWEEN 1 AND 5),
+    FOREIGN KEY (avaliacao_id) REFERENCES avaliacao_item (id) ON DELETE CASCADE,
+    FOREIGN KEY (consumidor_id) REFERENCES conta (id) ON DELETE CASCADE,
+    FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE
+);
+
 INSERT IGNORE INTO conta (id, nome, email, senha, tipo, ativo)
 VALUES (1, 'João Silva', 'loja@g.com', 'loja', 'lojista', 1),
        (2, 'Maria Souza', 'maria@example.com', 'senha123', 'lojista', 1),
