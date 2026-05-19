@@ -1,12 +1,6 @@
 <?php
 include_once '../conexao.php';
-
-// Envia resposta JSON e encerra o script
-function respostaJson($status, $mensagem = '', $dados = []) {
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
-    exit;
-}
+include_once '../funcoes.php';
 
 session_start();
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo'] !== 'lojista') {

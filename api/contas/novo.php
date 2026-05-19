@@ -1,12 +1,7 @@
 <?php
 include_once '../conexao.php';
+include_once '../funcoes.php';
 
-// Envia resposta JSON e encerra o script
-function respostaJson($status, $mensagem = '', $dados = []) {
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
-    exit;
-}
 
 $nome  = trim($_POST['nome'] ?? '');
 $email = trim($_POST['email'] ?? '');

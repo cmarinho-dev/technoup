@@ -1,11 +1,6 @@
 <?php
 include_once '../conexao.php';
-
-function respostaJson($status, $mensagem = '', $dados = []) {
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['status' => $status, 'mensagem' => $mensagem, 'data' => $dados]);
-    exit;
-}
+include_once '../funcoes.php';
 
 function lojaDaSessao($conexao, $usuario) {
     if ($usuario['tipo'] !== 'lojista') return null;
