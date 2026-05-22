@@ -83,7 +83,6 @@ function construirCardProduto(produto) {
     const nomeLoja     = produto.nome_loja || 'Loja parceira';
     const desconto     = parseInt(produto.desconto || 0);
     const precoFinal   = parseFloat(produto.preco_final || produto.preco);
-    const notaLoja     = formatarNotaLoja(produto);
 
     // Formata os preços para exibição
     const preco        = formatarMoeda(precoFinal);
@@ -92,7 +91,7 @@ function construirCardProduto(produto) {
     let imagemHtml = `<i data-lucide="package" class="h-12 w-12 text-slate-300"></i>`;
     if (produto.imagem) {
         const src = produto.imagem.caminho + produto.imagem.arquivo;
-        imagemHtml = `<img src="${src}" alt="${produto.nome}" class="h-[230px] w-full rounded-2xl object-contain" onerror="this.style.display='none'">`;
+        imagemHtml = `<img src="${src}" alt="${produto.nome}" class="h-48 w-full rounded-2xl object-contain sm:h-[230px]" onerror="this.style.display='none'">`;
     }
 
     let precoMarkup = '';
@@ -112,8 +111,8 @@ function construirCardProduto(produto) {
     }
 
     return `
-        <article class="flex min-w-[84%] min-h-[520px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
-            <div class="mb-4 flex h-[230px] items-center justify-center rounded-2xl bg-white">
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:min-h-[520px] sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex h-48 items-center justify-center rounded-2xl bg-white sm:h-[230px]">
                 ${imagemHtml}
             </div>
             <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
@@ -122,16 +121,11 @@ function construirCardProduto(produto) {
                     <span class="text-xs font-medium text-slate-500">${produto.marca || ''}</span>
                 </div>
                 <div>
-                    <h3 class="min-h-[56px] text-lg font-semibold text-slate-900">${produto.nome}</h3>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">${produto.nome}</h3>
                     <p class="mt-1 text-sm text-slate-500">${nomeLoja}</p>
-                    ${notaLoja}
                 </div>
                 <div class="mt-auto">
                     <div class="space-y-1">${precoMarkup}</div>
-                    <a href="./formulario.html?loja_id=${produto.loja_id}" class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100">
-                        <i data-lucide="badge-dollar-sign" class="h-4 w-4"></i>
-                        Cotar item usada
-                    </a>
                 </div>
             </div>
         </article>
@@ -141,7 +135,6 @@ function construirCardProduto(produto) {
 function construirCardLoja(loja) {
     const cidade = loja.cidade || 'Brasil';
     const estado = loja.estado || '';
-    const notaLoja = formatarNotaLoja(loja);
 
     let bannerHtml = `<i data-lucide="store" class="h-12 w-12 text-slate-300"></i>`;
     if (loja.banner_img) {
@@ -149,19 +142,17 @@ function construirCardLoja(loja) {
     }
 
     return `
-        <article class="flex min-w-[84%] min-h-[340px] shrink-0 snap-start flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:min-w-[320px]">
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-h-[340px] sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
             <div class="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-slate-100">
                 ${bannerHtml}
             </div>
             <div class="flex flex-1 flex-col space-y-3">
                 <div>
-                    <h3 class="min-h-[56px] text-lg font-semibold text-slate-900">${loja.nome_loja}</h3>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">${loja.nome_loja}</h3>
                     <p class="mt-1 text-sm text-slate-500">${cidade} ${estado}</p>
-                    ${notaLoja}
                 </div>
                 <div class="mt-auto flex items-center justify-between">
                     <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Marketplace</span>
-                    <a href="./formulario.html?loja_id=${loja.id}" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">Avaliar item</a>
                 </div>
             </div>
         </article>
@@ -179,13 +170,13 @@ function renderizarCarouselLojas(lojas) {
         <div class="flex items-center mb-3">
             <h2 class="text-3xl font-bold">Lojas parceiras</h2>
         </div>
-        <div class="relative mb-8">
+        <div class="relative mb-8 sm:overflow-x-hidden">
             <button type="button" id="carousel_lojas_prev"
                 class="absolute -left-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full border border-gray-200 bg-white/90 p-2 text-gray-700 shadow-md backdrop-blur sm:flex">
                 <i data-lucide="chevron-left" class="h-5 w-5"></i>
             </button>
             <div id="carousel_lojas"
-                class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4 pt-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                class="grid grid-cols-1 gap-4 pb-6 pt-2 sm:flex sm:snap-x sm:snap-mandatory sm:overflow-x-auto sm:scroll-smooth sm:pb-4 sm:[-ms-overflow-style:none] sm:[scrollbar-width:none] sm:[&::-webkit-scrollbar]:hidden">
                 ${cards.join('')}
             </div>
             <button type="button" id="carousel_lojas_next"
@@ -207,17 +198,6 @@ function renderizarCarouselLojas(lojas) {
 // Remove acentos e deixa em minúsculo para comparação
 function normalizar(texto) {
     return texto.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-}
-
-function formatarNotaLoja(item) {
-    const total = Number(item.total_avaliacoes_atendimento || 0);
-    if (total <= 0) {
-        return '<p class="mt-2 inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500"><i data-lucide="star" class="h-3.5 w-3.5"></i> Sem notas</p>';
-    }
-
-    const media = Number(item.media_atendimento || 0).toFixed(1).replace('.', ',');
-    const texto = total === 1 ? '1 avaliação' : `${total} avaliações`;
-    return `<p class="mt-2 inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700"><i data-lucide="star" class="h-3.5 w-3.5 fill-amber-400 text-amber-400"></i> ${media} (${texto})</p>`;
 }
 
 // Formata um número como moeda brasileira

@@ -7,33 +7,52 @@ function respostaJson($status, $mensagem = '', $dados = [])
     exit;
 }
 
-function salvarImagem($pastaDestino)
+function salvarImagem($nomePasta)
 {
-    if (isset($_FILES['imagem'])) {
-        $arquivo = $_FILES['imagem'];
+    $nomeInput = "imagem";
+    $pastaDestino = "/imagens/" . $nomePasta;
+    $tiposPermitidos = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
+    $tamanhoMaximoMB = 5;
+
+    salvarArquivo($nomeInput, $pastaDestino, $tiposPermitidos, $tamanhoMaximoMB);
+}
+
+function salvarVideo($nomePasta)
+{
+    $nomeInput = "video";
+    $pastaDestino = "/videos/" . $nomePasta;
+    $tiposPermitidos = ['video/mp4', 'video/webm'];
+    $tamanhoMaximoMB = 20;
+
+    salvarArquivo($nomeInput, $pastaDestino, $tiposPermitidos, $tamanhoMaximoMB);
+}
+
+function salvarArquivo($nomeInput, $pastaDestino, $tiposPermitidos, $tamanhoMaximoMB)
+{
+    if (isset($_FILES[$nomeInput])) {
+        $arquivo = $_FILES[$nomeInput];
 
         // Validações básicas
         if ($arquivo['error'] !== UPLOAD_ERR_OK) {
             die("Erro no upload do arquivo.");
         }
-        
-        $tamanhoMaximo = 5 * 1024 * 1024; // 5MB
-        if ($arquivo['size'] > $tamanhoMaximo) {
-            die("Arquivo muito grande. O limite é 5MB.");
+
+        define("MB", 1024 * 1024);
+        if ($arquivo['size'] > $tamanhoMaximoMB * MB) {
+            die("Arquivo muito grande. O limite é " . MB . "MB.");
         }
 
         // Valida o tipo da imagem
-        $permitidos = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'];
-        if (!in_array($arquivo['type'], $permitidos)) {
+        if (!in_array($arquivo['type'], $tiposPermitidos)) {
             die("Tipo de arquivo não permitido.");
         }
 
         // Renomeia o arquivo para evitar conflitos (usando uniqid)
         $extensao = pathinfo($arquivo['name'], PATHINFO_EXTENSION);
-        $novoNome = uniqid('img_') . '.' . $extensao;
+        $novoNome = uniqid() . '.' . $extensao;
 
         // Move a imagem para a pasta no servidor
-        $destino = '../imagems/' . $pastaDestino;
+        $destino = '..' . $pastaDestino;
         if (!is_dir($destino)) {
             mkdir($destino, 0755, true); // Cria a pasta se não existir
         }
