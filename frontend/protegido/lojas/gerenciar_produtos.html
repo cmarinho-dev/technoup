@@ -51,6 +51,7 @@
                 <thead class="bg-slate-50 text-left">
                     <tr class="*:px-4 *:py-3 *:text-xs *:font-semibold *:uppercase *:tracking-[0.16em] *:text-slate-500">
                         <th class="px-3 py-2 whitespace-nowrap text-left">Ações</th>
+                        <th class="px-3 py-2 whitespace-nowrap text-left">Imagem</th>
                         <th class="px-3 py-2 whitespace-nowrap text-left">Nome</th>
                         <th class="px-3 py-2 whitespace-nowrap text-left">Tipo</th>
                         <th class="px-3 py-2 whitespace-nowrap text-left">Marca</th>
@@ -63,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody id="tabelaProdutosBody" class="divide-y divide-slate-200">
-                    <tr><td colspan="10" class="px-4 py-8 text-center text-slate-400">Carregando produtos...</td></tr>
+                    <tr><td colspan="11" class="px-4 py-8 text-center text-slate-400">Carregando produtos...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -117,6 +118,11 @@
             <div class="relative">
                 <input type="number" id="campoDesconto" placeholder=" " min="0" max="100" class="peer w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
                 <label for="campoDesconto" class="absolute -top-[12px] left-2 text-slate-500 font-thin bg-white px-1 peer-focus:font-semibold peer-focus:text-blue-600 text-sm">Desconto (%)</label>
+            </div>
+            <div>
+                <label for="campoImagem" class="mb-1.5 block text-sm font-medium text-slate-700">Imagem do produto</label>
+                <input type="file" id="campoImagem" accept="image/jpeg,image/png,image/webp" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
+                <p id="imagemAtualProduto" class="mt-2 text-xs text-slate-500"></p>
             </div>
         </div>
 

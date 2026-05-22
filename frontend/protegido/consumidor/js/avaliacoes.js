@@ -17,6 +17,43 @@ function formatarData(data) {
     }).format(new Date(data.replace(' ', 'T')));
 }
 
+function caminhoArquivo(caminho) {
+    if (!caminho) return '';
+    if (/^(https?:)?\/\//.test(caminho) || caminho.startsWith('/')) return caminho;
+    return `${CAMINHO_FRONTEND}/${caminho}`;
+}
+
+function blocoMidia(avaliacao) {
+    const midias = Array.isArray(avaliacao.midias) && avaliacao.midias.length > 0
+        ? avaliacao.midias
+        : (avaliacao.arquivo && avaliacao.caminho && avaliacao.tipo_arquivo ? [avaliacao] : []);
+
+    if (midias.length === 0) return '';
+
+    const itens = midias.map((midia, indice) => {
+        const src = escaparHtml(caminhoArquivo(`${midia.caminho}${midia.arquivo}`));
+        if (midia.tipo_arquivo === 'imagem') {
+            return `
+                <div class="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                    <img src="${src}" alt="Foto ${indice + 1} do item ${escaparHtml(avaliacao.nome_item)}" class="h-64 w-full object-contain">
+                </div>
+            `;
+        }
+
+        if (midia.tipo_arquivo === 'video') {
+            return `
+                <div class="overflow-hidden rounded-xl border border-slate-200 bg-slate-950">
+                    <video src="${src}" controls preload="metadata" class="h-64 w-full"></video>
+                </div>
+            `;
+        }
+
+        return '';
+    }).join('');
+
+    return `<div class="mt-5 grid gap-3 md:grid-cols-2">${itens}</div>`;
+}
+
 function textoStatusSolicitacao(status) {
     if (status === 'aceita') return 'Aceita';
     if (status === 'recusada') return 'Recusada';
@@ -145,6 +182,7 @@ function cardAvaliacao(avaliacao) {
             </div>
 
             <p class="mt-4 text-sm leading-6 text-slate-600">${escaparHtml(avaliacao.detalhes || 'Sem detalhes adicionais.')}</p>
+            ${blocoMidia(avaliacao)}
 
             ${blocoAvaliacaoAtendimento(avaliacao)}
 

@@ -61,6 +61,9 @@ function renderizarMensagem(mensagem) {
     const minhaMensagem = souConsumidor ? !enviadaPelaLoja : enviadaPelaLoja;
     const lado = minhaMensagem ? 'mine' : 'other';
     const autor = minhaMensagem ? 'Você' : (enviadaPelaLoja ? 'Loja' : 'Consumidor');
+    const textoMensagem = mensagem.mensagem
+        ? `<p class="chat-message-text">${escaparHtml(mensagem.mensagem)}</p>`
+        : '';
 
     return `
         <div class="chat-message-row chat-message-row--${lado}">
@@ -69,7 +72,7 @@ function renderizarMensagem(mensagem) {
                     <span>${autor}</span>
                     <span>${formatarHora(mensagem.criado_em)}</span>
                 </div>
-                <p class="chat-message-text">${escaparHtml(mensagem.mensagem)}</p>
+                ${textoMensagem}
             </div>
         </div>
     `;
@@ -219,7 +222,8 @@ async function enviarMensagem(evento) {
     } catch (erro) {
         mostrarErro('Falha ao enviar mensagem.');
     } finally {
-        btnEnviar.disabled = false;
+        const fechado = chatAtual?.status === 'fechado';
+        btnEnviar.disabled = fechado;
         campoMensagem.focus();
     }
 }

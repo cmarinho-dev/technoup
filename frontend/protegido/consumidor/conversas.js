@@ -19,6 +19,7 @@ function formatarData(data) {
 function renderizarConversa(chat) {
     const titulo = TIPO_LISTA_CHAT === 'lojista' ? chat.consumidor_nome : chat.nome_loja;
     const subtitulo = `${chat.nome_item} · ${chat.categoria}`;
+    const ultimaMensagem = chat.ultima_mensagem || 'Conversa liberada. Envie a primeira mensagem.';
     const link = TIPO_LISTA_CHAT === 'lojista'
         ? `./chat.html?chat_id=${chat.chat_id}`
         : `./chat.html?chat_id=${chat.chat_id}`;
@@ -38,12 +39,18 @@ function renderizarConversa(chat) {
                 </div>
                 <p class="text-sm text-slate-400">${formatarData(chat.ultima_mensagem_em || chat.atualizado_em)}</p>
             </div>
-            <p class="mt-4 line-clamp-2 text-sm leading-6 text-slate-600">${escaparHtml(chat.ultima_mensagem || 'Conversa liberada. Envie a primeira mensagem.')}</p>
+            <p class="mt-4 line-clamp-2 text-sm leading-6 text-slate-600">${escaparHtml(ultimaMensagem)}</p>
             <div class="mt-5">
                 <a href="${link}" class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">
                     <i data-lucide="messages-square" class="h-4 w-4"></i>
                     Abrir conversa
                 </a>
+                ${TIPO_LISTA_CHAT === 'lojista' ? `
+                    <a href="./denunciar.html?conta_id=${chat.consumidor_id}" class="ml-2 inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100">
+                        <i data-lucide="flag" class="h-4 w-4"></i>
+                        Denunciar cliente
+                    </a>
+                ` : ''}
             </div>
         </article>
     `;

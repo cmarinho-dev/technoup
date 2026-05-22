@@ -46,7 +46,7 @@ function renderizarTabela(produtos) {
     const tbody = document.getElementById('tabelaProdutosBody');
 
     if (produtos.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" class="px-3 py-8 text-center text-slate-400">Nenhum produto cadastrado ainda.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="11" class="px-3 py-8 text-center text-slate-400">Nenhum produto cadastrado ainda.</td></tr>`;
         return;
     }
 
@@ -55,6 +55,10 @@ function renderizarTabela(produtos) {
         const precoFinal = produto.preco_final
             ? 'R$ ' + parseFloat(produto.preco_final).toFixed(2).replace('.', ',')
             : '-';
+        const imagem = produto.imagem ? caminhoArquivo(produto.imagem.caminho + produto.imagem.arquivo) : '';
+        const imagemHtml = imagem
+            ? `<img src="${imagem}" alt="${produto.nome}" class="h-14 w-14 rounded-xl object-cover" onerror="this.style.display='none'">`
+            : '<div class="flex h-14 w-14 items-center justify-center rounded-xl bg-slate-100 text-slate-300"><i data-lucide="image" class="size-5"></i></div>';
 
         return `
             <tr class="align-center *:px-4 *:py-4 *:text-sm *:text-slate-700">
@@ -70,6 +74,7 @@ function renderizarTabela(produtos) {
                         </button>
                     </div>
                 </td>
+                <td>${imagemHtml}</td>
                 <td class="font-medium text-slate-900">${produto.nome}</td>
                 <td>${produto.tipo || '-'}</td>
                 <td>${produto.marca || '-'}</td>
@@ -86,10 +91,17 @@ function renderizarTabela(produtos) {
     lucide.createIcons();
 }
 
+function caminhoArquivo(caminho) {
+    if (!caminho) return '';
+    if (/^(https?:)?\/\//.test(caminho) || caminho.startsWith('/')) return caminho;
+    return `${CAMINHO_FRONTEND}/${caminho}`;
+}
+
 function abrirModalNovo() {
     document.getElementById('modalTitulo').textContent = 'Novo produto';
     document.getElementById('campoIdProduto').value    = '';
     limparCamposModal();
+    document.getElementById('imagemAtualProduto').textContent = 'Formatos aceitos: JPG, PNG ou WebP.';
     document.getElementById('modalProduto').style.display = 'flex';
 }
 
@@ -110,6 +122,10 @@ async function abrirModalEditar(id) {
     document.getElementById('campoMarca').value           = produto.marca    || '';
     document.getElementById('campoDescricao').value       = produto.descricao || '';
     document.getElementById('campoDesconto').value        = produto.desconto || 0;
+    document.getElementById('campoImagem').value          = '';
+    document.getElementById('imagemAtualProduto').textContent = produto.imagem
+        ? 'A imagem atual será mantida se nenhuma nova imagem for escolhida.'
+        : 'Formatos aceitos: JPG, PNG ou WebP.';
     document.getElementById('modalProduto').style.display = 'flex';
 }
 
@@ -120,6 +136,7 @@ function fecharModal() {
 function limparCamposModal() {
     ['campoNome', 'campoPreco', 'campoTipo', 'campoModelo', 'campoMarca', 'campoDescricao', 'campoDesconto']
         .forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('campoImagem').value = '';
 }
 
 async function salvarProduto() {
@@ -151,6 +168,9 @@ async function salvarProduto() {
     fd.append('descricao', descricao);
     fd.append('desconto', desconto);
     if (id) fd.append('id', parseInt(id));
+
+    const imagem = document.getElementById('campoImagem').files[0];
+    if (imagem) fd.append('imagem', imagem);
 
     const resposta = await fetch(endpoint, {
         method: 'POST',

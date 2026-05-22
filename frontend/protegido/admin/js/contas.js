@@ -58,11 +58,19 @@ function renderizarTabela(contas) {
                 </td>
                 <td>${conta.tipo || '-'}</td>
                 <td class="font-medium text-slate-900">${conta.nome}</td>
+                <td>${formatarCpf(conta.cpf) || '-'}</td>
                 <td>${conta.email || '-'}</td>
                 <td class="whitespace-nowrap">${conta.criado_em || '-'}</td>
             </tr>
         `;
     }).join('');
+}
+
+function formatarCpf(valor) {
+    const digitos = String(valor || '').replace(/\D+/g, '').slice(0, 11);
+    if (digitos.length !== 11) return valor || '';
+
+    return digitos.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }
 
 async function alternarStatus(contaId) {

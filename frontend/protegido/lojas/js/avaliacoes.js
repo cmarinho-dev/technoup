@@ -20,6 +20,43 @@ function formatarData(data) {
     }).format(new Date(data.replace(' ', 'T')));
 }
 
+function caminhoArquivo(caminho) {
+    if (!caminho) return '';
+    if (/^(https?:)?\/\//.test(caminho) || caminho.startsWith('/')) return caminho;
+    return `${CAMINHO_FRONTEND}/${caminho}`;
+}
+
+function blocoMidia(avaliacao) {
+    const midias = Array.isArray(avaliacao.midias) && avaliacao.midias.length > 0
+        ? avaliacao.midias
+        : (avaliacao.arquivo && avaliacao.caminho && avaliacao.tipo_arquivo ? [avaliacao] : []);
+
+    if (midias.length === 0) return '';
+
+    const itens = midias.map((midia, indice) => {
+        const src = escaparHtml(caminhoArquivo(`${midia.caminho}${midia.arquivo}`));
+        if (midia.tipo_arquivo === 'imagem') {
+            return `
+                <div class="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                    <img src="${src}" alt="Foto ${indice + 1} do item ${escaparHtml(avaliacao.nome_item)}" class="h-64 w-full object-contain">
+                </div>
+            `;
+        }
+
+        if (midia.tipo_arquivo === 'video') {
+            return `
+                <div class="overflow-hidden rounded-xl border border-slate-200 bg-slate-950">
+                    <video src="${src}" controls preload="metadata" class="h-64 w-full"></video>
+                </div>
+            `;
+        }
+
+        return '';
+    }).join('');
+
+    return `<div class="mt-5 grid gap-3 md:grid-cols-2">${itens}</div>`;
+}
+
 function mostrarFeedback(texto, sucesso = true) {
     mensagemFeedback.textContent = texto;
     mensagemFeedback.className = sucesso
@@ -102,6 +139,7 @@ function cardAvaliacao(avaliacao) {
             </div>
 
             <p class="mt-4 text-sm leading-6 text-slate-600">${escaparHtml(detalhes)}</p>
+            ${blocoMidia(avaliacao)}
 
             ${aceita ? `
                 <div class="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -134,6 +172,10 @@ function cardAvaliacao(avaliacao) {
                         Abrir chat
                     </a>
                 ` : ''}
+                <a href="./denunciar.html?conta_id=${avaliacao.consumidor_id}" class="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100">
+                    <i data-lucide="flag" class="h-4 w-4"></i>
+                    Denunciar cliente
+                </a>
             </div>
         </article>
     `;
