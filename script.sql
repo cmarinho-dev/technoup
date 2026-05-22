@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS conta
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
     nome      VARCHAR(200)                                  NOT NULL,
+    cpf       VARCHAR(11)                                   NOT NULL UNIQUE,
     email     VARCHAR(100)                                  NOT NULL UNIQUE,
     senha     VARCHAR(255)                                  NOT NULL,
     tipo      ENUM ('consumidor','lojista','administrador') NOT NULL DEFAULT 'consumidor',
@@ -20,8 +21,7 @@ CREATE TABLE IF NOT EXISTS loja
     conta_id   INT          NOT NULL UNIQUE,
     nome_loja  VARCHAR(100) NOT NULL,
     telefone   VARCHAR(15),
-    cpf        VARCHAR(11),
-    cnpj       VARCHAR(14)  NOT NULL,
+    cnpj       VARCHAR(14)  NOT NULL UNIQUE,
     cep        VARCHAR(8),
     estado     VARCHAR(2),
     cidade     VARCHAR(100),
@@ -78,6 +78,17 @@ CREATE TABLE IF NOT EXISTS avaliacao_item (
     FOREIGN KEY (loja_id) REFERENCES loja(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS avaliacao_item_midia
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    avaliacao_id  INT          NOT NULL,
+    arquivo       VARCHAR(255) NOT NULL,
+    caminho       VARCHAR(255) NOT NULL,
+    tipo_arquivo  ENUM ('imagem','video') NOT NULL,
+    criado_em     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (avaliacao_id) REFERENCES avaliacao_item (id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS chat_cotacao_item
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
@@ -120,20 +131,33 @@ CREATE TABLE IF NOT EXISTS avaliacao_atendimento
     FOREIGN KEY (loja_id) REFERENCES loja (id) ON DELETE CASCADE
 );
 
-INSERT IGNORE INTO conta (id, nome, email, senha, tipo, ativo)
-VALUES (1, 'João Silva', 'loja@g.com', 'loja', 'lojista', 1),
-       (2, 'Maria Souza', 'maria@example.com', 'senha123', 'lojista', 1),
-       (3, 'Pedro Alves', 'pedro@g.com', 'pedro', 'consumidor', 1),
-       (4, 'Lucas Martins', 'lucas@g.com', 'lucas', 'lojista', 1),
-       (5, 'Administrador', 'admin@g.com', 'admin', 'administrador', 1);
+CREATE TABLE IF NOT EXISTS denuncia_conta
+(
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    denunciante_id INT      NOT NULL,
+    denunciado_id  INT      NOT NULL,
+    motivo         TEXT     NOT NULL,
+    status         ENUM ('pendente','em_analise','resolvida','recusada') NOT NULL DEFAULT 'pendente',
+    criado_em      DATETIME DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (denunciante_id) REFERENCES conta (id) ON DELETE CASCADE,
+    FOREIGN KEY (denunciado_id) REFERENCES conta (id) ON DELETE CASCADE
+);
+
+INSERT IGNORE INTO conta (id, nome, cpf, email, senha, tipo, ativo)
+VALUES (1, 'João Silva', '52998224725', 'loja@g.com', 'loja', 'lojista', 1),
+       (2, 'Maria Souza', '11144477735', 'maria@example.com', 'senha123', 'lojista', 1),
+       (3, 'Pedro Alves', '93541134780', 'pedro@g.com', 'pedro', 'consumidor', 1),
+       (4, 'Lucas Martins', '12345678909', 'lucas@g.com', 'lucas', 'lojista', 1),
+       (5, 'Administrador', '98765432100', 'admin@g.com', 'admin', 'administrador', 1);
 
 INSERT IGNORE INTO loja
-(id, nome_loja, logradouro, cpf, cnpj, cep, estado, cidade, bairro, numero, telefone, banner_img, conta_id)
-VALUES (1, 'Pixau', 'Rua das Flores', '12345678901', '12345678000199', '01001000', 'PR', 'Curitiba', 'Centro', '100',
+(id, nome_loja, logradouro, cnpj, cep, estado, cidade, bairro, numero, telefone, banner_img, conta_id)
+VALUES (1, 'Pixau', 'Rua das Flores', '04252011000110', '01001000', 'PR', 'Curitiba', 'Centro', '100',
         '11999999999', '../imagens/lojas/pichau.png', 1),
-       (2, 'The Market.', 'Av. Paulista', '98765432100', '98765432000188', '01311000', 'PR', 'Curitiba', 'Barreirinha',
+       (2, 'The Market.', 'Av. Paulista', '11222333000181', '01311000', 'PR', 'Curitiba', 'Barreirinha',
         '2000', '11888888888', '../imagens/lojas/kabum.jpg', 2),
-       (3, 'ByteStorm', 'Rua XV de Novembro', '45612378901', '45612378000155', '80020000', 'PR', 'Curitiba', 'Centro',
+       (3, 'ByteStorm', 'Rua XV de Novembro', '11444777000161', '80020000', 'PR', 'Curitiba', 'Centro',
         '320', '41977778888', '../imagens/lojas/bytestorm.jpg', 4);
 
 INSERT IGNORE INTO produto (id, loja_id, nome, preco, tipo, descricao, modelo, marca, desconto)
