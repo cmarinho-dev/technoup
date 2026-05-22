@@ -13,6 +13,7 @@ if ($id !== null) {
     $stmt = $conexao->prepare("SELECT
         produto.*,
         loja.nome_loja,
+        loja.conta_id AS loja_conta_id,
         COALESCE(notas.media_atendimento, 0) AS media_atendimento,
         COALESCE(notas.total_avaliacoes_atendimento, 0) AS total_avaliacoes_atendimento
     FROM produto
@@ -34,6 +35,7 @@ if ($id !== null) {
     $stmt = $conexao->prepare("SELECT
         produto.*,
         loja.nome_loja,
+        loja.conta_id AS loja_conta_id,
         COALESCE(notas.media_atendimento, 0) AS media_atendimento,
         COALESCE(notas.total_avaliacoes_atendimento, 0) AS total_avaliacoes_atendimento
     FROM produto
@@ -56,6 +58,7 @@ if ($id !== null) {
     $stmt = $conexao->prepare("SELECT
         produto.*,
         loja.nome_loja,
+        loja.conta_id AS loja_conta_id,
         COALESCE(notas.media_atendimento, 0) AS media_atendimento,
         COALESCE(notas.total_avaliacoes_atendimento, 0) AS total_avaliacoes_atendimento
     FROM produto

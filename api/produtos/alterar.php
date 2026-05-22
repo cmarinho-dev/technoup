@@ -1,6 +1,7 @@
 <?php
 include_once '../conexao.php';
 include_once '../funcoes.php';
+include_once '_imagem.php';
 
 
 session_start();
@@ -25,6 +26,17 @@ $modelo    = $_POST['modelo'] ?? '';
 $marca     = $_POST['marca'] ?? '';
 $descricao = $_POST['descricao'] ?? '';
 
+$stmt = $conexao->prepare("SELECT id FROM produto WHERE id = ? AND loja_id = ? LIMIT 1");
+$stmt->bind_param('ii', $id, $lojaId);
+$stmt->execute();
+$produtoExiste = $stmt->get_result()->num_rows > 0;
+$stmt->close();
+
+if (!$produtoExiste) {
+    $conexao->close();
+    respostaJson('nok', 'Produto não encontrado ou sem permissão.');
+}
+
 // preco_final é uma coluna GERADA — não incluir no UPDATE
 $stmt = $conexao->prepare("
     UPDATE produto
@@ -36,10 +48,12 @@ $stmt->execute();
 
 $sucesso = $stmt->affected_rows >= 0;
 $stmt->close();
-$conexao->close();
 
 if ($sucesso) {
-    respostaJson('ok', 'Produto atualizado com sucesso.');
+    $imagem = registrarImagemProduto($conexao, $id);
+    $conexao->close();
+    respostaJson('ok', 'Produto atualizado com sucesso.', ['imagem' => $imagem]);
 } else {
+    $conexao->close();
     respostaJson('nok', 'Produto não encontrado ou sem permissão.');
 }

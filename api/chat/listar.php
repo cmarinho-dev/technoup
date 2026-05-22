@@ -48,6 +48,7 @@ $sql = "
     SELECT
         chat_cotacao_item.id AS chat_id,
         chat_cotacao_item.status AS chat_status,
+        chat_cotacao_item.consumidor_id,
         chat_cotacao_item.avaliacao_id,
         chat_cotacao_item.atualizado_em,
         chat_cotacao_item.lido_consumidor_em,

@@ -78,8 +78,9 @@ $lojaId = lojaDaSessao($conexao, $usuario);
 session_write_close();
 
 $mensagem = trim($_POST['mensagem'] ?? '');
+
 if ($mensagem === '') {
-    respostaJson('nok', 'Digite uma mensagem antes de enviar.');
+    respostaJson('nok', 'Digite uma mensagem.');
 }
 
 $tamanhoMensagem = function_exists('mb_strlen') ? mb_strlen($mensagem, 'UTF-8') : strlen($mensagem);

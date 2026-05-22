@@ -18,6 +18,7 @@ $sql = "
         conta.senha,
         conta.id,
         conta.nome,
+        conta.cpf,
         conta.email,
         conta.tipo,
         conta.ativo,

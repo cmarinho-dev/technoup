@@ -1,6 +1,7 @@
 <?php
 include_once '../conexao.php';
 include_once '../funcoes.php';
+include_once '_imagem.php';
 
 
 session_start();
@@ -38,9 +39,10 @@ $stmt->execute();
 
 if ($stmt->affected_rows > 0) {
     $idCriado = $stmt->insert_id;
+    $imagem = registrarImagemProduto($conexao, $idCriado);
     $stmt->close();
     $conexao->close();
-    respostaJson('ok', 'Produto criado com sucesso.', ['id' => $idCriado]);
+    respostaJson('ok', 'Produto criado com sucesso.', ['id' => $idCriado, 'imagem' => $imagem]);
 } else {
     $stmt->close();
     $conexao->close();

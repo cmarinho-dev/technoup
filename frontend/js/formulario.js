@@ -42,6 +42,21 @@ function arquivoMidiaValido() {
     return true;
 }
 
+async function lerRespostaJson(resposta) {
+    const texto = await resposta.text();
+
+    try {
+        return texto ? JSON.parse(texto) : {};
+    } catch (erro) {
+        console.error('Resposta inválida do servidor.', {
+            status: resposta.status,
+            contentType: resposta.headers.get('content-type'),
+            resposta: texto.slice(0, 300)
+        });
+        throw new Error('O servidor não retornou uma resposta JSON válida.');
+    }
+}
+
 campoMidia.addEventListener('change', () => {
     const arquivos = Array.from(campoMidia.files);
     if (arquivos.length === 0) {
@@ -69,7 +84,12 @@ formAvaliacaoItem.addEventListener('submit', async (evento) => {
             body: new FormData(formAvaliacaoItem),
             credentials: 'include'
         });
-        const json = await resposta.json();
+        const json = await lerRespostaJson(resposta);
+
+        if (!resposta.ok) {
+            mostrarFeedback(json.mensagem || 'Não foi possível enviar a avaliação.', false);
+            return;
+        }
 
         if (json.status !== 'ok') {
             mostrarFeedback(json.mensagem || 'Não foi possível enviar a avaliação.', false);
@@ -83,7 +103,7 @@ formAvaliacaoItem.addEventListener('submit', async (evento) => {
             window.location.href = './protegido/consumidor/avaliacoes.html';
         }, 900);
     } catch (erro) {
-        mostrarFeedback('Falha ao enviar a avaliação.', false);
+        mostrarFeedback('Falha ao enviar a avaliação. ' + erro.message, false);
     } finally {
         botao.disabled = false;
         botao.textContent = textoOriginal;

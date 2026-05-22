@@ -67,6 +67,7 @@ while ($linha = $resultado->fetch_assoc()) {
 }
 
 $stmt->close();
+$avaliacoes = anexarMidiasAvaliacoes($conexao, $avaliacoes);
 $conexao->close();
 
 respostaJson('ok', '', $avaliacoes);
