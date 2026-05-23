@@ -49,6 +49,13 @@ function construirMenuLogado(usuario) {
 
     if (usuario.tipo === 'lojista') {
         opcoes += `
+            <a href="${CAMINHO_FRONTEND}/protegido/lojas/denunciar.html"
+               class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="flag" class="h-4 w-4 text-slate-400"></i>
+                    Denunciar cliente
+                </div>
+            </a>
             <a href="${CAMINHO_FRONTEND}/protegido/lojas/gerenciar_produtos.html"
                class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                 <div class="flex items-center gap-2">
@@ -80,6 +87,13 @@ function construirMenuLogado(usuario) {
         `;
     } else if (usuario.tipo === 'consumidor') {
         opcoes += `
+            <a href="${CAMINHO_FRONTEND}/protegido/consumidor/denunciar.html"
+               class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="flag" class="h-4 w-4 text-slate-400"></i>
+                    Denunciar loja
+                </div>
+            </a>
             <a href="${CAMINHO_FRONTEND}/formulario.html"
                class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                 <div class="flex items-center gap-2">
@@ -116,6 +130,13 @@ function construirMenuLogado(usuario) {
                 <div class="flex items-center gap-2">
                     <i data-lucide="users" class="h-4 w-4 text-slate-400"></i>
                     Gerenciar contas
+                </div>
+            </a>
+            <a href="${CAMINHO_FRONTEND}/protegido/admin/denuncias.html"
+               class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="flag" class="h-4 w-4 text-slate-400"></i>
+                    Denúncias
                 </div>
             </a>
         `;
