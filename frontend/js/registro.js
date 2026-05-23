@@ -1,9 +1,41 @@
 // registro.js — Lógica da página de criação de conta
 
 document.getElementById('btnCriarConta').addEventListener('click', criarConta);
+document.getElementById('inputCpf').addEventListener('input', (evento) => {
+    evento.target.value = formatarCpf(evento.target.value);
+});
+
+function somenteDigitos(valor) {
+    return String(valor || '').replace(/\D+/g, '');
+}
+
+function formatarCpf(valor) {
+    const digitos = somenteDigitos(valor).slice(0, 11);
+    return digitos
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+}
+
+function cpfValido(valor) {
+    const cpf = somenteDigitos(valor);
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+    for (let t = 9; t < 11; t++) {
+        let soma = 0;
+        for (let i = 0; i < t; i++) {
+            soma += Number(cpf[i]) * ((t + 1) - i);
+        }
+        const digito = ((10 * soma) % 11) % 10;
+        if (Number(cpf[t]) !== digito) return false;
+    }
+
+    return true;
+}
 
 async function criarConta() {
     const nome = document.getElementById('inputNome').value.trim();
+    const cpf = document.getElementById('inputCpf').value.trim();
     const email = document.getElementById('inputEmail').value.trim();
     const senha = document.getElementById('inputSenha').value.trim();
     const confirmarSenha = document.getElementById('inputConfirmarSenha').value.trim();
@@ -17,13 +49,28 @@ async function criarConta() {
     // Determina o tipo selecionado
     const tipoSelecionado = document.querySelector('input[name="tipo_conta"]:checked').value;
 
-    if (!nome || !email || !senha) {
+    if (!nome || !cpf || !email || !senha) {
         mostrarErro('Preencha todos os campos obrigatórios.');
+        return;
+    }
+
+    if (nome.length < 3) {
+        mostrarErro('Informe seu nome completo.');
+        return;
+    }
+
+    if (!cpfValido(cpf)) {
+        mostrarErro('Digite um CPF válido.');
         return;
     }
 
     if (!email.includes('@')) {
         mostrarErro('Digite um email válido.');
+        return;
+    }
+
+    if (senha.length < 6) {
+        mostrarErro('A senha deve ter pelo menos 6 caracteres.');
         return;
     }
 
@@ -39,6 +86,7 @@ async function criarConta() {
     // Cria a conta no banco
     const fdConta = new FormData();
     fdConta.append('nome', nome);
+    fdConta.append('cpf', somenteDigitos(cpf));
     fdConta.append('email', email);
     fdConta.append('senha', senha);
     fdConta.append('tipo', tipoSelecionado);
