@@ -153,6 +153,7 @@ function construirCardLoja(loja) {
                 </div>
                 <div class="mt-auto flex items-center justify-between">
                     <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Marketplace</span>
+                    <a href="./protegido/consumidor/denunciar.html?conta_id=${loja.conta_id}" class="text-xs font-semibold text-red-600 transition hover:text-red-700">Denunciar</a>
                 </div>
             </div>
         </article>

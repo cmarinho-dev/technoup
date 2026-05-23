@@ -78,9 +78,6 @@ function construirCardProduto(produto) {
                     <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">${produto.nome}</h3>
                     <p class="mt-1 text-sm text-slate-500">${nomeLoja}</p>
                 </div>
-                <div class="mt-auto">
-                    <div class="space-y-1">${precoMarkup}</div>
-                </div>
             </div>
         </article>
     `;
@@ -108,7 +105,10 @@ function construirCardLoja(loja) {
                 </div>
                 <div class="mt-auto flex items-center justify-between">
                     <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Marketplace</span>
-                    <a href="./catalogo.html" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">Explorar</a>
+                    <div class="flex items-center gap-3">
+                        <a href="./protegido/consumidor/denunciar.html?conta_id=${loja.conta_id}" class="text-xs font-semibold text-red-600 transition hover:text-red-700">Denunciar</a>
+                        <a href="./catalogo.html" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">Explorar</a>
+                    </div>
                 </div>
             </div>
         </article>
