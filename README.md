@@ -40,7 +40,7 @@
 
 O projeto gira em torno de quatro entidades principais: uma conta pode estar associada a uma loja, que por sua vez vende diversos produtos, cada um podendo ter uma imagem associada.
 
-```
+```mermaid
 erDiagram
     CONTA ||--o| LOJA : "Conta pode ter loja"
     LOJA ||--o{ PRODUTO : "Loja vende produtos"
