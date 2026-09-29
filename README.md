@@ -4,8 +4,9 @@
 
 [Instalação](#instalação) • [Funcionalidades](#funcionalidades) • [Modelo de Dados](#modelo-de-dados) • [Links Úteis](#links-úteis)
 
-![JavaScript](https://img.shields.io/badge/JavaScript-42.4%25-F7DF1E?logo=javascript&logoColor=black)
-![PHP](https://img.shields.io/badge/PHP-Backend-777BB4?logo=php&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-Frontend-F7DF1E?logo=javascript&logoColor=black)
+![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-Backend-6DB33F?logo=springboot&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-UI-38BDF8?logo=tailwindcss&logoColor=white)
 ![Status](https://img.shields.io/badge/status-acad%C3%AAmico-yellow)
@@ -25,7 +26,7 @@
 
 # Introdução
 
-**TechnoUP** é um projeto fullstack desenvolvido e apresentado na disciplina de **Experiência Criativa**, do curso de Bacharelado em Engenharia de Software. A proposta é oferecer uma plataforma onde lojas de eletrônicos possam informatizar seus produtos em um catálogo digital, centralizando cadastro de contas, lojas e produtos.
+**TechnoUP** é um projeto fullstack desenvolvido e apresentado na disciplina de **Experiência Criativa**, do curso de Bacharelado em Engenharia de Software. A proposta é oferecer uma plataforma onde lojas de eletrônicos possam informatizar seus produtos em um catálogo digital, centralizando cadastro de contas, lojas e produtos. O backend é uma API em **Java com Spring Boot**, que também serve o frontend e os arquivos de mídia.
 
 # Funcionalidades
 
@@ -33,12 +34,14 @@
 - Vínculo entre uma conta e uma loja (CNPJ, cidade e estado);
 - Cadastro de produtos por loja, com preço, desconto e preço final calculado;
 - Upload/associação de imagens aos produtos;
+- Solicitações de avaliação de itens, conversas entre consumidores e lojas e denúncias de contas;
 - Interface web estilizada com **TailwindCSS**;
-- Backend em **PHP**, integrado a um banco **MySQL**.
+- API em **Java com Spring Boot**, integrada a um banco **MySQL**.
 
+<!--
 # Modelo de Dados
 
-O projeto gira em torno de quatro entidades principais: uma conta pode estar associada a uma loja, que por sua vez vende diversos produtos, cada um podendo ter uma imagem associada.
+O núcleo do catálogo gira em torno de quatro entidades: uma conta pode estar associada a uma loja, que por sua vez vende diversos produtos, cada um podendo ter uma imagem associada. O banco também contém tabelas para avaliações de itens e atendimento, mídias das avaliações, chats, mensagens e denúncias.
 
 ```mermaid
 erDiagram
@@ -49,6 +52,7 @@ erDiagram
     CONTA {
         INT id PK
         VARCHAR nome
+        VARCHAR cpf
         VARCHAR email
         VARCHAR senha
         ENUM tipo
@@ -82,29 +86,38 @@ erDiagram
     }
 ```
 
-O script de criação do banco está disponível em [`script.sql`](script.sql), na raiz do repositório.
-
+O script de criação do banco está disponível em [`script.sql`](script.sql), na raiz do repositório. **Use-o apenas em uma instalação nova:** ele começa com `DROP DATABASE IF EXISTS technoup` e apaga os dados existentes desse banco.
+-->
 # Pré-requisitos
 
-- **Servidor Apache** e **MySQL** — a forma mais simples é usar o [XAMPP](https://www.apachefriends.org/pt_br/index.html);
-- Um cliente para rodar scripts SQL (o próprio phpMyAdmin do XAMPP resolve).
+- **Java 17 ou superior** e **MySQL**;
+- Um cliente MySQL para executar o [`script.sql`](script.sql). O projeto inclui o Gradle Wrapper, então não é necessário instalar Gradle separadamente.
 
 # Instalação
 
-1. Instale o XAMPP e inicie os serviços **Apache** e **MySQL**.
-2. Acesse `http://localhost/phpmyadmin`, crie o banco do projeto e execute o script disponível em [`script.sql`](script.sql) na aba `SQL`.
-3. Copie todos os arquivos do projeto para o diretório `htdocs` do XAMPP (geralmente `C:\xampp\htdocs\technoup`).
-4. Acesse o projeto pelo navegador em [`http://localhost/technoup`](http://localhost/technoup).
+1. Inicie o **MySQL** e, em uma instalação nova, execute o [`script.sql`](script.sql) da raiz do repositório no seu cliente MySQL. O script cria o banco `technoup` e inclui dados de exemplo.
+2. Se necessário, configure as variáveis de ambiente `DB_URL`, `DB_USER` e `DB_PASSWORD` em [`api\src\main\resources\application.properties`](api\src\main\resources\application.properties). Os padrões são `jdbc:mysql://localhost:3306/technoup`, `root` e senha vazia. A porta HTTP pode ser alterada com `SERVER_PORT`.
+3. Na pasta `api/`, inicie o servidor com o Gradle Wrapper:
+
+   ```powershell
+   cd api
+   .\gradlew.bat bootRun
+   ```
+
+   No Linux ou macOS, use `./gradlew bootRun` no lugar de `.\gradlew.bat bootRun`.
+4. Abra [`http://localhost:8080/frontend/home.html`](http://localhost:8080/frontend/home.html) no navegador. O Spring Boot serve a interface, a API em `/api/` e os arquivos em `imagens/` e `videos/` no mesmo endereço.
+
+Ao executar o servidor fora da pasta `api/`, defina `TECHNOUP_WORKSPACE` com o caminho absoluto da raiz do repositório para que os arquivos do frontend e as mídias sejam encontrados.
 
 # Estrutura do Projeto
 
 ```
 technoup/
-├── api/          # Backend (PHP) — regras de negócio e acesso ao banco
-├── frontend/      # Interface web (HTML, CSS/TailwindCSS, JavaScript)
-├── imagens/       # Imagens estáticas do projeto/produtos
-├── videos/        # Vídeos de apresentação/demonstração
-└── script.sql     # Script de criação do banco de dados
+├── api/          # Backend Java/Spring Boot e Gradle Wrapper
+├── frontend/     # Interface web (HTML, CSS/TailwindCSS, JavaScript)
+├── imagens/      # Imagens do projeto e arquivos enviados
+├── videos/       # Vídeos enviados nas avaliações
+└── script.sql    # Script de criação do banco e dados de exemplo
 ```
 
 # Links Úteis
