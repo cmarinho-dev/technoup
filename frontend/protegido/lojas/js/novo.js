@@ -1,7 +1,7 @@
 // novo.js — formulário de criação de loja (apenas criação)
 
 async function iniciarNovoLoja() {
-    const resposta = await fetch(CAMINHO_API + '/auth/sessao.php', { credentials: 'include' });
+    const resposta = await fetch(CAMINHO_API + '/autenticacao/sessao', { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok' || !json.data.usuario) {
@@ -131,7 +131,7 @@ async function salvarLoja() {
     fd.append('logradouro', logradouro);
     fd.append('numero', numero);
 
-    const resposta = await fetch(CAMINHO_API + '/lojas/novo.php', {
+    const resposta = await fetch(CAMINHO_API + '/lojas', {
         method: 'POST',
         body: fd,
         credentials: 'include'

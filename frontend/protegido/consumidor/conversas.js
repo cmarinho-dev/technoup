@@ -57,7 +57,7 @@ function renderizarConversa(chat) {
 }
 
 async function carregarConversas() {
-    const resposta = await fetch(`${CAMINHO_API}/chat/listar.php`, { credentials: 'include' });
+    const resposta = await fetch(`${CAMINHO_API}/chats`, { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok') {

@@ -4,7 +4,7 @@ let lojaId = null; // ID da loja do lojista logado
 
 async function iniciarGerenciar() {
     // Verifica sessão e garante que é lojista
-    const resposta = await fetch(CAMINHO_API + '/auth/sessao.php', { credentials: 'include' });
+    const resposta = await fetch(CAMINHO_API + '/autenticacao/sessao', { credentials: 'include' });
     const json     = await resposta.json();
 
     if (json.status !== 'ok' || !json.data.usuario) {
@@ -35,7 +35,7 @@ async function iniciarGerenciar() {
 }
 
 async function carregarProdutos() {
-    const resposta = await fetch(CAMINHO_API + '/produtos/get.php?loja_id=' + lojaId, { credentials: 'include' });
+    const resposta = await fetch(CAMINHO_API + '/produtos?loja_id=' + lojaId, { credentials: 'include' });
     const json     = await resposta.json();
     const produtos = json.data || [];
 
@@ -107,7 +107,7 @@ function abrirModalNovo() {
 
 async function abrirModalEditar(id) {
     // Busca os dados atuais do produto para preencher o modal
-    const resposta = await fetch(CAMINHO_API + '/produtos/get.php?loja_id=' + lojaId, { credentials: 'include' });
+    const resposta = await fetch(CAMINHO_API + '/produtos?loja_id=' + lojaId, { credentials: 'include' });
     const json     = await resposta.json();
     const produto  = (json.data || []).find(p => p.id === id);
 
@@ -156,8 +156,8 @@ async function salvarProduto() {
     }
 
     const endpoint = id
-        ? CAMINHO_API + '/produtos/alterar.php'
-        : CAMINHO_API + '/produtos/novo.php';
+        ? CAMINHO_API + '/produtos/alterar'
+        : CAMINHO_API + '/produtos';
 
     const fd = new FormData();
     fd.append('nome', nome);
@@ -195,7 +195,7 @@ async function deletarProduto(id) {
     const fd = new FormData();
     fd.append('id', id);
 
-    const resposta = await fetch(CAMINHO_API + '/produtos/excluir.php', {
+    const resposta = await fetch(CAMINHO_API + '/produtos/excluir', {
         method: 'POST',
         body: fd,
         credentials: 'include'

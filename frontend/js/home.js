@@ -12,13 +12,13 @@ const departamentos = [
 
 async function carregarHome() {
     // Busca produtos (modelo simples: fetch -> json -> verificar status)
-    const retornoProdutos = await fetch(CAMINHO_API + '/produtos/get.php', { credentials: 'include' });
+    const retornoProdutos = await fetch(CAMINHO_API + '/produtos', { credentials: 'include' });
     const respostaProdutos = await retornoProdutos.json();
     const produtos = respostaProdutos.status === 'ok' ? (respostaProdutos.data || []) : ([]);
     if (respostaProdutos.status !== 'ok') console.warn('Erro ao carregar produtos:', respostaProdutos.mensagem || respostaProdutos);
 
     // Busca lojas
-    const retornoLojas = await fetch(CAMINHO_API + '/lojas/get.php', { credentials: 'include' });
+    const retornoLojas = await fetch(CAMINHO_API + '/lojas', { credentials: 'include' });
     const respostaLojas = await retornoLojas.json();
     const lojas = respostaLojas.status === 'ok' ? (respostaLojas.data || []) : ([]);
     if (respostaLojas.status !== 'ok') console.warn('Erro ao carregar lojas:', respostaLojas.mensagem || respostaLojas);

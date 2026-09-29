@@ -107,7 +107,7 @@ function cardDenuncia(denuncia) {
 }
 
 async function verificarAdmin() {
-    const resposta = await fetch(`${CAMINHO_API}/auth/sessao.php`, { credentials: 'include' });
+    const resposta = await fetch(`${CAMINHO_API}/autenticacao/sessao`, { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok' || !json.data.usuario) {
@@ -127,7 +127,7 @@ async function carregarDenuncias() {
     listaDenuncias.innerHTML = '<div class="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-500 shadow-sm">Carregando denúncias...</div>';
 
     const query = statusAtual ? `?status=${encodeURIComponent(statusAtual)}` : '';
-    const resposta = await fetch(`${CAMINHO_API}/denuncias/listar.php${query}`, { credentials: 'include' });
+    const resposta = await fetch(`${CAMINHO_API}/denuncias${query}`, { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok') {
@@ -156,7 +156,7 @@ async function atualizarStatus(botao) {
     botao.disabled = true;
 
     try {
-        const resposta = await fetch(`${CAMINHO_API}/denuncias/atualizar_status.php`, {
+        const resposta = await fetch(`${CAMINHO_API}/denuncias/status`, {
             method: 'POST',
             body: dados,
             credentials: 'include'

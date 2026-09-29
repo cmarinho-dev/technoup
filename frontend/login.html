@@ -49,7 +49,6 @@
                         Entrar
                     </button>
                 </div>
-                <div id="teste" class="absolute text-white text-nowrap"></div>
             </div>
         </div>
     </div>
@@ -66,26 +65,6 @@
 <script>
     const CAMINHO_API     = '../api';
     const CAMINHO_FRONTEND = '.';
-    // apenas para testes, !remover depois
-    // ira abrir uma listas de contas com login e senha
-    showLogins().then(html => {
-        document.getElementById('teste').innerHTML = html;
-    });
-    async function showLogins() {
-        try {
-            const response = await fetch(`${CAMINHO_API}/contas/get.php`);
-            const json = await response.json();
-            return `
-                    ${json.data.map(conta => `
-                            ${conta.tipo} <br>
-                            ${conta.email} |
-                            ${conta.senha}<br>
-                    `).join('')}
-            `;
-        } catch (error) {
-            return '';
-        }
-    }
 </script>
 <script src="./js/login.js"></script>
 </body>

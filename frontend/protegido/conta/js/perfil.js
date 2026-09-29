@@ -2,7 +2,7 @@
 
 async function iniciarPerfil() {
     // Verifica se o usuário está logado
-    const resposta = await fetch(CAMINHO_API + '/auth/sessao.php', { credentials: 'include' });
+    const resposta = await fetch(CAMINHO_API + '/autenticacao/sessao', { credentials: 'include' });
     const json     = await resposta.json();
 
     if (json.status !== 'ok' || !json.data.usuario) {
@@ -93,7 +93,7 @@ async function salvarAlteracoes() {
     fd.append('email', email);
     fd.append('senha', senha);
 
-    const resposta = await fetch(CAMINHO_API + '/contas/alterar.php', {
+    const resposta = await fetch(CAMINHO_API + '/contas/perfil', {
         method: 'POST',
         body: fd,
         credentials: 'include'

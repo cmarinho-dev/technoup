@@ -2,7 +2,7 @@
 
 async function iniciarAdmin() {
     // Verifica sessão: deve ser administrador
-    const resposta = await fetch(CAMINHO_API + '/auth/sessao.php', { credentials: 'include' });
+    const resposta = await fetch(CAMINHO_API + '/autenticacao/sessao', { credentials: 'include' });
     const json     = await resposta.json();
 
     if (json.status !== 'ok' || !json.data.usuario) {
@@ -19,7 +19,7 @@ async function iniciarAdmin() {
 }
 
 async function carregarContas() {
-    const resposta = await fetch(CAMINHO_API + '/contas/get.php', { credentials: 'include' });
+    const resposta = await fetch(CAMINHO_API + '/contas', { credentials: 'include' });
     const json     = await resposta.json();
 
     renderizarTabela(json.data || []);
@@ -77,7 +77,7 @@ async function alternarStatus(contaId) {
     const fd = new FormData();
     fd.append('id', contaId);
 
-    const resposta = await fetch(CAMINHO_API + '/contas/alterar_status.php', {
+    const resposta = await fetch(CAMINHO_API + '/contas/status', {
         method: 'POST',
         body: fd,
         credentials: 'include'
@@ -98,7 +98,7 @@ async function deletarConta(contaId) {
     const fd = new FormData();
     fd.append('id', contaId);
 
-    const resposta = await fetch(CAMINHO_API + '/contas/excluir.php', {
+    const resposta = await fetch(CAMINHO_API + '/contas/excluir', {
         method: 'POST',
         body: fd,
         credentials: 'include'

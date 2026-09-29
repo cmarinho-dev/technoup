@@ -91,7 +91,7 @@ async function criarConta() {
     fdConta.append('senha', senha);
     fdConta.append('tipo', tipoSelecionado);
 
-    const respostaConta = await fetch(CAMINHO_API + '/contas/novo.php', {
+    const respostaConta = await fetch(CAMINHO_API + '/contas', {
         method: 'POST',
         body: fdConta,
         credentials: 'include'
@@ -111,7 +111,7 @@ async function criarConta() {
         fdLogin.append('email', email);
         fdLogin.append('senha', senha);
 
-        const respostaLogin = await fetch(CAMINHO_API + '/auth/login.php', {
+        const respostaLogin = await fetch(CAMINHO_API + '/autenticacao/entrar', {
             method: 'POST',
             body: fdLogin,
             credentials: 'include'

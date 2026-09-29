@@ -193,7 +193,7 @@ async function atualizarStatusAvaliacao(botao) {
     botao.disabled = true;
 
     try {
-        const resposta = await fetch(`${CAMINHO_API}/avaliacoes/atualizar_status.php`, {
+        const resposta = await fetch(`${CAMINHO_API}/avaliacoes/status`, {
             method: 'POST',
             body: dados,
             credentials: 'include'
@@ -218,7 +218,7 @@ async function carregarAvaliacoes() {
     listaAvaliacoes.innerHTML = '<div class="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-500 shadow-sm">Carregando solicitações...</div>';
 
     const query = statusAtual ? `?status=${encodeURIComponent(statusAtual)}` : '';
-    const resposta = await fetch(`${CAMINHO_API}/avaliacoes/listar.php${query}`, { credentials: 'include' });
+    const resposta = await fetch(`${CAMINHO_API}/avaliacoes/loja${query}`, { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok') {
@@ -244,7 +244,7 @@ async function responderAvaliacao(botao) {
     botao.disabled = true;
 
     try {
-        const resposta = await fetch(`${CAMINHO_API}/avaliacoes/responder.php`, {
+        const resposta = await fetch(`${CAMINHO_API}/avaliacoes/responder`, {
             method: 'POST',
             body: dados,
             credentials: 'include'

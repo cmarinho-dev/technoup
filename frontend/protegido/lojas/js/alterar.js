@@ -1,7 +1,7 @@
 // alterar.js — formulário para atualizar loja existente
 
 async function iniciarAlterarLoja() {
-    const resposta = await fetch(CAMINHO_API + '/auth/sessao.php', { credentials: 'include' });
+    const resposta = await fetch(CAMINHO_API + '/autenticacao/sessao', { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok' || !json.data.usuario) {
@@ -16,7 +16,7 @@ async function iniciarAlterarLoja() {
 
     // Busca a loja pelo conta_id via API (não depende de dados completos na sessão)
     const contaId = json.data.usuario.id;
-    const retornoLoja = await fetch(CAMINHO_API + '/lojas/get.php?conta_id=' + contaId, { credentials: 'include' });
+    const retornoLoja = await fetch(CAMINHO_API + '/lojas?conta_id=' + contaId, { credentials: 'include' });
     const jsonLoja = await retornoLoja.json();
 
     if (jsonLoja.status !== 'ok' || !Array.isArray(jsonLoja.data) || jsonLoja.data.length === 0) {
@@ -151,7 +151,7 @@ async function salvarLoja() {
     fd.append('logradouro', logradouro);
     fd.append('numero', numero);
 
-    const resposta = await fetch(CAMINHO_API + '/lojas/alterar.php', {
+    const resposta = await fetch(CAMINHO_API + '/lojas/alterar', {
         method: 'POST',
         body: fd,
         credentials: 'include'

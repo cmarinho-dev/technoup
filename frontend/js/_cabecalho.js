@@ -8,7 +8,7 @@ async function iniciarMenuUsuario() {
     if (!menuEl) return;
 
     try {
-        const resposta = await fetch(CAMINHO_API + '/auth/sessao.php', { credentials: 'include' });
+        const resposta = await fetch(CAMINHO_API + '/autenticacao/sessao', { credentials: 'include' });
         const json = await resposta.json();
 
         if (json.status === 'ok' && json.data && json.data.usuario) {
@@ -200,7 +200,7 @@ function iniciarMenuDropdown() {
 }
 
 async function fazerLogoff() {
-    await fetch(CAMINHO_API + '/auth/logoff.php', { method: 'POST', credentials: 'include' });
+    await fetch(CAMINHO_API + '/autenticacao/sair', { method: 'POST', credentials: 'include' });
     window.location.href = CAMINHO_FRONTEND + '/login.html';
 }
 

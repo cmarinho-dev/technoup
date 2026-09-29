@@ -25,7 +25,7 @@ function rotuloCliente(conta) {
 }
 
 async function verificarSessao() {
-    const resposta = await fetch(`${CAMINHO_API}/auth/sessao.php`, { credentials: 'include' });
+    const resposta = await fetch(`${CAMINHO_API}/autenticacao/sessao`, { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok' || !json.data.usuario) {
@@ -42,7 +42,7 @@ async function verificarSessao() {
 }
 
 async function carregarClientes() {
-    const resposta = await fetch(`${CAMINHO_API}/denuncias/alvos.php`, { credentials: 'include' });
+    const resposta = await fetch(`${CAMINHO_API}/denuncias/alvos`, { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok') {
@@ -93,7 +93,7 @@ async function enviarDenuncia() {
     btnEnviarDenuncia.textContent = 'Enviando...';
 
     try {
-        const resposta = await fetch(`${CAMINHO_API}/denuncias/salvar.php`, {
+        const resposta = await fetch(`${CAMINHO_API}/denuncias`, {
             method: 'POST',
             body: dados,
             credentials: 'include'

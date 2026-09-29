@@ -115,7 +115,7 @@ async function marcarComoLida() {
     if (!chatAtual?.id) return;
     const dados = new FormData();
     dados.append('chat_id', chatAtual.id);
-    await fetch(`${CAMINHO_API}/chat/marcar_lida.php`, {
+    await fetch(`${CAMINHO_API}/chats/marcar-lido`, {
         method: 'POST',
         body: dados,
         credentials: 'include'
@@ -145,7 +145,7 @@ async function carregarMensagens() {
             params.set('avaliacao_id', avaliacaoId);
         }
 
-        const resposta = await fetch(`${CAMINHO_API}/chat/get.php?${params.toString()}`, {
+        const resposta = await fetch(`${CAMINHO_API}/chats/detalhes?${params.toString()}`, {
             credentials: 'include'
         });
         const json = await resposta.json();
@@ -201,7 +201,7 @@ async function enviarMensagem(evento) {
     }
 
     try {
-        const resposta = await fetch(`${CAMINHO_API}/chat/enviar.php`, {
+        const resposta = await fetch(`${CAMINHO_API}/chats/mensagens`, {
             method: 'POST',
             body: dados,
             credentials: 'include'

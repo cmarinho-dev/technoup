@@ -199,7 +199,7 @@ function cardAvaliacao(avaliacao) {
 }
 
 async function carregarAvaliacoes() {
-    const resposta = await fetch(`${CAMINHO_API}/avaliacoes/minhas.php`, { credentials: 'include' });
+    const resposta = await fetch(`${CAMINHO_API}/avaliacoes/minhas`, { credentials: 'include' });
     const json = await resposta.json();
 
     if (json.status !== 'ok') {
@@ -231,7 +231,7 @@ async function enviarAvaliacaoAtendimento(evento) {
     botao.textContent = 'Enviando...';
 
     try {
-        const resposta = await fetch(`${CAMINHO_API}/avaliacoes/avaliar_atendimento.php`, {
+        const resposta = await fetch(`${CAMINHO_API}/avaliacoes/atendimento`, {
             method: 'POST',
             credentials: 'include',
             body: dados

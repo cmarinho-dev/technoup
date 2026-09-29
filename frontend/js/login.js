@@ -34,7 +34,7 @@ async function fazerLogin() {
     fd.append('email', email);
     fd.append('senha', senha);
 
-    const resposta = await fetch(CAMINHO_API + '/auth/login.php', {
+    const resposta = await fetch(CAMINHO_API + '/autenticacao/entrar', {
         method: 'POST',
         body: fd,
         credentials: 'include'

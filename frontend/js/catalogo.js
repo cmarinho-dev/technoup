@@ -5,7 +5,7 @@ let todosProdutos = [];
 
 async function carregarCatalogo() {
     // Busca produtos e lojas (modelo simples: fetch -> json -> verificar status)
-    const retornoProdutos = await fetch(CAMINHO_API + '/produtos/get.php', { credentials: 'include' });
+    const retornoProdutos = await fetch(CAMINHO_API + '/produtos', { credentials: 'include' });
     const respostaProdutos = await retornoProdutos.json();
     if (respostaProdutos.status === 'ok') {
         todosProdutos = respostaProdutos.data || [];
@@ -14,7 +14,7 @@ async function carregarCatalogo() {
         console.warn('Erro ao carregar produtos:', respostaProdutos.mensagem || respostaProdutos);
     }
 
-    const retornoLojas = await fetch(CAMINHO_API + '/lojas/get.php', { credentials: 'include' });
+    const retornoLojas = await fetch(CAMINHO_API + '/lojas', { credentials: 'include' });
     const respostaLojas = await retornoLojas.json();
     const lojas = respostaLojas.status === 'ok' ? (respostaLojas.data || []) : ([]);
 
