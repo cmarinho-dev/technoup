@@ -6,7 +6,7 @@ final class ApiIntegracaoTest extends TestCase
 {
     private function requisitar(string $caminho): array
     {
-        $base = getenv('TEST_API_BASE_URL') ?: 'http://localhost/technoPhp/api';
+        $base = getenv('TEST_API_BASE_URL') ?: 'http://localhost/technoup/api';
         $cliente = curl_init(rtrim($base, '/') . '/' . ltrim($caminho, '/'));
         self::assertInstanceOf(CurlHandle::class, $cliente);
 

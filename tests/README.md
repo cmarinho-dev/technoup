@@ -13,7 +13,7 @@ php tests/api/phpunit.phar --do-not-cache-result tests/api
 Para usar outra URL da API:
 
 ```powershell
-$env:TEST_API_BASE_URL = 'http://localhost/technoPhp/api'
+$env:TEST_API_BASE_URL = 'http://localhost/technoup/api'
 php tests/api/phpunit.phar --do-not-cache-result tests/api
 ```
 
