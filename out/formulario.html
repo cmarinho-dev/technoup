@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venda seu item - TechnoUp</title>
+
+    <link href="./assets/fonts/inter.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+<script src="./assets/vendor/tailwind.js"></script><meta name="description" content="TechnoUp — demonstração de portfólio de um marketplace de tecnologia."></head>
+<body class="bg-slate-50">
+
+<header class="bg-white shadow-sm border-b border-slate-200">
+    <div class="mx-auto flex h-16 md:mx-12 lg:mx-28 items-center gap-8 px-4 sm:px-6">
+        <a href="./home.html" class="block text-blue-600">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
+                <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor"></path>
+                <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor"></path>
+            </svg>
+        </a>
+        <div class="flex flex-1 items-center justify-end md:justify-between">
+            <nav aria-label="Global" class="hidden md:block">
+                <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
+                    <li><a href="./home.html" class="transition hover:text-blue-600">Home</a></li>
+                    <li><a href="./catalogo.html" class="transition hover:text-blue-600">Catálogo</a></li>
+                    <li><a href="./sobre.html" class="transition hover:text-blue-600">Sobre</a></li>
+                    <li><a href="./formulario.html" class="transition hover:text-blue-600">Venda seu item</a></li>
+                </ul>
+            </nav>
+            <div id="menuUsuario">
+        <div class="flex items-center gap-3">
+            <a data-demo="" href="#demonstracao" class="hidden sm:block rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm border border-slate-300 transition-all hover:bg-slate-50">Registro</a>
+            <a data-demo="" href="#demonstracao" class="block rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700">Login</a>
+        </div></div>
+        </div>
+    </div>
+<nav aria-label="Navegação mobile" class="flex flex-wrap gap-x-5 gap-y-3 border-t border-slate-100 px-4 py-3 text-sm font-medium text-slate-600 md:hidden"><a href="./home.html" class="transition hover:text-blue-600">Home</a><a href="./catalogo.html" class="transition hover:text-blue-600">Catálogo</a><a href="./sobre.html" class="transition hover:text-blue-600">Sobre</a><a href="./formulario.html" aria-current="page" class="font-semibold text-blue-600">Venda seu item</a></nav></header>
+
+<main class="mx-auto max-w-2xl px-4 py-12">
+    <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        <h1 class="text-2xl font-bold text-slate-900 mb-2">Avaliação de Item</h1>
+        <p class="text-sm text-slate-600 mb-6">Preencha os dados abaixo para enviar o item para análise .</p>
+
+        <form id="formAvaliacaoItem" action="#demonstracao" class="space-y-5" novalidate="">
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5" for="loja_id">Loja Destino</label>
+                <select name="loja_id" required="" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600" id="loja_id"><option value="">Selecione a loja...</option><option value="3">ByteStorm</option><option value="1">Pixau</option><option value="2">The Market.</option></select>
+            </div>
+
+            <div>
+                <label for="nome" class="block text-sm font-medium text-slate-700 mb-1.5">Nome do item</label>
+                <input type="text" name="nome" id="nome" required="" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5" for="tipoitem">Tipo do item</label>
+                <select name="tipoitem" required="" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600" id="tipoitem">
+                    <option value="">Selecione...</option>
+                    <option value="Computador">Computador</option>
+                    <option value="Hardware">Hardware</option>
+                    <option value="Periférico">Periférico</option>
+                    <option value="Monitor">Monitor</option>
+                    <option value="Ergonomia">Ergonomia</option>
+                    <option value="Armazenamento">Armazenamento</option>
+                    <option value="Memória">Memória</option>
+                    <option value="Placa de vídeo">Placa de vídeo</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Estado do item</label>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="estado" value="Funcionando perfeitamente" required="" class="w-4 h-4 text-blue-600">
+                        <span class="text-sm text-slate-700">Funcionando Perfeitamente</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="estado" value="Funcionando com avarias" class="w-4 h-4 text-blue-600">
+                        <span class="text-sm text-slate-700">Funcionando Com Avarias</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="estado" value="Não funciona" class="w-4 h-4 text-blue-600">
+                        <span class="text-sm text-slate-700">Não Funciona</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <label for="detalhes" class="block text-sm font-medium text-slate-700 mb-1.5">Detalhes / Defeitos (Opcional)</label>
+                <textarea name="detalhes" id="detalhes" rows="3" maxlength="1000" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"></textarea>
+            </div>
+
+            <div>
+                <label for="midias" class="block text-sm font-medium text-slate-700 mb-1.5">Fotos ou vídeos do item</label>
+                <input type="file" name="midias[]" id="midias" multiple="" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime,video/x-m4v" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
+                <p id="midiaSelecionada" class="mt-2 text-xs text-slate-500">Até 8 arquivos: JPG, PNG, WebP ou vídeos MP4, WebM, MOV e M4V.</p>
+            </div>
+
+            <div id="mensagemFeedback" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
+
+            <button type="submit" class="w-full rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2">
+                Enviar Avaliação
+            </button>
+        </form>
+    </div>
+</main>
+
+
+
+
+
+
+
+<script src="./assets/vendor/lucide.js"></script><script src="./js/demo.js"></script></body></html>

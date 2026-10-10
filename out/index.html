@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - TechnoUp</title>
+
+    <link href="./assets/fonts/inter.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+<script src="./assets/vendor/tailwind.js"></script><meta name="description" content="TechnoUp — demonstração de portfólio de um marketplace de tecnologia."></head>
+<body>
+
+<!-- CABEÇALHO -->
+<header class="bg-white shadow-sm border-b border-slate-200">
+    <div class="mx-auto flex h-16 md:mx-12 lg:mx-28 items-center gap-8 px-4 sm:px-6">
+        <a href="./home.html" class="block text-blue-600">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
+                <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor"></path>
+                <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor"></path>
+            </svg>
+        </a>
+        <div class="flex flex-1 items-center justify-end md:justify-between">
+            <nav aria-label="Global" class="hidden md:block">
+                <ul class="flex items-center gap-6 text-sm font-medium text-slate-600">
+                    <li><a href="./home.html" class="font-semibold text-blue-600">Home</a></li>
+                    <li><a href="./catalogo.html" class="transition hover:text-blue-600">Catálogo</a></li>
+                    <li><a href="./sobre.html" class="transition hover:text-blue-600">Sobre</a></li>
+                    <li><a href="./formulario.html" class="transition hover:text-blue-600">Venda seu item</a></li>
+                </ul>
+            </nav>
+            <div id="menuUsuario">
+        <div class="flex items-center gap-3">
+            <a data-demo="" href="#demonstracao" class="hidden sm:block rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm border border-slate-300 transition-all hover:bg-slate-50">Registro</a>
+            <a data-demo="" href="#demonstracao" class="block rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700">Login</a>
+        </div></div>
+        </div>
+    </div>
+<nav aria-label="Navegação mobile" class="flex flex-wrap gap-x-5 gap-y-3 border-t border-slate-100 px-4 py-3 text-sm font-medium text-slate-600 md:hidden"><a href="./home.html" aria-current="page" class="font-semibold text-blue-600">Home</a><a href="./catalogo.html" class="transition hover:text-blue-600">Catálogo</a><a href="./sobre.html" class="transition hover:text-blue-600">Sobre</a><a href="./formulario.html" class="transition hover:text-blue-600">Venda seu item</a></nav></header>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="flex flex-col gap-4 px-4 py-6 my-6 sm:mx-8 sm:px-8 sm:py-8 sm:my-8 md:mx-16 lg:mx-24">
+
+    <!-- Hero -->
+    <section class="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-900 px-6 py-8 text-white shadow-xl sm:px-10 sm:py-12">
+        <div class="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_top_right,_rgba(96,165,250,0.35),_transparent_55%)] lg:block"></div>
+        <div class="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div class="space-y-6">
+                <span class="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.28em] text-blue-100">
+                    Setup, upgrade e reaproveitamento de items em um só lugar
+                </span>
+                <div>
+                    <h1 class="max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
+                        Monte, compare e descubra os destaques da TechnoUp.
+                    </h1>
+                    <p class="max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
+                        A TechnoUp é uma plataforma que conecta consumidores e lojistas em um catálogo focado em tecnologia, reunindo produtos, ofertas e lojas parceiras numa experiência simples e acessível.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="./catalogo.html" class="rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100">
+                        Ver catálogo
+                    </a>
+                    <a href="./catalogo.html" class="rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                        Conhecer lojas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carrossel de departamentos (preenchido pelo JS) -->
+    <section id="carousel_departamentos_container" class="mt-10">
+        <div class="flex items-center gap-8 mb-3">
+            <h2 class="text-3xl font-bold">Departamentos em destaque</h2>
+        </div>
+        <div class="relative mb-8 sm:overflow-x-hidden">
+            <button type="button" id="carousel_departamentos_prev" class="absolute -left-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full border border-gray-200 bg-white/90 p-2 text-gray-700 shadow-md backdrop-blur sm:flex" aria-label="Voltar">
+                <i data-lucide="chevron-left" class="h-5 w-5"></i>
+            </button>
+            <div id="carousel_departamentos" class="grid grid-cols-1 gap-4 pb-6 pt-2 sm:flex sm:snap-x sm:snap-mandatory sm:overflow-x-auto sm:scroll-smooth sm:pb-8 sm:px-2 sm:[-ms-overflow-style:none] sm:[scrollbar-width:none] sm:[&amp;::-webkit-scrollbar]:hidden">
+
+        <article class="w-full min-w-0 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-5 text-white shadow-sm sm:w-auto sm:min-w-[260px] sm:shrink-0 sm:snap-start">
+            <div class="mb-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+                <i data-lucide="monitor" class="h-6 w-6"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-semibold">PC Gamer</h3>
+                <p class="text-sm leading-6 text-slate-300">Maquinas montadas para jogar e criar.</p>
+            </div>
+        </article>
+
+        <article class="w-full min-w-0 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-5 text-white shadow-sm sm:w-auto sm:min-w-[260px] sm:shrink-0 sm:snap-start">
+            <div class="mb-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+                <i data-lucide="cpu" class="h-6 w-6"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-semibold">Hardware</h3>
+                <p class="text-sm leading-6 text-slate-300">Processadores, placas e upgrades.</p>
+            </div>
+        </article>
+
+        <article class="w-full min-w-0 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-5 text-white shadow-sm sm:w-auto sm:min-w-[260px] sm:shrink-0 sm:snap-start">
+            <div class="mb-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+                <i data-lucide="mouse" class="h-6 w-6"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-semibold">Perifericos</h3>
+                <p class="text-sm leading-6 text-slate-300">Teclados, mouses e audio.</p>
+            </div>
+        </article>
+
+        <article class="w-full min-w-0 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-5 text-white shadow-sm sm:w-auto sm:min-w-[260px] sm:shrink-0 sm:snap-start">
+            <div class="mb-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+                <i data-lucide="monitor-up" class="h-6 w-6"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-semibold">Monitores</h3>
+                <p class="text-sm leading-6 text-slate-300">Imagens fluidas para trabalho e jogo.</p>
+            </div>
+        </article>
+
+        <article class="w-full min-w-0 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-5 text-white shadow-sm sm:w-auto sm:min-w-[260px] sm:shrink-0 sm:snap-start">
+            <div class="mb-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+                <i data-lucide="armchair" class="h-6 w-6"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-semibold">Cadeiras</h3>
+                <p class="text-sm leading-6 text-slate-300">Conforto para setups longos.</p>
+            </div>
+        </article>
+
+        <article class="w-full min-w-0 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-5 text-white shadow-sm sm:w-auto sm:min-w-[260px] sm:shrink-0 sm:snap-start">
+            <div class="mb-10 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+                <i data-lucide="briefcase-business" class="h-6 w-6"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-semibold">Home Office</h3>
+                <p class="text-sm leading-6 text-slate-300">Equipamentos para produtividade.</p>
+            </div>
+        </article>
+
+            </div>
+            <button type="button" id="carousel_departamentos_next" class="absolute -right-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full border border-gray-200 bg-white/90 p-2 text-gray-700 shadow-md backdrop-blur sm:flex" aria-label="Avançar">
+                <i data-lucide="chevron-right" class="h-5 w-5"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Carrossel de produtos em promoção (preenchido pelo JS) -->
+    <section id="carousel_produtos_container" class="mt-6">
+        <div class="flex items-center gap-8 mb-3">
+            <h2 class="text-3xl font-bold">Promoções imperdíveis</h2>
+        </div>
+        <div class="relative mb-8 sm:overflow-x-hidden">
+            <button type="button" id="carousel_produtos_prev" class="absolute -left-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full border border-gray-200 bg-white/90 p-2 text-gray-700 shadow-md backdrop-blur sm:flex" aria-label="Voltar">
+                <i data-lucide="chevron-left" class="h-5 w-5"></i>
+            </button>
+            <div id="carousel_produtos" class="grid grid-cols-1 gap-4 pb-6 pt-2 sm:flex sm:snap-x sm:snap-mandatory sm:overflow-x-auto sm:scroll-smooth sm:pb-8 sm:px-2 sm:[-ms-overflow-style:none] sm:[scrollbar-width:none] sm:[&amp;::-webkit-scrollbar]:hidden">
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex h-48 items-center justify-center rounded-2xl bg-white sm:h-[230px]">
+                <img src="./imagens/produtos/cadeira_gamer.jpg" alt="Cadeira Gamer Ajustavel" class="h-48 w-full rounded-2xl object-contain sm:h-[230px]" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Ergonomia</span>
+                    <span class="text-xs font-medium text-slate-500">ComfortPlay</span>
+                </div>
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">Cadeira Gamer Ajustavel</h3>
+                    <p class="mt-1 text-sm text-slate-500">ByteStorm</p>
+                </div>
+                <div class="space-y-1">
+            <p class="text-sm tracking-[0.2em] text-slate-400">De <s>R$&nbsp;899,90</s></p>
+            <div class="flex items-center gap-3">
+                <p class="text-2xl font-bold tracking-tight text-slate-900">Por R$&nbsp;719,92</p>
+                <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">-20%</span>
+            </div>
+        </div>
+            </div>
+        </article>
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex h-48 items-center justify-center rounded-2xl bg-white sm:h-[230px]">
+                <img src="./imagens/produtos/gabinete_rgb.jpg" alt="Gabinete Mid Tower RGB" class="h-48 w-full rounded-2xl object-contain sm:h-[230px]" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Hardware</span>
+                    <span class="text-xs font-medium text-slate-500">DarkCase</span>
+                </div>
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">Gabinete Mid Tower RGB</h3>
+                    <p class="mt-1 text-sm text-slate-500">Pixau</p>
+                </div>
+                <div class="space-y-1">
+            <p class="text-sm tracking-[0.2em] text-slate-400">De <s>R$&nbsp;279,90</s></p>
+            <div class="flex items-center gap-3">
+                <p class="text-2xl font-bold tracking-tight text-slate-900">Por R$&nbsp;237,92</p>
+                <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">-15%</span>
+            </div>
+        </div>
+            </div>
+        </article>
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex h-48 items-center justify-center rounded-2xl bg-white sm:h-[230px]">
+                <img src="./imagens/produtos/headset_usb.jpg" alt="Headset USB Surround" class="h-48 w-full rounded-2xl object-contain sm:h-[230px]" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Periférico</span>
+                    <span class="text-xs font-medium text-slate-500">SoundMax</span>
+                </div>
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">Headset USB Surround</h3>
+                    <p class="mt-1 text-sm text-slate-500">The Market.</p>
+                </div>
+                <div class="space-y-1">
+            <p class="text-sm tracking-[0.2em] text-slate-400">De <s>R$&nbsp;219,90</s></p>
+            <div class="flex items-center gap-3">
+                <p class="text-2xl font-bold tracking-tight text-slate-900">Por R$&nbsp;193,51</p>
+                <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">-12%</span>
+            </div>
+        </div>
+            </div>
+        </article>
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex h-48 items-center justify-center rounded-2xl bg-white sm:h-[230px]">
+                <img src="./imagens/produtos/fonte_650w.jpg" alt="Fonte 650W 80 Plus Bronze" class="h-48 w-full rounded-2xl object-contain sm:h-[230px]" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Hardware</span>
+                    <span class="text-xs font-medium text-slate-500">VoltX</span>
+                </div>
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">Fonte 650W 80 Plus Bronze</h3>
+                    <p class="mt-1 text-sm text-slate-500">Pixau</p>
+                </div>
+                <div class="space-y-1">
+            <p class="text-sm tracking-[0.2em] text-slate-400">De <s>R$&nbsp;349,90</s></p>
+            <div class="flex items-center gap-3">
+                <p class="text-2xl font-bold tracking-tight text-slate-900">Por R$&nbsp;314,91</p>
+                <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">-10%</span>
+            </div>
+        </div>
+            </div>
+        </article>
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex h-48 items-center justify-center rounded-2xl bg-white sm:h-[230px]">
+                <img src="./imagens/produtos/placa_mae_b550.jpg" alt="Placa Mae B550 AM4" class="h-48 w-full rounded-2xl object-contain sm:h-[230px]" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Hardware</span>
+                    <span class="text-xs font-medium text-slate-500">BoardMax</span>
+                </div>
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">Placa Mae B550 AM4</h3>
+                    <p class="mt-1 text-sm text-slate-500">ByteStorm</p>
+                </div>
+                <div class="space-y-1">
+            <p class="text-sm tracking-[0.2em] text-slate-400">De <s>R$&nbsp;799,90</s></p>
+            <div class="flex items-center gap-3">
+                <p class="text-2xl font-bold tracking-tight text-slate-900">Por R$&nbsp;719,91</p>
+                <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">-10%</span>
+            </div>
+        </div>
+            </div>
+        </article>
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex h-48 items-center justify-center rounded-2xl bg-white sm:h-[230px]">
+                <img src="./imagens/produtos/notebook_ryzen7.jpg" alt="Notebook Ryzen 7 16GB 512GB SSD" class="h-48 w-full rounded-2xl object-contain sm:h-[230px]" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3 overflow-hidden">
+                <div class="flex items-center justify-between gap-3">
+                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Notebook</span>
+                    <span class="text-xs font-medium text-slate-500">ByteTech</span>
+                </div>
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">Notebook Ryzen 7 16GB 512GB SSD</h3>
+                    <p class="mt-1 text-sm text-slate-500">ByteStorm</p>
+                </div>
+                <div class="space-y-1">
+            <p class="text-sm tracking-[0.2em] text-slate-400">De <s>R$&nbsp;3.899,90</s></p>
+            <div class="flex items-center gap-3">
+                <p class="text-2xl font-bold tracking-tight text-slate-900">Por R$&nbsp;3.587,91</p>
+                <span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700">-8%</span>
+            </div>
+        </div>
+            </div>
+        </article>
+
+            </div>
+            <button type="button" id="carousel_produtos_next" class="absolute -right-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full border border-gray-200 bg-white/90 p-2 text-gray-700 shadow-md backdrop-blur sm:flex" aria-label="Avançar">
+                <i data-lucide="chevron-right" class="h-5 w-5"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Carrossel de lojas (preenchido pelo JS) -->
+    <section id="carousel_lojas_container" class="mt-6">
+        <div class="flex items-center gap-8 mb-3">
+            <h2 class="text-3xl font-bold">Lojas para acompanhar</h2>
+        </div>
+        <div class="relative mb-8 sm:overflow-x-hidden">
+            <button type="button" id="carousel_lojas_prev" class="absolute -left-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full border border-gray-200 bg-white/90 p-2 text-gray-700 shadow-md backdrop-blur sm:flex" aria-label="Voltar">
+                <i data-lucide="chevron-left" class="h-5 w-5"></i>
+            </button>
+            <div id="carousel_lojas" class="grid grid-cols-1 gap-4 pb-6 pt-2 sm:flex sm:snap-x sm:snap-mandatory sm:overflow-x-auto sm:scroll-smooth sm:pb-8 sm:px-2 sm:[-ms-overflow-style:none] sm:[scrollbar-width:none] sm:[&amp;::-webkit-scrollbar]:hidden">
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-h-[340px] sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-slate-100">
+                <img src="./imagens/lojas/bytestorm.jpg" alt="Banner da loja ByteStorm" class="w-full aspect-[4/3] rounded-2xl object-cover" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3">
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">ByteStorm</h3>
+                    <p class="mt-1 text-sm text-slate-500">Curitiba PR</p>
+                </div>
+                <div class="mt-auto flex items-center justify-between">
+                    <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Marketplace</span>
+                    <div class="flex items-center gap-3">
+                        <a data-demo="" href="#demonstracao" class="text-xs font-semibold text-red-600 transition hover:text-red-700">Denunciar</a>
+                        <a href="./catalogo.html" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">Explorar</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-h-[340px] sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-slate-100">
+                <img src="./imagens/lojas/pichau.png" alt="Banner da loja Pixau" class="w-full aspect-[4/3] rounded-2xl object-cover" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3">
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">Pixau</h3>
+                    <p class="mt-1 text-sm text-slate-500">Curitiba PR</p>
+                </div>
+                <div class="mt-auto flex items-center justify-between">
+                    <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Marketplace</span>
+                    <div class="flex items-center gap-3">
+                        <a data-demo="" href="#demonstracao" class="text-xs font-semibold text-red-600 transition hover:text-red-700">Denunciar</a>
+                        <a href="./catalogo.html" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">Explorar</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="flex w-full min-w-0 flex-col rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition sm:w-auto sm:min-h-[340px] sm:min-w-[320px] sm:shrink-0 sm:snap-start sm:hover:-translate-y-1 sm:hover:shadow-xl">
+            <div class="mb-4 flex aspect-[4/3] items-center justify-center rounded-2xl bg-slate-100">
+                <img src="./imagens/lojas/kabum.jpg" alt="Banner da loja The Market." class="w-full aspect-[4/3] rounded-2xl object-cover" onerror="this.style.display='none'">
+            </div>
+            <div class="flex flex-1 flex-col space-y-3">
+                <div>
+                    <h3 class="min-h-[36px] text-lg font-semibold text-slate-900">The Market.</h3>
+                    <p class="mt-1 text-sm text-slate-500">Curitiba PR</p>
+                </div>
+                <div class="mt-auto flex items-center justify-between">
+                    <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Marketplace</span>
+                    <div class="flex items-center gap-3">
+                        <a data-demo="" href="#demonstracao" class="text-xs font-semibold text-red-600 transition hover:text-red-700">Denunciar</a>
+                        <a href="./catalogo.html" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">Explorar</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+            </div>
+            <button type="button" id="carousel_lojas_next" class="absolute -right-3 top-1/2 z-30 hidden -translate-y-1/2 rounded-full border border-gray-200 bg-white/90 p-2 text-gray-700 shadow-md backdrop-blur sm:flex" aria-label="Avançar">
+                <i data-lucide="chevron-right" class="h-5 w-5"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Destaques fixos -->
+    <section class="mt-10 grid gap-4 lg:grid-cols-3">
+        <article class="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                <i data-lucide="shield-check" class="h-6 w-6"></i>
+            </div>
+            <h2 class="text-xl font-semibold text-slate-900">Compra mais segura</h2>
+            <p class="mt-3 text-sm leading-7 text-slate-600">Loja, produto e navegação em uma estrutura simples, com foco em comparação e descoberta.</p>
+        </article>
+        <article class="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+                <i data-lucide="truck" class="h-6 w-6"></i>
+            </div>
+            <h2 class="text-xl font-semibold text-slate-900">Vitrine de parceiros</h2>
+            <p class="mt-3 text-sm leading-7 text-slate-600">Cada lojista ganha espaço próprio sem quebrar a experiência central da plataforma.</p>
+        </article>
+        <article class="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+                <i data-lucide="sparkles" class="h-6 w-6"></i>
+            </div>
+            <h2 class="text-xl font-semibold text-slate-900">Experiência acessível</h2>
+            <p class="mt-3 text-sm leading-7 text-slate-600">A plataforma que facilita a busca de produtos e aproxima lojas parceiras a consumidores.</p>
+        </article>
+    </section>
+</main>
+
+<!-- RODAPÉ -->
+<footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto grid gap-10 px-8 py-10 sm:mx-8 md:mx-16 lg:mx-24 lg:grid-cols-[1.3fr_0.7fr_0.7fr_0.9fr]">
+        <div>
+            <div class="flex items-center gap-3 text-blue-600">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10">
+                    <path d="M12 28C17.5 28 20 22 27 22C31.5 22 34.5 24.5 34.5 24.5C34.5 24.5 30.5 19 24 19C17 19 14.5 25 8 25C8 25 9.5 28 12 28Z" fill="currentColor"></path>
+                    <path d="M19 20C24.5 20 27 14 34 14C38.5 14 41.5 16.5 41.5 16.5C41.5 16.5 37.5 11 31 11C24 11 21.5 17 15 17C15 17 16.5 20 19 20Z" fill="currentColor"></path>
+                </svg>
+                <div>
+                    <p class="text-lg font-semibold text-slate-900">TechnoUp</p>
+                    <p class="text-sm text-slate-500">Marketplace de tecnologia e lojas parceiras.</p>
+                </div>
+            </div>
+            <p class="mt-4 max-w-md text-sm leading-7 text-slate-600">Descubra produtos, acompanhe vitrines de lojistas e encontre componentes, perifericos e setups completos em uma experiencia centralizada.</p>
+        </div>
+        <div>
+            <h2 class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">Navegacao</h2>
+            <div class="mt-4 flex flex-col gap-3 text-sm text-slate-600">
+                <a href="./home.html" class="transition hover:text-blue-600">Home</a>
+                <a href="./catalogo.html" class="transition hover:text-blue-600">Catalogo</a>
+                <a href="./sobre.html" class="transition hover:text-blue-600">Sobre</a>
+                <a href="./formulario.html" class="transition hover:text-blue-600">Venda seu item</a>
+            </div>
+        </div>
+        <div>
+            <h2 class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">Categorias</h2>
+            <div class="mt-4 flex flex-col gap-3 text-sm text-slate-600">
+                <span>Hardware</span><span>Perifericos</span><span>Monitores</span><span>PC Gamer</span>
+            </div>
+        </div>
+        <div>
+            <h2 class="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">Contato</h2>
+            <div class="mt-4 flex flex-col gap-3 text-sm text-slate-600">
+                <span>atendimento@technoup.local</span>
+                <span>Seg a Sex, 9h as 18h</span>
+            </div>
+        </div>
+    </div>
+    <div class="border-t border-slate-200 px-8 py-4 text-center text-sm text-slate-500">
+        TechnoUp © 2026. Todos os direitos reservados.
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+<script src="./assets/vendor/lucide.js"></script><script src="./js/dados.js"></script><script src="./js/home.js"></script><script src="./js/demo.js"></script></body></html>
