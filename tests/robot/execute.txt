@@ -1,0 +1,16 @@
+Execução de todos os casos
+robot --outputdir resultados technoup_web.robot
+
+
+Execução seletiva dos casos
+
+Para executar somente um caso, use a opção --test com o nome exato:
+
+robot --outputdir resultados --test "08 Busca por nome inexistente mostra lista vazia" technoup_web.robot
+
+Para executar mais de um caso, repita --test:
+
+robot --outputdir resultados --test "01 Home exibe chamada principal e atalhos" --test "02 Home abre catálogo pelo botão de destaque" technoup_web.robot
+
+Os nomes dos casos podem ser conferidos na seção *** Test Cases *** de technoup_web.robot.
+Os relatórios report.html, log.html e output.xml serão salvos na pasta resultados.
